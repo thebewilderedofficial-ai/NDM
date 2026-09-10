@@ -7,7 +7,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
@@ -256,8 +256,8 @@ async function setupServer() {
     console.log(`Serving static files from ${distPath}`);
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Digital PR & Marketing Agency Server launched at http://0.0.0.0:${PORT}`);
+  app.listen(Number(port), "0.0.0.0", () => {
+    console.log(`Digital PR & Marketing Agency Server launched at http://0.0.0.0:${port}`);
   });
 }
 
