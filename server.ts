@@ -32,12 +32,12 @@ if (process.env.GEMINI_API_KEY) {
 }
 
 // Global WhatsApp redirect number
-const DEFAULT_WHATSAPP_NUMBER = "+447404499119"; // A high-end mock/real setting ready for user editing
+const DEFAULT_WHATSAPP_NUMBER = "+919103908189";
 
 // API: Server configuration settings
 app.get("/api/settings", (req, res) => {
   res.json({
-    whatsappNumber: process.env.WHATSAPP_NUMBER || DEFAULT_WHATSAPP_NUMBER,
+    whatsappNumber: DEFAULT_WHATSAPP_NUMBER,
     hasGemini: !!ai,
   });
 });

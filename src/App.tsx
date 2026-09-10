@@ -6,37 +6,41 @@ import {
   Newspaper, 
   ArrowUpRight, 
   MessageSquare, 
-  Settings, 
   Phone, 
   ExternalLink,
   ShieldCheck,
   Check,
   HelpCircle,
   Clock,
-  ArrowRight
+  ArrowRight,
+  ChevronRight
 } from "lucide-react";
 import { SERVICES_DATA } from "./data";
 import { Service, AgencySettings } from "./types";
 import ThreeDIcon from "./components/ThreeDIcons";
 import StatsDashboard from "./components/StatsDashboard";
 import ServiceModal from "./components/ServiceModal";
+import ServiceDetailPage from "./components/ServiceDetailPage";
+
+// Fixed WhatsApp line across all dispatches and calls
+const FIXED_WHATSAPP = "+919103908189";
 
 const FAQS = [
   {
-    q: "How do you recover disabled Instagram accounts?",
-    a: "We do not use standard forms that are filtered out by automatic systems. As an agency partner, we send requests directly to real human reviewers, which makes the unban and recovery process much quicker and highly successful."
+    q: "What is Wikipedia's rule for page creation, and do you offer maintenance support for existing pages?",
+    a: "Wikipedia pages require independent news coverage about you in newspapers or notable magazines (such as Forbes, Bloomberg, TechCrunch, or other business news channels). We evaluate your available news features first to ensure they fit Wikipedia guidelines before drafting. IN ADDITION, WE OFFER 24/7 ONGOING MAINTENANCE & CONTENT DEFENSE FOR PAGES THAT ARE ALREADY PUBLISHED—including watchlist monitoring against competitor vandalism, reversion of unauthorized changes, citation repairs, and regular milestone updates (funding rounds, awards, leadership expansions)!"
   },
   {
-    q: "What is Wikipedia's rule for page creation?",
-    a: "Wikipedia pages require independent news coverage about you in newspapers or solid magazines (such as Forbes, TechCrunch, or other business news channels). We read through your available news features first to ensure they fit Wikipedia guidelines before draft start."
+    q: "How do you recover disabled Instagram accounts?",
+    a: "We do not use standard forms that are filtered out by automated bots. As an agency partner, we send requests directly to real human review desks at Meta operations, which makes the unban and recovery process much quicker and highly successful. Plus, we operate under a 100% Pay On Success Guarantee."
   },
   {
     q: "Can you claim any inactive username?",
-    a: "We can help you get inactive usernames on Instagram, TikTok, and Twitter if the account has been inactive for a long time (usually 2 or more years with zero posts or activity) and fits your brand. We cannot claim active or already verified channels."
+    a: "We help you acquire inactive, squatted, or dead usernames on Instagram, X (Twitter), TikTok, and YouTube if the account has been inactive for an extended duration (usually 2 or more years with zero activity) and fits your brand. We cannot claim active or verified channels."
   },
   {
     q: "Do I need to make upfront payments?",
-    a: "It depends heavily on the specific services and our prior agreements with the client. For standard campaigns such as Wikipedia setup or press media packages, an upfront payment is mostly required to initialize the project."
+    a: "It depends on the specific service. For Instagram account recovery, we offer a 100% Pay On Success guarantee (you pay nothing unless the account is back in your hands). For Wikipedia publishing and Tier-1 press distribution, milestone allocations or standard packages apply."
   }
 ];
 
@@ -48,7 +52,7 @@ const TESTIMONIALS = [
     tag: "Instagram Unban customer"
   },
   {
-    quote: "Setting up our official page on Wikipedia was critical for our search results. They wrote a neutral draft that fit the rules perfectly.",
+    quote: "Setting up our official page on Wikipedia was critical for our search results. They wrote a neutral draft that fit the rules perfectly. They also monitor and defend our page from vandalism 24/7.",
     author: "Sir Marcus Vance",
     role: "Founder, Vance Luxury Real Estate",
     tag: "Wikipedia client"
@@ -57,44 +61,47 @@ const TESTIMONIALS = [
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState<"all" | "pr" | "social" | "claim">("all");
-  const [whatsappNumber, setWhatsappNumber] = useState("+447404499119");
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [activeServiceDetail, setActiveServiceDetail] = useState<Service | null>(null);
   const [hasGemini, setHasGemini] = useState(false);
-  
-  // Custom temporary input for WhatsApp number adjustments
-  const [tempPhoneInput, setTempPhoneInput] = useState("");
 
   useEffect(() => {
-    // Attempt to load settings from server or localStorage
-    const savedNum = localStorage.getItem("agency_whatsapp");
-    if (savedNum) {
-      setWhatsappNumber(savedNum);
-      setTempPhoneInput(savedNum);
-    } else {
-      setTempPhoneInput("+447404499119");
-    }
+    // Check URL hash for direct service page routing (e.g., #service-wikipedia or #wikipedia)
+    const handleHashRouting = () => {
+      const hash = window.location.hash.replace("#", "").replace("service-", "").replace("services/", "").replace("service/", "");
+      if (hash) {
+        const found = SERVICES_DATA.find((s) => s.id.toLowerCase() === hash.toLowerCase());
+        if (found) {
+          setActiveServiceDetail(found);
+          return;
+        }
+      }
+      if (!window.location.hash || window.location.hash === "#" || window.location.hash === "#featured-services") {
+        setActiveServiceDetail(null);
+      }
+    };
+
+    handleHashRouting();
+    window.addEventListener("hashchange", handleHashRouting);
 
     fetch("/api/settings")
       .then((res) => res.json())
       .then((data: AgencySettings) => {
         setHasGemini(data.hasGemini);
-        if (data.whatsappNumber && !savedNum) {
-          setWhatsappNumber(data.whatsappNumber);
-          setTempPhoneInput(data.whatsappNumber);
-        }
       })
-      .catch((err) => console.log("Settings fetch local fallback activated.", err));
+      .catch((err) => console.log("Settings fetch fallback activated.", err));
+
+    return () => window.removeEventListener("hashchange", handleHashRouting);
   }, []);
 
-  const savePhoneSetting = (e: React.FormEvent) => {
-    e.preventDefault();
-    const cleaned = tempPhoneInput.trim();
-    if (cleaned) {
-      setWhatsappNumber(cleaned);
-      localStorage.setItem("agency_whatsapp", cleaned);
-      setIsSettingsOpen(false);
-    }
+  const openServicePage = (srv: Service) => {
+    setActiveServiceDetail(srv);
+    window.location.hash = `service-${srv.id}`;
+  };
+
+  const backToAllServices = () => {
+    setActiveServiceDetail(null);
+    window.location.hash = "";
   };
 
   const filteredServices = SERVICES_DATA.filter((srv) => {
@@ -104,6 +111,34 @@ export default function App() {
     if (selectedCategory === "claim") return srv.id === "username-claim";
     return true;
   });
+
+  const cleanPhone = FIXED_WHATSAPP.replace("+", "").replace(/\s/g, "");
+
+  // If a dedicated service detail page is active, display it full-page
+  if (activeServiceDetail) {
+    return (
+      <>
+        <ServiceDetailPage
+          service={activeServiceDetail}
+          allServices={SERVICES_DATA}
+          onSelectService={openServicePage}
+          onBackToHome={backToAllServices}
+          onOpenBriefModal={(srv) => setSelectedService(srv)}
+          whatsappNumber={FIXED_WHATSAPP}
+        />
+
+        {/* Questionnaire Modal pop-up when initiated from detail page */}
+        {selectedService && (
+          <ServiceModal
+            service={selectedService}
+            isOpen={!!selectedService}
+            onClose={() => setSelectedService(null)}
+            whatsappNumber={FIXED_WHATSAPP}
+          />
+        )}
+      </>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-zinc-950 font-sans text-stone-200 relative pb-16 selection:bg-indigo-500/30 selection:text-white" id="agency-root">
@@ -117,7 +152,7 @@ export default function App() {
       <header className="sticky top-0 z-40 bg-zinc-950/75 backdrop-blur-md border-b border-zinc-900/80" id="agency-header">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
           
-          <div className="flex items-center space-x-3.5">
+          <div className="flex items-center space-x-3.5 cursor-pointer" onClick={backToAllServices}>
             <div className="w-9 h-9 bg-gradient-to-tr from-blue-500 via-indigo-500 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg shadow-black/40">
               <span className="font-display font-bold text-white text-lg">N</span>
             </div>
@@ -127,8 +162,18 @@ export default function App() {
             </div>
           </div>
 
-          <nav className="hidden xl:flex items-center space-x-8 text-xs font-semibold tracking-wide text-zinc-400 uppercase">
+          <nav className="hidden xl:flex items-center space-x-7 text-xs font-semibold tracking-wide text-zinc-400 uppercase">
             <a href="#featured-services" className="hover:text-white transition">Core Services</a>
+            <button
+              onClick={() => {
+                const wikiSrv = SERVICES_DATA.find((s) => s.id === "wikipedia");
+                if (wikiSrv) openServicePage(wikiSrv);
+              }}
+              className="hover:text-blue-300 transition text-blue-400 flex items-center space-x-1 uppercase"
+            >
+              <span>Wikipedia &amp; Maintenance</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-ping" />
+            </button>
             <a href="#stats-dashboard" className="hover:text-white transition">Authority Stats</a>
             <a href="#testimonials-block" className="hover:text-white transition">Reviews</a>
             <a href="#advisory-faq" className="hover:text-white transition">FAQ</a>
@@ -145,25 +190,16 @@ export default function App() {
               <span className="text-zinc-400 uppercase">Live SLA: 3m</span>
             </div>
 
-            {/* Customizer settings trigger */}
-            <button
-              onClick={() => setIsSettingsOpen(true)}
-              className="p-2 text-zinc-400 hover:text-white bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-xl transition"
-              title="Configure recipient destination keys"
-              id="settings-trigger-btn"
-            >
-              <Settings className="w-4 h-4" />
-            </button>
-
-            {/* Direct Instant Reach Button */}
+            {/* Direct Instant Reach Button with FIXED WhatsApp */}
             <a
-              href={`https://api.whatsapp.com/send?phone=${whatsappNumber.replace("+", "")}&text=Hello%20Notorious%20Digital%20Media%20Operations%2C%20I%20would%20like%20to%20request%20a%20priority%20custom%20confidential%20PR%20consultation.`}
+              href={`https://api.whatsapp.com/send?phone=${cleanPhone}&text=Hello%20Notorious%20Digital%20Media%20Operations%2C%20I%20would%20like%20to%20request%20a%20priority%20custom%20confidential%20PR%20consultation.`}
               target="_blank"
               rel="noreferrer"
-              className="bg-zinc-100 hover:bg-white text-black font-display font-bold text-xs x-padding py-2 rounded-xl border border-zinc-300 flex items-center space-x-1.5 transition px-3.5"
+              className="bg-zinc-100 hover:bg-white text-black font-display font-bold text-xs x-padding py-2 rounded-xl border border-zinc-300 flex items-center space-x-1.5 transition px-3.5 shadow-sm"
+              id="header-direct-call-btn"
             >
               <Phone className="w-3.5 h-3.5" />
-              <span>Direct Call</span>
+              <span>Direct Call (+91 9103908189)</span>
             </a>
           </div>
 
@@ -186,7 +222,7 @@ export default function App() {
         </h1>
 
         <p className="text-lg text-zinc-400 leading-relaxed max-w-3xl mx-auto mb-10">
-          Get your customized Wikipedia page created, recover your disabled Instagram accounts, claim inactive usernames for your brand, or get featured on top news websites. Simple, secure, and direct.
+          Get your customized Wikipedia page created, maintain and protect your existing published Wikipedia pages, recover disabled Instagram accounts, claim inactive usernames for your brand, or get featured on top global news websites.
         </p>
 
         {/* Call actions */}
@@ -195,15 +231,20 @@ export default function App() {
             href="#featured-services"
             className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-display font-semibold hover:scale-[1.01] active:scale-[0.99] transition px-8 py-3.5 rounded-xl shadow-[0_10px_35px_rgba(37,99,235,0.25)] flex items-center justify-center space-x-2"
           >
-            <span>Explore Custom Services</span>
+            <span>Explore Dedicated Services</span>
             <ArrowRight className="w-4 h-4" />
           </a>
-          <a
-            href="#advisory-faq"
-            className="w-full sm:w-auto border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 text-zinc-300 hover:text-white px-8 py-3.5 rounded-xl text-sm font-medium transition"
+          
+          <button
+            onClick={() => {
+              const wikiSrv = SERVICES_DATA.find((s) => s.id === "wikipedia");
+              if (wikiSrv) openServicePage(wikiSrv);
+            }}
+            className="w-full sm:w-auto border border-blue-500/40 hover:border-blue-400 bg-blue-500/10 text-blue-300 hover:text-white px-7 py-3.5 rounded-xl text-sm font-medium transition flex items-center justify-center space-x-2"
           >
-            Advisory Guidelines
-          </a>
+            <Globe className="w-4 h-4 text-blue-400" />
+            <span>Wikipedia Hub &amp; Maintenance</span>
+          </button>
         </div>
 
         {/* Bento Board component */}
@@ -219,11 +260,14 @@ export default function App() {
         {/* Section Header with categories */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 pb-6 border-b border-zinc-900/60">
           <div>
+            <div className="inline-flex items-center space-x-2 text-[10px] font-mono uppercase tracking-widest text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20 mb-2">
+              <span>Interactive 3D Service Hubs</span>
+            </div>
             <h2 className="text-2xl sm:text-3xl font-bold font-display text-white tracking-tight">
               Featured PR &amp; Marketing Services
             </h2>
             <p className="text-zinc-500 text-sm mt-1">
-              Select a service below to create your brief and see how we can help.
+              Select any service to view its dedicated 3D interactive page, detailed benefits, and live telemetry.
             </p>
           </div>
 
@@ -257,11 +301,15 @@ export default function App() {
               <div
                 key={srv.id}
                 id={`card-${srv.id}`}
-                className="relative overflow-hidden rounded-2xl bg-zinc-900/35 border border-zinc-800/60 hover:border-zinc-700/80 p-6 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_12px_40px_rgba(0,0,0,0.5)] glow-hover"
+                className="relative overflow-hidden rounded-2xl bg-zinc-900/35 border border-zinc-800/60 hover:border-zinc-750 p-6 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_12px_40px_rgba(0,0,0,0.5)] glow-hover"
                 style={{ "--hover-shadow": srv.glowColor } as any}
               >
-                {/* 3D-styled Custom Layer Illustration */}
-                <div className="flex justify-center mb-4">
+                {/* 3D-styled Custom Layer Illustration (Clickable) */}
+                <div 
+                  className="flex justify-center mb-4 cursor-pointer"
+                  onClick={() => openServicePage(srv)}
+                  title={`View dedicated ${srv.title} page`}
+                >
                   <ThreeDIcon serviceId={srv.id} />
                 </div>
 
@@ -276,32 +324,55 @@ export default function App() {
                     </span>
                   </div>
 
-                  <h3 className="text-xl font-bold font-display text-white tracking-tight mb-2 group-hover:text-indigo-300 transition-colors">
-                    {srv.title}
+                  <h3 
+                    onClick={() => openServicePage(srv)}
+                    className="text-xl font-bold font-display text-white tracking-tight mb-2 group-hover:text-indigo-300 transition-colors cursor-pointer flex items-center justify-between"
+                  >
+                    <span>{srv.title}</span>
+                    <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-indigo-400" />
                   </h3>
                   
                   <p className="text-zinc-400 text-xs leading-relaxed mb-4">
                     {srv.tagline}
                   </p>
 
-                  <ul className="space-y-2 mt-4 pt-4 border-t border-zinc-900/80">
+                  {/* Special note for Wikipedia maintenance on card */}
+                  {srv.id === "wikipedia" && (
+                    <div className="mb-3 px-2.5 py-1.5 bg-blue-500/10 border border-blue-500/25 rounded-lg text-[11px] text-blue-300 flex items-center gap-1.5">
+                      <ShieldCheck className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                      <span>Includes 24/7 existing page maintenance &amp; defense</span>
+                    </div>
+                  )}
+
+                  <ul className="space-y-2 mt-3 pt-3 border-t border-zinc-900/80">
                     {srv.benefits.slice(0, 3).map((benefit, bidx) => (
-                      <li key={bidx} className="flex items-start space-x-2 text-[11px] text-zinc-500">
-                        <Check className="w-3.5 h-3.5 text-zinc-400 mt-0.5 shrink-0" />
+                      <li key={bidx} className="flex items-start space-x-2 text-[11px] text-zinc-400">
+                        <Check className="w-3.5 h-3.5 text-indigo-400 mt-0.5 shrink-0" />
                         <span>{benefit}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                {/* Start assessment CTA */}
-                <button
-                  onClick={() => setSelectedService(srv)}
-                  className={`mt-6 w-full bg-gradient-to-r ${srv.gradient} text-white font-display font-semibold text-xs py-2.5 rounded-xl shadow-md transition-all duration-300 hover:opacity-90 active:scale-[0.98] flex items-center justify-center space-x-1.5`}
-                >
-                  <span>Build custom dispatch brief</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </button>
+                {/* Dual Action Buttons */}
+                <div className="mt-6 space-y-2">
+                  <button
+                    onClick={() => openServicePage(srv)}
+                    className="w-full bg-zinc-800 hover:bg-zinc-700 text-white font-display font-semibold text-xs py-2.5 rounded-xl border border-zinc-700 transition flex items-center justify-center space-x-1.5"
+                    id={`view-page-btn-${srv.id}`}
+                  >
+                    <span>View Dedicated Page &amp; 3D Demo</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-indigo-300" />
+                  </button>
+
+                  <button
+                    onClick={() => setSelectedService(srv)}
+                    className={`w-full bg-gradient-to-r ${srv.gradient} text-white font-display font-semibold text-xs py-2 rounded-xl shadow-md transition hover:opacity-90 active:scale-[0.98] flex items-center justify-center space-x-1.5`}
+                  >
+                    <span>Build Strategy Brief</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
             );
           })}
@@ -350,7 +421,7 @@ export default function App() {
             Consultancy &amp; Advisory FAQ
           </h2>
           <p className="text-zinc-500 text-sm mt-1">
-            Understanding operations, trademark claims, and media partner allocations.
+            Understanding operations, trademark claims, media partner allocations, and page maintenance.
           </p>
         </div>
 
@@ -360,7 +431,7 @@ export default function App() {
               <h4 className="text-white font-display font-semibold text-base mb-2">
                 {faq.q}
               </h4>
-              <p className="text-zinc-400 text-xs leading-relaxed">
+              <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed">
                 {faq.a}
               </p>
             </div>
@@ -368,82 +439,42 @@ export default function App() {
         </div>
       </section>
 
-      {/* Advisory Configuration Settings Modal */}
-      {isSettingsOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm" id="global-settings-dialog">
-          <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-6 w-full max-w-sm relative">
-            <h4 className="text-white font-display font-bold text-lg mb-2 flex items-center space-x-2">
-              <Settings className="w-5 h-5 text-indigo-400 animate-spin-slow" />
-              <span>Agency Portal Setup</span>
-            </h4>
-            <p className="text-zinc-500 text-xs mb-4">
-              Adjust the destination target phone number for direct client dispatches and order notifications.
-            </p>
-
-            <form onSubmit={savePhoneSetting} className="space-y-4">
-              <div>
-                <label className="block text-zinc-300 text-xs font-mono uppercase mb-1">
-                  Destination WhatsApp Line
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="+447404499119"
-                  value={tempPhoneInput}
-                  onChange={(e) => setTempPhoneInput(e.target.value)}
-                  className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-white text-sm focus:outline-none focus:border-indigo-500"
-                />
-                <span className="text-[10px] text-zinc-600 font-mono mt-1 block">
-                  Include country code (e.g., +44, +1)
-                </span>
-              </div>
-
-              <div className="flex space-x-2 pt-2">
-                <button
-                  type="submit"
-                  className="flex-1 bg-white hover:bg-zinc-200 text-black py-2.5 rounded-xl font-display font-bold text-xs transition"
-                >
-                  Save Settings
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsSettingsOpen(false)}
-                  className="border border-zinc-800 hover:border-zinc-700 bg-zinc-900 text-zinc-400 py-2.5 px-4 rounded-xl font-display font-semibold text-xs transition"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
       {/* Interactive Questionnaire Modal pop-up */}
       {selectedService && (
         <ServiceModal
           service={selectedService}
           isOpen={!!selectedService}
           onClose={() => setSelectedService(null)}
-          whatsappNumber={whatsappNumber}
+          whatsappNumber={FIXED_WHATSAPP}
         />
       )}
 
-      {/* Elegant Footer attribution */}
+      {/* Elegant Footer attribution with fixed WhatsApp */}
       <footer className="text-center pt-16 border-t border-zinc-900 pb-1 flex flex-col items-center justify-center space-y-2">
         <div className="flex flex-wrap justify-center items-center gap-6 text-xs text-zinc-500 font-medium">
           <a href="https://www.notoriousdigitalmedia.com" target="_blank" rel="noreferrer" className="hover:text-amber-400 transition flex items-center space-x-1">
             <span>www.notoriousdigitalmedia.com</span>
             <ExternalLink className="w-3.5 h-3.5" />
           </a>
+          <a
+            href={`https://api.whatsapp.com/send?phone=${cleanPhone}&text=Hello%20Notorious%20Digital%20Media%2C%20I%20am%20reaching%20out%20for%20PR%20and%20social%20services.`}
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-emerald-400 transition flex items-center space-x-1"
+          >
+            <Phone className="w-3 h-3 text-emerald-400" />
+            <span>WhatsApp: +91 9103908189</span>
+          </a>
           <a href="mailto:notoriousdigitalmedia@gmail.com" className="hover:text-indigo-400 transition flex items-center space-x-1">
             <span>notoriousdigitalmedia@gmail.com</span>
           </a>
         </div>
         <p className="text-[10px] text-zinc-650 font-mono mt-1">
-          &copy; {new Date().getFullYear()} NOTORIOUS DIGITAL MEDIA. ALL OPERATIONS SECURED & EXTENDED VIA EXCLUSIVE PORTALS.
+          &copy; {new Date().getFullYear()} NOTORIOUS DIGITAL MEDIA. ALL OPERATIONS SECURED VIA FIXED DESK (+919103908189).
         </p>
       </footer>
 
     </div>
   );
 }
+
