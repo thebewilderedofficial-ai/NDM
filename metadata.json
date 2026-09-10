@@ -1,0 +1,8 @@
+{
+  "name": "Notorious Digital Media",
+  "description": "An elite agency portal for ordering premium PR \u0026 digital services like Wikipedia publishing, Instagram recovery, unbans, username claims, and verifications with an interactive strategist brief builder.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

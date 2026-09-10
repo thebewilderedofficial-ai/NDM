@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+body {
+  background-color: #0c0a09;
+  color: #f5f5f4;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Custom shimmering/glowing animations */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.glow-hover:hover {
+  box-shadow: 0 0 25px var(--hover-shadow, rgba(99, 102, 241, 0.25));
+}
+
