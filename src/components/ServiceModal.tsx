@@ -1,35 +1,45 @@
 import React, { useState, useEffect } from "react";
-import { X, Sparkles, Send, Copy, Check, MessageSquare, AlertCircle, HelpCircle } from "lucide-react";
-import { Service, BriefResponse } from "../types";
+import { X, Sparkles, Copy, Check, Mail, ExternalLink, ArrowLeft } from "lucide-react";
+import { Service } from "../types";
 
 interface ServiceModalProps {
   service: Service;
   isOpen: boolean;
   onClose: () => void;
-  whatsappNumber: string;
+  whatsappNumber?: string;
+  agencyEmail?: string;
 }
 
 const LOADING_STEPS = [
-  "Setting up our customer consultation session...",
-  "Reviewing your digital search presence...",
-  "Checking news sources and references...",
-  "Verifying category guidelines and eligibility...",
-  "Calculating the optimal plan for your brief...",
-  "Ready to finalize!"
+  "Structuring project parameters...",
+  "Formatting client specifications...",
+  "Compiling quotation inquiry...",
+  "Redirecting to email client..."
 ];
 
-export default function ServiceModal({ service, isOpen, onClose, whatsappNumber }: ServiceModalProps) {
+export default function ServiceModal({
+  service,
+  isOpen,
+  onClose,
+  whatsappNumber = "+919103908189",
+  agencyEmail = "notoriousdigitalmedia@gmail.com",
+}: ServiceModalProps) {
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [loadingStep, setLoadingStep] = useState(0);
-  const [result, setResult] = useState<BriefResponse | null>(null);
+  const [dispatchedInfo, setDispatchedInfo] = useState<{
+    mailtoUrl: string;
+    gmailWebUrl: string;
+    subject: string;
+    body: string;
+  } | null>(null);
   const [copied, setCopied] = useState(false);
   const [customNotes, setCustomNotes] = useState("");
 
   useEffect(() => {
     // Reset states when current service changes
     setFormData({});
-    setResult(null);
+    setDispatchedInfo(null);
     setLoading(false);
     setCopied(false);
     setCustomNotes("");
@@ -47,7 +57,7 @@ export default function ServiceModal({ service, isOpen, onClose, whatsappNumber 
             return prev;
           }
         });
-      }, 1000);
+      }, 350);
     } else {
       setLoadingStep(0);
     }
@@ -60,70 +70,105 @@ export default function ServiceModal({ service, isOpen, onClose, whatsappNumber 
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const getClientIdentifier = () => {
+    return (
+      formData.brandName ||
+      formData.username ||
+      formData.desiredUsername ||
+      formData.handle ||
+      formData.name ||
+      formData.company ||
+      ""
+    );
+  };
+
+  const buildEmailContent = () => {
+    const clientIdentifier = getClientIdentifier();
+    const subject = `Quote Request: ${service.title}${clientIdentifier ? ` - ${clientIdentifier}` : ""}`;
+
+    // Collect all fields provided by the client with human-friendly labels
+    const fieldLines: string[] = [];
+
+    service.fields.forEach((f) => {
+      const val = formData[f.name];
+      if (val && typeof val === "string" && val.trim()) {
+        fieldLines.push(`• ${f.label}:\n  ${val.trim()}`);
+      }
+    });
+
+    // Any other custom entries in formData not explicitly in service.fields
+    Object.entries(formData).forEach(([k, v]) => {
+      const isKnown = service.fields.some((f) => f.name === k);
+      if (!isKnown && v && typeof v === "string" && v.trim()) {
+        const friendlyName = k
+          .replace(/([A-Z])/g, " $1")
+          .replace(/^./, (s) => s.toUpperCase());
+        fieldLines.push(`• ${friendlyName}:\n  ${v.trim()}`);
+      }
+    });
+
+    if (customNotes.trim()) {
+      fieldLines.push(`• Custom Requests & Timeline Target:\n  ${customNotes.trim()}`);
+    }
+
+    const dateStr = new Date().toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+
+    const body = `Hello Notorious Digital Media Team,
+
+I am requesting a formal quotation and project scope review for the following service:
+
+SERVICE: ${service.title}
+DATE: ${dateStr}
+
+==================================================
+CLIENT SUBMITTED DETAILS
+==================================================
+${fieldLines.length > 0 ? fieldLines.join("\n\n") : "• No specific fields entered."}
+
+==================================================
+Please review these project specifications and respond back with a formal quotation, estimated timeline, and next steps.
+
+Thank you!
+`;
+
+    return { subject, body };
+  };
+
+  const getEmailUrls = () => {
+    const { subject, body } = buildEmailContent();
+    const mailtoUrl = `mailto:${agencyEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(agencyEmail)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    return { mailtoUrl, gmailWebUrl, subject, body };
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setResult(null);
+    setDispatchedInfo(null);
 
-    // Merge custom notes block if filled
-    const submissionDetails = {
-      ...formData,
-      ...(customNotes.trim() ? { additionalAgencyDirectives: customNotes } : {})
-    };
-
-    try {
-      const response = await fetch("/api/generate-brief", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          serviceId: service.id,
-          details: submissionDetails,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Feasibility check failed.");
-      }
-
-      const data: BriefResponse = await response.json();
-      setResult(data);
-    } catch (err) {
-      console.error(err);
-      // Fallback local results
-      setResult({
-        assessment: "Failed to load direct strategic assessment. Fallback outline generated successfully.",
-        recommendations: [
-          "Double check internet connection parameters.",
-          "Prepare official registration certificates.",
-          "Coordinate directly with senior operations team on WhatsApp."
-        ],
-        whatsappBrief: `*PREMIUM ${service.title.toUpperCase()} INQUIRY*\n\n` +
-          `Failed to compile full AI brief, however we are ready to serve you.\n\n` +
-          `Details Submitted:\n` +
-          Object.entries(formData)
-            .map(([k, v]) => `• *${k}:* ${v}`)
-            .join("\n") +
-          `\n\n*Agency Support:* Ready to consult.`,
-        isAiGenerated: false
-      });
-    } finally {
+    // Analyse and format specifications, then immediately redirect to email
+    setTimeout(() => {
+      const urls = getEmailUrls();
+      setDispatchedInfo(urls);
       setLoading(false);
-    }
+
+      try {
+        window.location.href = urls.mailtoUrl;
+      } catch (err) {
+        console.warn("Auto mailto redirection caught:", err);
+      }
+    }, 1200);
   };
 
   const copyBriefText = () => {
-    if (!result) return;
-    navigator.clipboard.writeText(result.whatsappBrief);
+    if (!dispatchedInfo) return;
+    navigator.clipboard.writeText(dispatchedInfo.body);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  const dispatchToWhatsApp = () => {
-    if (!result) return;
-    const cleanNum = whatsappNumber.replace("+", "").replace(/\s/g, "");
-    const encodedText = encodeURIComponent(result.whatsappBrief);
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${cleanNum}&text=${encodedText}`;
-    window.open(whatsappUrl, "_blank");
   };
 
   return (
@@ -164,7 +209,7 @@ export default function ServiceModal({ service, isOpen, onClose, whatsappNumber 
           </div>
 
           <div className="p-6">
-            {!result && !loading && (
+            {!dispatchedInfo && !loading && (
               <form onSubmit={handleSubmit} className="space-y-5" id="service-brief-form">
                 <p className="text-zinc-400 text-sm leading-relaxed mb-4">
                   {service.description}
@@ -236,10 +281,10 @@ export default function ServiceModal({ service, isOpen, onClose, whatsappNumber 
                     className={`w-full bg-gradient-to-r ${service.gradient} text-white py-3 rounded-xl font-display font-semibold transition-all hover:scale-[1.01] active:scale-[0.99] shadow-[0_4px_20px_rgba(0,0,0,0.5)] flex items-center justify-center space-x-2`}
                   >
                     <Sparkles className="w-4 h-4 text-white animate-pulse" />
-                    <span>Run AI Strategic Assessment</span>
+                    <span>Generate Formal Quote</span>
                   </button>
                   <p className="text-center text-[11px] text-zinc-600 font-mono mt-2">
-                    Builds bespoke briefing copy in under 5 seconds
+                    Prepares verified project scope and quotation summary
                   </p>
                 </div>
               </form>
@@ -280,81 +325,128 @@ export default function ServiceModal({ service, isOpen, onClose, whatsappNumber 
               </div>
             )}
 
-            {/* Results display */}
-            {result && !loading && (
-              <div className="space-y-6" id="assessment-response-view">
+            {/* Results / Direct Email Redirect Screen */}
+            {dispatchedInfo && !loading && (
+              <div className="py-6 px-2 text-center space-y-6" id="quote-dispatched-screen">
                 
-                {/* Feasibility Index Callout */}
-                <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4">
-                  <h4 className="text-zinc-300 font-display font-bold text-xs uppercase tracking-wider mb-2 flex items-center space-x-2">
-                    <Sparkles className="w-4 h-4 text-emerald-400" />
-                    <span>Executive Advisory Assessment</span>
+                {/* Animated Dispatch Icon */}
+                <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 p-0.5 shadow-[0_0_30px_rgba(59,130,246,0.35)] flex items-center justify-center">
+                  <div className="w-full h-full bg-zinc-950 rounded-[14px] flex items-center justify-center">
+                    <Mail className="w-8 h-8 text-blue-400 animate-pulse" />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold font-mono tracking-wider bg-emerald-500/15 border border-emerald-500/30 text-emerald-300">
+                    REDIRECTED TO EMAIL
+                  </span>
+                  <h4 className="text-2xl font-bold font-display text-white">
+                    Quote Request Dispatched
                   </h4>
-                  <p className="text-zinc-100 text-sm leading-relaxed">
-                    {result.assessment}
+                  <p className="text-zinc-300 text-sm max-w-md mx-auto leading-relaxed">
+                    Your details have been compiled and redirected to your email client addressed to{" "}
+                    <strong className="text-white font-mono">{agencyEmail}</strong> for our team to review manually and respond back.
                   </p>
                 </div>
 
-                {/* Strategy Checkpoints */}
-                <div className="space-y-2.5">
-                  <h4 className="text-zinc-400 font-display font-medium text-xs uppercase tracking-wider">
-                    Preparation Checklist & Guidance
-                  </h4>
-                  <div className="grid grid-cols-1 gap-2">
-                    {result.recommendations.map((rec, i) => (
-                      <div key={i} className="flex items-start space-x-3 bg-zinc-900/40 p-3 rounded-xl border border-zinc-800/40 text-xs text-zinc-300">
-                        <div className={`p-1 mt-0.5 rounded-md bg-zinc-800 text-zinc-300`}>
-                          {i + 1}
-                        </div>
-                        <p className="leading-relaxed">{rec}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Raw Message Review Block */}
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <h4 className="text-zinc-400 font-display font-medium text-xs uppercase tracking-wider">
-                      Compiled Dispatch WhatsApp Brief
-                    </h4>
-                    <span className="text-[10px] font-mono text-zinc-500">
-                      {result.isAiGenerated ? "⚡ Optimized by AI" : "⚙️ Compiled via Heuristics"}
+                {/* Submitted fields preview */}
+                <div className="max-w-md mx-auto text-left bg-zinc-900/70 border border-zinc-800 rounded-2xl p-4 space-y-3 shadow-inner">
+                  <div className="flex items-center justify-between border-b border-zinc-800/80 pb-2">
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-400 font-semibold">
+                      Client Submitted Specifications
+                    </span>
+                    <span className="text-[10px] font-mono text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
+                      Manual Review
                     </span>
                   </div>
 
-                  <div className="relative">
-                    <pre className="w-full bg-zinc-950 border border-zinc-900 rounded-xl p-4 text-zinc-300 text-xs font-mono whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto">
-                      {result.whatsappBrief}
-                    </pre>
-                    
-                    {/* Copy Hover Button */}
-                    <button
-                      onClick={copyBriefText}
-                      className="absolute right-3 top-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-lg p-2 text-zinc-400 hover:text-white transition-all shadow-md"
-                      title="Copy brief copy to clipboard"
-                    >
-                      {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-                    </button>
+                  <div className="max-h-48 overflow-y-auto space-y-2.5 pr-1 text-xs">
+                    <div className="flex flex-col">
+                      <span className="text-zinc-500 text-[10px] uppercase font-mono">Service</span>
+                      <span className="text-white font-semibold">{service.title}</span>
+                    </div>
+
+                    {service.fields.map((f) => {
+                      const val = formData[f.name];
+                      if (!val || !val.trim()) return null;
+                      return (
+                        <div key={f.name} className="flex flex-col">
+                          <span className="text-zinc-500 text-[10px] uppercase font-mono">{f.label}</span>
+                          <span className="text-zinc-200 font-normal leading-relaxed">{val.trim()}</span>
+                        </div>
+                      );
+                    })}
+
+                    {customNotes.trim() && (
+                      <div className="flex flex-col">
+                        <span className="text-zinc-500 text-[10px] uppercase font-mono">Custom Requests & Timeline Target</span>
+                        <span className="text-zinc-200 font-normal leading-relaxed">{customNotes.trim()}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
-                {/* Final dispatch CTA */}
-                <div className="pt-3 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
-                  <button
-                    onClick={dispatchToWhatsApp}
-                    className="flex-1 bg-green-500 hover:bg-green-600 text-white py-3 px-6 rounded-xl font-display font-bold transition-all hover:scale-[1.01] active:scale-[0.99] shadow-[0_10px_25px_rgba(34,197,94,0.3)] flex items-center justify-center space-x-2 text-sm"
-                  >
-                    <MessageSquare className="w-4 h-4" />
-                    <span>Send Order Brief via WhatsApp</span>
-                  </button>
-                  
-                  <button
-                    onClick={() => setResult(null)}
-                    className="border border-zinc-800 hover:border-zinc-700 bg-zinc-900 text-zinc-300 hover:text-white py-3 px-5 rounded-xl font-display font-medium transition text-xs"
-                  >
-                    Reconfigure Details
-                  </button>
+                {/* Direct Launch / Fallback Actions */}
+                <div className="pt-2 max-w-md mx-auto space-y-3">
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <a
+                      href={dispatchedInfo.mailtoUrl}
+                      className="flex-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-700 hover:from-blue-500 hover:via-indigo-500 hover:to-violet-600 text-white py-3.5 px-5 rounded-xl font-display font-bold transition-all hover:scale-[1.01] active:scale-[0.99] shadow-[0_10px_25px_rgba(59,130,246,0.35)] flex items-center justify-center space-x-2 text-sm"
+                      id="launch-email-client-btn"
+                    >
+                      <Mail className="w-4 h-4 shrink-0" />
+                      <span>Launch Email App</span>
+                    </a>
+
+                    <a
+                      href={dispatchedInfo.gmailWebUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 hover:border-zinc-500 text-white py-3.5 px-5 rounded-xl font-display font-semibold transition-all hover:scale-[1.01] flex items-center justify-center space-x-2 text-xs shrink-0"
+                      id="launch-gmail-web-btn"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                      <span>Open in Gmail Web</span>
+                    </a>
+                  </div>
+
+                  <div className="flex flex-wrap items-center justify-center gap-4 pt-2 text-xs">
+                    <button
+                      onClick={copyBriefText}
+                      className="text-zinc-400 hover:text-zinc-200 flex items-center space-x-1.5 transition font-display"
+                    >
+                      {copied ? (
+                        <>
+                          <Check className="w-3.5 h-3.5 text-emerald-400" />
+                          <span className="text-emerald-400">Inquiry Copied!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5" />
+                          <span>Copy Inquiry Text</span>
+                        </>
+                      )}
+                    </button>
+
+                    <span className="text-zinc-700">•</span>
+
+                    <button
+                      onClick={() => setDispatchedInfo(null)}
+                      className="text-zinc-400 hover:text-white flex items-center space-x-1 transition font-display"
+                    >
+                      <ArrowLeft className="w-3 h-3" />
+                      <span>Edit Details</span>
+                    </button>
+
+                    <span className="text-zinc-700">•</span>
+
+                    <button
+                      onClick={onClose}
+                      className="text-zinc-400 hover:text-white transition font-display"
+                    >
+                      Close Window
+                    </button>
+                  </div>
                 </div>
 
               </div>

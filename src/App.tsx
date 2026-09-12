@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { 
   Globe, 
   Sparkles, 
@@ -6,6 +6,7 @@ import {
   Newspaper, 
   ArrowUpRight, 
   MessageSquare, 
+  MessageCircle,
   Phone, 
   ExternalLink,
   ShieldCheck,
@@ -13,17 +14,33 @@ import {
   HelpCircle,
   Clock,
   ArrowRight,
-  ChevronRight
+  ChevronRight,
+  Menu,
+  Wrench,
+  Gauge
 } from "lucide-react";
 import { SERVICES_DATA } from "./data";
 import { Service, AgencySettings } from "./types";
 import ThreeDIcon from "./components/ThreeDIcons";
 import StatsDashboard from "./components/StatsDashboard";
 import ServiceModal from "./components/ServiceModal";
+import ServiceUtilityModal from "./components/ServiceUtilityModal";
 import ServiceDetailPage from "./components/ServiceDetailPage";
+import TypewriterHeadline from "./components/TypewriterHeadline";
+import NavigationDrawer from "./components/NavigationDrawer";
+import HeroTypewriterVisual from "./components/HeroTypewriterVisual";
 
 // Fixed WhatsApp line across all dispatches and calls
 const FIXED_WHATSAPP = "+919103908189";
+const FIXED_EMAIL = "notoriousdigitalmedia@gmail.com";
+
+const HERO_TYPEWRITER_PHRASES = [
+  "Create your Wikipedia page",
+  "Claim Username Profiles",
+  "Publish you in Major media outlets",
+  "Recover disabled Instagram accounts",
+  "Build high-performance Web Portals",
+];
 
 const FAQS = [
   {
@@ -60,28 +77,51 @@ const TESTIMONIALS = [
 ];
 
 export default function App() {
-  const [selectedCategory, setSelectedCategory] = useState<"all" | "pr" | "social" | "claim">("all");
+  const [selectedCategory, setSelectedCategory] = useState<"all" | "pr" | "social" | "claim" | "web">("all");
   const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [utilityModalService, setUtilityModalService] = useState<Service | null>(null);
   const [activeServiceDetail, setActiveServiceDetail] = useState<Service | null>(null);
   const [hasGemini, setHasGemini] = useState(false);
+  const [isNavDrawerOpen, setIsNavDrawerOpen] = useState(false);
+  const [heroTypewriter, setHeroTypewriter] = useState({
+    phraseIndex: 0,
+    isVisible: true,
+  });
+
+  const handleTypewriterStateChange = useCallback(
+    (st: { phraseIndex: number; isVisible: boolean }) => {
+      setHeroTypewriter((prev) => {
+        if (prev.phraseIndex === st.phraseIndex && prev.isVisible === st.isVisible) {
+          return prev;
+        }
+        return { phraseIndex: st.phraseIndex, isVisible: st.isVisible };
+      });
+    },
+    []
+  );
 
   useEffect(() => {
-    // Check URL hash for direct service page routing (e.g., #service-wikipedia or #wikipedia)
+    // Always ensure fresh page loads and browser reloads land on the Home page
+    if (window.location.hash && (window.location.hash.includes("service-") || window.location.hash.includes("service/"))) {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+    setActiveServiceDetail(null);
+
+    // Respond to in-session hash navigation
     const handleHashRouting = () => {
       const hash = window.location.hash.replace("#", "").replace("service-", "").replace("services/", "").replace("service/", "");
-      if (hash) {
+      if (hash && hash !== "featured-services" && hash !== "faq-section") {
         const found = SERVICES_DATA.find((s) => s.id.toLowerCase() === hash.toLowerCase());
         if (found) {
           setActiveServiceDetail(found);
           return;
         }
       }
-      if (!window.location.hash || window.location.hash === "#" || window.location.hash === "#featured-services") {
+      if (!window.location.hash || window.location.hash === "#" || window.location.hash === "#featured-services" || window.location.hash === "#faq-section") {
         setActiveServiceDetail(null);
       }
     };
 
-    handleHashRouting();
     window.addEventListener("hashchange", handleHashRouting);
 
     fetch("/api/settings")
@@ -101,7 +141,7 @@ export default function App() {
 
   const backToAllServices = () => {
     setActiveServiceDetail(null);
-    window.location.hash = "";
+    window.history.replaceState(null, "", window.location.pathname);
   };
 
   const filteredServices = SERVICES_DATA.filter((srv) => {
@@ -109,6 +149,7 @@ export default function App() {
     if (selectedCategory === "pr") return srv.id === "wikipedia" || srv.id === "news-pr";
     if (selectedCategory === "social") return srv.id === "instagram-unban" || srv.id === "meta-verify";
     if (selectedCategory === "claim") return srv.id === "username-claim";
+    if (selectedCategory === "web") return srv.id === "web-development";
     return true;
   });
 
@@ -125,6 +166,7 @@ export default function App() {
           onBackToHome={backToAllServices}
           onOpenBriefModal={(srv) => setSelectedService(srv)}
           whatsappNumber={FIXED_WHATSAPP}
+          onOpenMenu={() => setIsNavDrawerOpen(true)}
         />
 
         {/* Questionnaire Modal pop-up when initiated from detail page */}
@@ -134,8 +176,19 @@ export default function App() {
             isOpen={!!selectedService}
             onClose={() => setSelectedService(null)}
             whatsappNumber={FIXED_WHATSAPP}
+            agencyEmail={FIXED_EMAIL}
           />
         )}
+
+        <NavigationDrawer
+          isOpen={isNavDrawerOpen}
+          onClose={() => setIsNavDrawerOpen(false)}
+          services={SERVICES_DATA}
+          activeServiceId={activeServiceDetail?.id}
+          onSelectService={openServicePage}
+          onNavigateHome={backToAllServices}
+          whatsappNumber={FIXED_WHATSAPP}
+        />
       </>
     );
   }
@@ -183,56 +236,64 @@ export default function App() {
             </a>
           </nav>
 
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 sm:space-x-2.5">
             {/* Real-time Indicator Tag */}
             <div className="hidden lg:flex items-center space-x-1.5 bg-zinc-900 border border-zinc-800 rounded-full px-3 py-1 font-mono text-[10px]">
               <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping" />
               <span className="text-zinc-400 uppercase">Live SLA: 3m</span>
             </div>
 
-            {/* Direct Instant Reach Button with FIXED WhatsApp */}
-            <a
-              href={`https://api.whatsapp.com/send?phone=${cleanPhone}&text=Hello%20Notorious%20Digital%20Media%20Operations%2C%20I%20would%20like%20to%20request%20a%20priority%20custom%20confidential%20PR%20consultation.`}
-              target="_blank"
-              rel="noreferrer"
-              className="bg-zinc-100 hover:bg-white text-black font-display font-bold text-xs x-padding py-2 rounded-xl border border-zinc-300 flex items-center space-x-1.5 transition px-3.5 shadow-sm"
-              id="header-direct-call-btn"
+            {/* Hamburger Services Navigation Menu */}
+            <button
+              onClick={() => setIsNavDrawerOpen(true)}
+              className="group bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 hover:border-zinc-700 px-3 py-2 rounded-xl flex items-center space-x-1.5 text-xs font-semibold tracking-wide transition shadow-sm"
+              aria-label="Open Services Navigation Menu"
+              id="header-services-menu-btn"
             >
-              <Phone className="w-3.5 h-3.5" />
-              <span>Direct Call (+91 9103908189)</span>
-            </a>
+              <Menu className="w-4 h-4 text-zinc-400 group-hover:text-blue-400 transition" />
+              <span className="font-display">Services</span>
+            </button>
           </div>
 
         </div>
       </header>
 
       {/* Hero Showcase Display */}
-      <section className="pt-16 pb-12 text-center max-w-5xl mx-auto px-4" id="agency-hero">
+      <section className="pt-12 sm:pt-16 pb-12 text-center max-w-5xl mx-auto px-4" id="agency-hero">
         
-        {/* Elite agency crown design */}
-        <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border border-blue-500/30 rounded-full px-4 py-1.5 mb-6 shadow-sm">
-          <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-          <span className="text-xs font-mono font-medium text-blue-300 uppercase tracking-widest">
-            {hasGemini ? "AI-Powered Strategy Assistant" : "Premium Digital & PR Agency"}
-          </span>
+        {/* 3D Transparent Floating Dynamic Visual Stage with Fade In / Fade Out sync */}
+        <div className="relative w-full max-w-xs sm:max-w-sm mx-auto h-28 sm:h-32 mb-4 sm:mb-6 flex items-center justify-center pointer-events-none">
+          <HeroTypewriterVisual
+            phraseIndex={heroTypewriter.phraseIndex}
+            isVisible={heroTypewriter.isVisible}
+          />
         </div>
 
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold font-display text-white tracking-tight leading-tight max-w-4xl mx-auto mb-6">
-          We Build Your Online Authority &amp; <span className="bg-gradient-to-r from-blue-400 via-indigo-300 to-rose-400 bg-clip-text text-transparent">Claim Username Profiles</span>
+        <h1 className="font-extrabold font-display text-white tracking-tight leading-tight max-w-4xl mx-auto mb-4 sm:mb-6">
+          <span className="block text-[21px] sm:text-4xl md:text-5xl lg:text-6xl">We Build Your Online Authority</span>
+          <span className="block mt-1 sm:mt-2 text-zinc-300 text-[21px] sm:text-3xl md:text-4xl lg:text-5xl">
+            <span className="inline-flex items-baseline justify-center max-w-full">
+              <span className="text-zinc-500 font-normal mr-2 sm:mr-3 text-[0.85em] shrink-0">&amp;</span>
+              <TypewriterHeadline
+                phrases={HERO_TYPEWRITER_PHRASES}
+                onStateChange={handleTypewriterStateChange}
+              />
+            </span>
+          </span>
         </h1>
 
-        <p className="text-lg text-zinc-400 leading-relaxed max-w-3xl mx-auto mb-10">
+        <p className="text-[11px] sm:text-base md:text-lg text-zinc-400 leading-relaxed max-w-3xl mx-auto mb-8 sm:mb-10">
           Get your customized Wikipedia page created, maintain and protect your existing published Wikipedia pages, recover disabled Instagram accounts, claim inactive usernames for your brand, or get featured on top global news websites.
         </p>
 
         {/* Call actions */}
-        <div className="flex flex-col sm:flex-row justify-center items-center space-y-3 sm:space-y-0 sm:space-x-4 mb-16">
+        <div className="flex flex-row justify-center items-center gap-2 sm:gap-4 mb-14 max-w-sm sm:max-w-none mx-auto w-full px-1 sm:px-0">
           <a
             href="#featured-services"
-            className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-display font-semibold hover:scale-[1.01] active:scale-[0.99] transition px-8 py-3.5 rounded-xl shadow-[0_10px_35px_rgba(37,99,235,0.25)] flex items-center justify-center space-x-2"
+            className="flex-1 sm:flex-initial sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-display font-semibold hover:scale-[1.01] active:scale-[0.99] transition px-3 sm:px-7 py-2 sm:py-3 rounded-xl shadow-[0_10px_35px_rgba(37,99,235,0.25)] flex items-center justify-center space-x-1.5 sm:space-x-2 text-[10px] sm:text-sm md:text-base whitespace-nowrap"
           >
-            <span>Explore Dedicated Services</span>
-            <ArrowRight className="w-4 h-4" />
+            <span>Our Services</span>
+            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 shrink-0" />
           </a>
           
           <button
@@ -240,10 +301,12 @@ export default function App() {
               const wikiSrv = SERVICES_DATA.find((s) => s.id === "wikipedia");
               if (wikiSrv) openServicePage(wikiSrv);
             }}
-            className="w-full sm:w-auto border border-blue-500/40 hover:border-blue-400 bg-blue-500/10 text-blue-300 hover:text-white px-7 py-3.5 rounded-xl text-sm font-medium transition flex items-center justify-center space-x-2"
+            className="flex-1 sm:flex-initial sm:w-auto border border-blue-500/40 hover:border-blue-400 bg-blue-500/10 text-blue-300 hover:text-white px-3 sm:px-6 py-2 sm:py-3 rounded-xl text-[10px] sm:text-xs md:text-sm font-medium transition flex items-center justify-center space-x-1.5 sm:space-x-2 whitespace-nowrap"
           >
-            <Globe className="w-4 h-4 text-blue-400" />
-            <span>Wikipedia Hub &amp; Maintenance</span>
+            <svg className="w-3 h-3 sm:w-4 sm:h-4 text-blue-400 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12.09 13.119c-.936 1.932-2.217 4.548-2.853 5.728-.616 1.074-1.127.931-1.532.029-1.406-3.321-4.293-9.144-5.651-12.409-.251-.601-.441-.987-.619-1.139-.181-.15-.554-.24-1.122-.271C.103 5.033 0 4.982 0 4.898v-.455l.052-.045c.924-.005 5.401 0 5.401 0l.051.045v.434c0 .119-.075.176-.225.176l-.564.031c-.485.029-.727.164-.727.436 0 .135.053.33.166.601 1.082 2.646 4.818 10.521 4.818 10.521l.136.046 2.411-4.81-.482-1.067-1.658-3.264s-.318-.654-.428-.872c-.728-1.443-.712-1.518-1.447-1.617-.207-.023-.313-.05-.313-.149v-.468l.06-.045h4.292l.113.037v.451c0 .105-.076.15-.227.15l-.308.047c-.792.061-.661.381-.136 1.422l1.582 3.252 1.758-3.504c.293-.64.233-.801.111-.947-.07-.084-.305-.22-.812-.24l-.201-.021c-.052 0-.098-.015-.145-.051-.045-.031-.067-.076-.067-.129v-.427l.061-.045c1.247-.008 4.043 0 4.043 0l.059.045v.436c0 .121-.059.178-.193.178-.646.03-.782.095-1.023.439-.12.186-.375.589-.646 1.039l-2.301 4.273-.065.135 2.792 5.712.17.048 4.396-10.438c.154-.422.129-.722-.064-.895-.197-.172-.346-.273-.857-.295l-.42-.016c-.061 0-.105-.014-.152-.045-.043-.029-.072-.075-.072-.119v-.436l.059-.045h4.961l.041.045v.437c0 .119-.074.18-.209.18-.648.03-1.127.18-1.443.421-.314.255-.557.616-.736 1.067 0 0-4.043 9.258-5.426 12.339-.525 1.007-1.053.917-1.503-.031-.571-1.171-1.773-3.786-2.646-5.71l.053-.036z" />
+            </svg>
+            <span>Get a Wikipedia Page</span>
           </button>
         </div>
 
@@ -261,13 +324,13 @@ export default function App() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 pb-6 border-b border-zinc-900/60">
           <div>
             <div className="inline-flex items-center space-x-2 text-[10px] font-mono uppercase tracking-widest text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20 mb-2">
-              <span>Interactive 3D Service Hubs</span>
+              <span>Specialized Practice Areas</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold font-display text-white tracking-tight">
               Featured PR &amp; Marketing Services
             </h2>
-            <p className="text-zinc-500 text-sm mt-1">
-              Select any service to view its dedicated 3D interactive page, detailed benefits, and live telemetry.
+            <p className="text-zinc-500 text-[12px] sm:text-sm mt-1">
+              Review comprehensive service specifications, client delivery frameworks, and verifiable deliverables.
             </p>
           </div>
 
@@ -277,7 +340,8 @@ export default function App() {
               { id: "all", label: "All Services" },
               { id: "pr", label: "PR & Wikipedia" },
               { id: "social", label: "Social Recovery" },
-              { id: "claim", label: "Username Claims" }
+              { id: "claim", label: "Username Claims" },
+              { id: "web", label: "Web Development" }
             ].map((cat) => (
               <button
                 key={cat.id}
@@ -354,22 +418,47 @@ export default function App() {
                   </ul>
                 </div>
 
-                {/* Dual Action Buttons */}
+                {/* Action Buttons Trio: Learn More, Interactive Tool, Request Quote */}
                 <div className="mt-6 space-y-2">
-                  <button
-                    onClick={() => openServicePage(srv)}
-                    className="w-full bg-zinc-800 hover:bg-zinc-700 text-white font-display font-semibold text-xs py-2.5 rounded-xl border border-zinc-700 transition flex items-center justify-center space-x-1.5"
-                    id={`view-page-btn-${srv.id}`}
-                  >
-                    <span>View Dedicated Page &amp; 3D Demo</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-indigo-300" />
-                  </button>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      onClick={() => openServicePage(srv)}
+                      className="bg-zinc-800/90 hover:bg-zinc-700 text-white font-display font-semibold text-xs py-2 rounded-xl border border-zinc-700 transition flex items-center justify-center space-x-1.5"
+                      id={`view-page-btn-${srv.id}`}
+                    >
+                      <span>Learn More</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-indigo-300" />
+                    </button>
+
+                    <button
+                      onClick={() => setUtilityModalService(srv)}
+                      className="bg-indigo-950/60 hover:bg-indigo-900/80 border border-indigo-500/40 text-indigo-200 hover:text-white font-display font-semibold text-xs py-2 rounded-xl transition flex items-center justify-center space-x-1.5 shadow-sm"
+                      id={`utility-btn-${srv.id}`}
+                      title={`Launch ${srv.title} Tool`}
+                    >
+                      <Gauge className="w-3.5 h-3.5 text-indigo-400" />
+                      <span>
+                        {srv.id === "web-development"
+                          ? "Speed Audit"
+                          : srv.id === "wikipedia"
+                          ? "Check Eligibility"
+                          : srv.id === "username-claim"
+                          ? "Check Handle"
+                          : srv.id === "instagram-unban"
+                          ? "Ban Triage"
+                          : srv.id === "meta-verify"
+                          ? "Audit Badge"
+                          : "ROI Simulator"}
+                      </span>
+                    </button>
+                  </div>
 
                   <button
                     onClick={() => setSelectedService(srv)}
                     className={`w-full bg-gradient-to-r ${srv.gradient} text-white font-display font-semibold text-xs py-2 rounded-xl shadow-md transition hover:opacity-90 active:scale-[0.98] flex items-center justify-center space-x-1.5`}
+                    id={`quote-btn-${srv.id}`}
                   >
-                    <span>Build Strategy Brief</span>
+                    <span>Request Quote</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -446,6 +535,22 @@ export default function App() {
           isOpen={!!selectedService}
           onClose={() => setSelectedService(null)}
           whatsappNumber={FIXED_WHATSAPP}
+          agencyEmail={FIXED_EMAIL}
+        />
+      )}
+
+      {/* Interactive Service Utility Modal pop-up (Triggered by 3rd button) */}
+      {utilityModalService && (
+        <ServiceUtilityModal
+          service={utilityModalService}
+          isOpen={!!utilityModalService}
+          onClose={() => setUtilityModalService(null)}
+          whatsappNumber={FIXED_WHATSAPP}
+          onOpenQuote={() => {
+            const s = utilityModalService;
+            setUtilityModalService(null);
+            setSelectedService(s);
+          }}
         />
       )}
 
@@ -473,6 +578,17 @@ export default function App() {
           &copy; {new Date().getFullYear()} NOTORIOUS DIGITAL MEDIA. ALL OPERATIONS SECURED VIA FIXED DESK (+919103908189).
         </p>
       </footer>
+
+      {/* Slide-in Navigation Drawer */}
+      <NavigationDrawer
+        isOpen={isNavDrawerOpen}
+        onClose={() => setIsNavDrawerOpen(false)}
+        services={SERVICES_DATA}
+        activeServiceId={activeServiceDetail?.id}
+        onSelectService={openServicePage}
+        onNavigateHome={backToAllServices}
+        whatsappNumber={FIXED_WHATSAPP}
+      />
 
     </div>
   );

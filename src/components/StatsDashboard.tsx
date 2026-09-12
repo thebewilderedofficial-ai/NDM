@@ -1,30 +1,68 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Award, Zap, CheckCircle2 } from "lucide-react";
 
 export default function StatsDashboard() {
   const [progress, setProgress] = useState(0);
+  const [hasTriggered, setHasTriggered] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let startTimestamp: number | null = null;
-    const duration = 1200; // Animates over 1.2 seconds for energetic feel
+    const el = containerRef.current;
+    if (!el) return;
 
+    if (typeof window === "undefined" || !("IntersectionObserver" in window)) {
+      setHasTriggered(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        // Triggers when viewport enters and reaches the stats container
+        if (entry.isIntersecting) {
+          setHasTriggered(true);
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: 0.15,
+        rootMargin: "0px 0px -10% 0px", // Mobile-friendly middle/lower-middle viewport trigger
+      }
+    );
+
+    observer.observe(el);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!hasTriggered) return;
+
+    let startTimestamp: number | null = null;
+    const duration = 1400; // Smooth 1.4s energetic count-up
+
+    let animId: number;
     const step = (timestamp: number) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const elapsed = timestamp - startTimestamp;
       const fraction = Math.min(elapsed / duration, 1);
       
-      // Smooth easeOutQuad easing
-      const easeFraction = fraction * (2 - fraction);
+      // Smooth easeOutCubic easing for satisfying deceleration
+      const easeFraction = 1 - Math.pow(1 - fraction, 3);
       setProgress(easeFraction);
 
       if (fraction < 1) {
-        requestAnimationFrame(step);
+        animId = requestAnimationFrame(step);
       }
     };
 
-    const animId = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(animId);
-  }, []);
+    animId = requestAnimationFrame(step);
+    return () => {
+      if (animId) cancelAnimationFrame(animId);
+    };
+  }, [hasTriggered]);
 
   const val1 = Math.floor(progress * 142);
   const val2 = (progress * 94.6).toFixed(1);
@@ -71,7 +109,11 @@ export default function StatsDashboard() {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 select-none" id="stats-dashboard-container">
+    <div
+      ref={containerRef}
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 select-none"
+      id="stats-dashboard-container"
+    >
       {stats.map((stat) => {
         const Icon = stat.icon;
         return (

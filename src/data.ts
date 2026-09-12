@@ -4,7 +4,7 @@ export const SERVICES_DATA: Service[] = [
   {
     id: "wikipedia",
     title: "Wikipedia Page Creation",
-    tagline: "Get your official profile published on Wikipedia",
+    tagline: "Publish your biographical or brand presence on Wikipedia",
     description: "We write and publish professional Wikipedia articles for brands, business owners, and creators. We verify your links and help you trigger a Google Knowledge Panel on web search.",
     benefits: [
       "Helps you get a Google Knowledge Panel",
@@ -12,7 +12,7 @@ export const SERVICES_DATA: Service[] = [
       "Written clearly to meet Wikipedia standards",
       "Safe and monitored page draft submission"
     ],
-    badge: "Official Page",
+    badge: "Knowledge Authority",
     iconName: "Globe",
     featured: true,
     difficulty: "Custom Scope",
@@ -117,7 +117,7 @@ export const SERVICES_DATA: Service[] = [
   {
     id: "username-claim",
     title: "Username Claims",
-    tagline: "Claim inactive and dead accounts for your brand",
+    tagline: "Claim inactive and dead usernames for your brand",
     description: "Get inactive, locked, or dead usernames on Instagram, Twitter, TikTok, or YouTube transferred directly to your business profile.",
     benefits: [
       "Claim short or high-value usernames",
@@ -174,7 +174,7 @@ export const SERVICES_DATA: Service[] = [
     benefits: [
       "Organize profile links for high success",
       "Guide you on required media articles",
-      "Check ID and verification settings",
+      "Submitted through Media Portal",
       "Continuous audit to protect your badge"
     ],
     badge: "Blue Checkmark",
@@ -247,5 +247,65 @@ export const SERVICES_DATA: Service[] = [
         options: ["Urgent (within 1-2 weeks)", "Standard (3-5 weeks)", "Ongoing campaigns"]
       }
     ]
+  },
+  {
+    id: "web-development",
+    title: "Web Development & Digital Portals",
+    tagline: "High-performance websites, web apps & agency portals",
+    description: "Custom, ultra-fast web development built for founders, elite brands, and digital agencies. Designed for high conversion, robust SEO, and bespoke user experiences.",
+    benefits: [
+      "Custom responsive design engineered for all devices",
+      "Full SEO foundation, structured schemas & performance tuning",
+      "Interactive client portals, CRM & quotation flows",
+      "Secure hosting, HTTPS, and domain deployment support"
+    ],
+    badge: "Web Solutions",
+    iconName: "Globe",
+    featured: false,
+    difficulty: "Custom Scope",
+    avgTimeline: "2 - 4 Weeks",
+    startingPrice: "Custom Quote",
+    gradient: "from-cyan-900 via-blue-950 to-indigo-950",
+    glowColor: "rgba(6, 182, 212, 0.45)",
+    fields: [
+      {
+        name: "projectType",
+        label: "Website or App Type",
+        placeholder: "Select...",
+        type: "select",
+        options: [
+          "Agency or Corporate Portfolio Website",
+          "Custom Web Application / Client Portal",
+          "High-Conversion Landing Page / Sales Funnel",
+          "E-Commerce / Brand Storefront"
+        ]
+      },
+      {
+        name: "brandName",
+        label: "Brand or Company Name",
+        placeholder: "e.g., Acme International, John Doe Brand",
+        type: "text"
+      },
+      {
+        name: "currentWebsite",
+        label: "Existing Website Link (if redesign)",
+        placeholder: "e.g., https://yourcurrentsite.com (optional)",
+        type: "text"
+      },
+      {
+        name: "requirements",
+        label: "Core Features & Specific Requirements",
+        placeholder: "Explain what functionality, integrations, or design aesthetic you need...",
+        type: "textarea"
+      },
+      {
+        name: "targetLaunch",
+        label: "Target Launch Timeline",
+        placeholder: "Select...",
+        type: "select",
+        options: ["Urgent (within 2 weeks)", "Standard (3 to 6 weeks)", "Flexible / Planning Phase"]
+      }
+    ]
   }
 ];
+

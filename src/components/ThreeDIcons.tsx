@@ -142,7 +142,43 @@ export default function ThreeDIcon({ serviceId }: ThreeDIconProps) {
         </div>
       );
 
+    case "web-development":
+      return (
+        <div className="relative w-40 h-40 flex items-center justify-center group-hover:scale-105 transition-all duration-500 [perspective:1000px]">
+          {/* Glowing Ambient Backdrop */}
+          <div className="absolute inset-0 bg-cyan-500/20 rounded-full blur-2xl group-hover:bg-blue-500/35 transition-all duration-500" />
+
+          {/* 3D Browser Window Frame */}
+          <div className="relative w-28 h-24 bg-gradient-to-br from-cyan-950/80 via-zinc-900/90 to-blue-950/80 backdrop-blur-xl border border-cyan-500/30 rounded-xl shadow-[0_15px_35px_rgba(6,182,212,0.3)] [transform:rotateY(-12deg)_rotateX(12deg)] transition-all duration-300 group-hover:[transform:rotateY(0deg)_rotateX(0deg)] p-2 flex flex-col justify-between">
+            {/* Window header dots */}
+            <div className="flex items-center space-x-1.5 pb-1 border-b border-cyan-500/20">
+              <div className="w-2 h-2 rounded-full bg-rose-500/80" />
+              <div className="w-2 h-2 rounded-full bg-amber-500/80" />
+              <div className="w-2 h-2 rounded-full bg-emerald-500/80" />
+              <div className="ml-auto text-[7px] font-mono text-cyan-400/70">https://</div>
+            </div>
+
+            {/* Code snippets & layout lines */}
+            <div className="space-y-1.5 py-1">
+              <div className="flex items-center space-x-1">
+                <span className="text-[8px] font-mono text-cyan-300 font-bold">&lt;/&gt;</span>
+                <div className="h-1.5 w-14 bg-cyan-400/40 rounded" />
+              </div>
+              <div className="h-1 w-20 bg-zinc-700/80 rounded" />
+              <div className="h-1 w-16 bg-blue-500/40 rounded" />
+            </div>
+
+            {/* Floating Terminal Pill */}
+            <div className="bg-cyan-500/20 border border-cyan-400/40 rounded px-1.5 py-0.5 flex items-center justify-between">
+              <span className="text-[7px] font-mono text-cyan-300">REACT + NEXT</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            </div>
+          </div>
+        </div>
+      );
+
     default:
+
       return (
         <div className="relative w-40 h-40 flex items-center justify-center group-hover:scale-105 transition-all duration-500">
           <div className="absolute inset-0 bg-slate-500/10 rounded-full blur-xl" />

@@ -60,53 +60,53 @@ export default function WikipediaRealtimeChart() {
   }, []);
 
   return (
-    <div className="w-full bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-5 sm:p-7 backdrop-blur-md relative overflow-hidden shadow-2xl" id="wikipedia-realtime-chart-card">
+    <div className="w-full max-w-full bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-4 sm:p-6 lg:p-7 backdrop-blur-md relative overflow-hidden shadow-2xl" id="wikipedia-realtime-chart-card">
       {/* Background ambient light */}
       <div className="absolute top-0 right-0 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
       {/* Header section with live pulse */}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 pb-6 border-b border-zinc-800/70">
-        <div>
-          <div className="flex items-center space-x-2.5 mb-1.5">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2 mb-1.5">
             <span className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
               <span>LIVE WIKIPEDIA TRAFFIC RADAR</span>
             </span>
             <span className="text-zinc-500 text-xs font-mono">Global Wikimedia Stream</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold font-display text-white tracking-tight flex items-center gap-2">
+          <h3 className="text-lg sm:text-xl md:text-2xl font-bold font-display text-white tracking-tight flex items-center gap-2 break-words">
             <span>Wikipedia Audience &amp; Brand Authority Trends</span>
             <Sparkles className="w-5 h-5 text-blue-400 shrink-0" />
           </h3>
-          <p className="text-zinc-400 text-xs sm:text-sm mt-1 max-w-2xl">
+          <p className="text-zinc-400 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed break-words">
             Wikipedia is the #5 most visited website on Earth, with 15+ Billion monthly pageviews. A verified Wikipedia page is the single most definitive factor for triggering Google Knowledge Panels and AI overview references.
           </p>
         </div>
 
         {/* View toggle tabs */}
-        <div className="flex items-center gap-1.5 bg-zinc-950/80 border border-zinc-800 p-1.5 rounded-xl shrink-0 self-stretch sm:self-auto justify-center">
+        <div className="flex flex-wrap sm:flex-nowrap items-center gap-1.5 bg-zinc-950/80 border border-zinc-800 p-1.5 rounded-xl w-full sm:w-auto shrink-0 justify-center">
           <button
             onClick={() => setActiveTab("traffic")}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold tracking-wide transition flex items-center space-x-1.5 ${
+            className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-lg text-xs font-semibold tracking-wide transition flex items-center justify-center space-x-1.5 ${
               activeTab === "traffic"
                 ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
                 : "text-zinc-400 hover:text-white"
             }`}
           >
-            <Activity className="w-3.5 h-3.5" />
-            <span>Monthly Traffic &amp; Views</span>
+            <Activity className="w-3.5 h-3.5 shrink-0" />
+            <span className="truncate">Traffic &amp; Views</span>
           </button>
           <button
             onClick={() => setActiveTab("impact")}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold tracking-wide transition flex items-center space-x-1.5 ${
+            className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-lg text-xs font-semibold tracking-wide transition flex items-center justify-center space-x-1.5 ${
               activeTab === "impact"
                 ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
                 : "text-zinc-400 hover:text-white"
             }`}
           >
-            <TrendingUp className="w-3.5 h-3.5" />
-            <span>Brand Impact Ratio (%)</span>
+            <TrendingUp className="w-3.5 h-3.5 shrink-0" />
+            <span className="truncate">Impact Ratio (%)</span>
           </button>
         </div>
       </div>
@@ -158,7 +158,7 @@ export default function WikipediaRealtimeChart() {
       </div>
 
       {/* Chart Display */}
-      <div className="w-full h-72 sm:h-80 pt-2">
+      <div className="w-full min-w-0 max-w-full overflow-hidden h-64 sm:h-80 pt-2">
         {activeTab === "traffic" ? (
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={MONTHLY_TRAFFIC_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
@@ -204,7 +204,7 @@ export default function WikipediaRealtimeChart() {
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={IMPACT_COMPARISON_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
-              <XAxis dataKey="metric" stroke="#71717a" fontSize={10} tickLine={false} interval={0} angle={-10} textAnchor="end" />
+              <XAxis dataKey="metric" stroke="#71717a" fontSize={9} tickLine={false} interval={0} angle={-15} textAnchor="end" height={45} />
               <YAxis stroke="#71717a" fontSize={11} tickLine={false} unit="%" domain={[0, 100]} />
               <Tooltip
                 contentStyle={{
@@ -227,30 +227,28 @@ export default function WikipediaRealtimeChart() {
       </div>
 
       {/* Legend & Explanatory footnote */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-zinc-800/70 text-xs text-zinc-400">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-4 border-t border-zinc-800/70 text-xs text-zinc-400">
+        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
           {activeTab === "traffic" ? (
-            <>
-              <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
-                <span className="text-zinc-300">Global Wikipedia Pageviews (Billions/mo)</span>
-              </div>
-            </>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-blue-500 shrink-0" />
+              <span className="text-zinc-300 text-xs">Global Wikipedia Views (Billions/mo)</span>
+            </div>
           ) : (
             <>
               <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-indigo-500" />
-                <span className="text-white font-medium">With Wikipedia Page (Notorious Media Client)</span>
+                <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 shrink-0" />
+                <span className="text-white font-medium text-xs">With Wikipedia Page</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-zinc-600" />
-                <span className="text-zinc-400">Industry Average (Without Page)</span>
+                <span className="w-2.5 h-2.5 rounded-full bg-zinc-600 shrink-0" />
+                <span className="text-zinc-400 text-xs">Industry Average</span>
               </div>
             </>
           )}
         </div>
-        <div className="text-[11px] text-zinc-500 font-mono">
-          Data synchronized with official Wikimedia Foundation public logs
+        <div className="text-[10px] sm:text-[11px] text-zinc-500 font-mono">
+          Data synchronized with official Wikimedia logs
         </div>
       </div>
     </div>

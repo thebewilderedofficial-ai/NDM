@@ -27,11 +27,14 @@ export interface BriefResponse {
   assessment: string;
   recommendations: string[];
   whatsappBrief: string;
+  emailSubject?: string;
+  emailBody?: string;
   isAiGenerated: boolean;
   error?: string;
 }
 
 export interface AgencySettings {
   whatsappNumber: string;
+  agencyEmail?: string;
   hasGemini: boolean;
 }

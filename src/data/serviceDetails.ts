@@ -37,8 +37,8 @@ export interface ServiceDetailExtended {
 export const EXTENDED_SERVICE_DATA: Record<string, ServiceDetailExtended> = {
   "wikipedia": {
     id: "wikipedia",
-    heroHeadline: "Command Maximum Digital Authority With an Official Wikipedia Page",
-    heroSubheadline: "Wikipedia is the world's most trusted knowledge repository. An official Wikipedia entry triggers your Google Knowledge Panel, elevates Google Search to #1, and cements unassailable legitimacy in the eyes of investors, partners, and clients.",
+    heroHeadline: "Command Maximum Digital Authority With a Wikipedia Page",
+    heroSubheadline: "Wikipedia is the world's most trusted knowledge repository. A Wikipedia entry triggers your Google Knowledge Panel, elevates Google Search to #1, and cements unassailable legitimacy in the eyes of investors, partners, and clients.",
     urgentHook: "Over 82% of enterprise clients and high-net-worth investors search an executive's Wikipedia page before signing multi-million contracts.",
     conversionPunch: "Without Wikipedia, Google algorithms treat your brand as unverified. With Wikipedia, you become an indexed historical authority.",
     deliverables: [
@@ -271,7 +271,7 @@ export const EXTENDED_SERVICE_DATA: Record<string, ServiceDetailExtended> = {
       },
       {
         title: "Capture 100% of Natural Direct Search Traffic",
-        description: "Customers search by exact brand name in social app search bars. If a dead account holds your name, you are actively leaking customer discovery to an abandoned profile.",
+        description: "Customers search by exact brand name in social app search bars. If a dead username holds your name, you are actively leaking customer discovery to an abandoned profile.",
         impactTag: "Zero Traffic Leakage",
         iconType: "TrendingUp"
       },
@@ -510,5 +510,98 @@ export const EXTENDED_SERVICE_DATA: Record<string, ServiceDetailExtended> = {
     ],
     guaranteeText: "100% Placement Guarantee: We deliver the exact media publication agreed upon or you are fully refunded.",
     whatsappPreset: "Hello Notorious Digital Media, I want to get featured on major news platforms (Forbes, Bloomberg, etc.) to boost my brand and PR footprint."
+  },
+  "web-development": {
+    id: "web-development",
+    heroHeadline: "Bespoke Web Development & High-Conversion Digital Infrastructure",
+    heroSubheadline: "Command instant authority online with precision-engineered web portals, corporate platforms, and conversion funnels built with modern stacks (React, Next.js, Tailwind). Optimized for lightning speed, technical SEO, and seamless lead acquisition.",
+    urgentHook: "75% of consumers judge a company's credibility and executive pedigree based solely on their website design and responsiveness.",
+    conversionPunch: "A slow, outdated website actively burns high-ticket clients. Our web engineering turns casual visitors into booked retainers.",
+    deliverables: [
+      "Custom responsive UI/UX design crafted with mobile-first precision",
+      "Modern full-stack engineering (React, Next.js, Node.js, Tailwind CSS)",
+      "Technical SEO foundation (JSON-LD schema, OpenGraph tags, sitemap & metadata)",
+      "Interactive consultation workflows, client portals & automated quotation flows",
+      "SSL security hardening, HTTPS encryption, domain DNS setup & Cloud CDN deployment",
+      "Post-launch technical support, maintenance & speed optimization"
+    ],
+    detailedBenefits: [
+      {
+        title: "Bespoke Modern Architecture",
+        description: "Zero generic cookie-cutter WordPress bloat. We engineer clean, modular, ultra-responsive web applications that load in under 1 second.",
+        impactTag: "< 1s Global Load Speeds",
+        iconType: "Cpu"
+      },
+      {
+        title: "Conversion-Engineered UX",
+        description: "Every layout, CTA, and interactive tool is strategically mapped to direct high-intent prospects straight into your WhatsApp or email inbox.",
+        impactTag: "+320% Lead Conversion",
+        iconType: "TrendingUp"
+      },
+      {
+        title: "Comprehensive Technical SEO & Schema",
+        description: "Built with Google-first semantic markup, OpenGraph social sharing preview cards, JSON-LD structured schemas, and full Google Lighthouse optimization.",
+        impactTag: "100 Lighthouse Performance",
+        iconType: "Globe"
+      },
+      {
+        title: "Enterprise Security & Global CDN",
+        description: "Hardened against DDoS, malicious scraping, and downtime with Cloudflare CDN routing, SSL certification, and zero-vulnerability frameworks.",
+        impactTag: "99.99% Uptime SLA",
+        iconType: "ShieldCheck"
+      }
+    ],
+    processSteps: [
+      {
+        step: "Phase 1",
+        title: "Architecture & Wireframe Blueprint",
+        duration: "Days 1 - 3",
+        description: "We map your brand narrative, target audience profile, required interactive flows, and conversion goals into visual wireframes."
+      },
+      {
+        step: "Phase 2",
+        title: "Bespoke UI/UX Design & Prototyping",
+        duration: "Days 4 - 8",
+        description: "Crafting modern, high-contrast dark/light visuals with refined typography, custom 3D iconography, and fluid layout motion."
+      },
+      {
+        step: "Phase 3",
+        title: "Full-Stack Code Development",
+        duration: "Days 9 - 18",
+        description: "Developing clean, type-safe code with responsive layouts, interactive tools, quote engines, and API integrations."
+      },
+      {
+        step: "Phase 4",
+        title: "Speed Optimization, SEO & Deployment",
+        duration: "Days 19 - 21",
+        description: "Running rigorous cross-device audits, configuring domain DNS, SSL security, XML sitemaps, and handing over full source code."
+      }
+    ],
+    clientStats: [
+      { label: "Platforms Delivered", value: "85+", detail: "Agencies, SaaS, & luxury brands" },
+      { label: "Lighthouse Score", value: "98/100", detail: "Industry-leading performance" },
+      { label: "Average Delivery", value: "2 - 3 Weeks", detail: "Rapid agile development" },
+      { label: "Mobile Optimization", value: "100%", detail: "Flawless on all screen sizes" }
+    ],
+    specificFaqs: [
+      {
+        q: "What tech stack do you use for web development?",
+        a: "We specialize in modern frontend and full-stack technologies including React, Next.js, TypeScript, Tailwind CSS, and Node.js. For clients who require custom CMS capabilities or static generation, we implement headless architectures with zero security bloat."
+      },
+      {
+        q: "Do you provide hosting and domain setup?",
+        a: "Yes! We handle the entire deployment pipeline—connecting your custom domain, configuring SSL/HTTPS encryption, setting up Cloudflare CDN, and ensuring optimal server routing."
+      },
+      {
+        q: "Will my website look great on phones and tablets?",
+        a: "Every project is developed with a strict mobile-first methodology. Your website will be fully responsive, pixel-perfect, and ultra-smooth across iPhones, Androids, iPads, and high-resolution desktop monitors."
+      },
+      {
+        q: "Do I own 100% of the code and website assets?",
+        a: "Absolutely. Once the project is completed, all intellectual property, source code, design files, and deployment accounts belong 100% to you."
+      }
+    ],
+    guaranteeText: "100% Satisfaction Guarantee: We provide revision cycles until your web portal matches your exact specifications and brand standards.",
+    whatsappPreset: "Hello Notorious Digital Media, I want to discuss building a modern website / web application for my brand. Please share your portfolio and pricing."
   }
 };

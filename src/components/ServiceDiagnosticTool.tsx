@@ -45,21 +45,22 @@ export default function ServiceDiagnosticTool({
   };
 
   return (
-    <div className="w-full bg-zinc-900/50 border border-zinc-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-sm relative overflow-hidden" id="service-diagnostic-tool">
-      <div className="flex items-center justify-between mb-4 pb-4 border-b border-zinc-800/60">
-        <div>
-          <span className="text-[10px] font-mono uppercase tracking-widest text-indigo-400 bg-indigo-500/10 px-2.5 py-1 rounded-full border border-indigo-500/20">
-            Interactive Diagnostic Engine
+    <div className="w-full max-w-full bg-zinc-900/50 border border-zinc-800/80 rounded-2xl p-4 sm:p-6 lg:p-8 backdrop-blur-sm relative overflow-hidden" id="service-diagnostic-tool">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-4 border-b border-zinc-800/60">
+        <div className="min-w-0">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-indigo-400 bg-indigo-500/10 px-2.5 py-1 rounded-full border border-indigo-500/20 inline-block mb-1.5">
+            Diagnostic Engine
           </span>
-          <h4 className="text-xl font-bold font-display text-white mt-2">
+          <h4 className="text-lg sm:text-xl font-bold font-display text-white mt-1 break-words">
             {serviceId === "wikipedia" && "Wikipedia Feasibility & Eligibility Scorecard"}
             {serviceId === "instagram-unban" && "Account Recovery Priority & Timeframe Estimator"}
             {serviceId === "username-claim" && "Inactive Handle Claim Probability Checker"}
             {serviceId === "meta-verify" && "Blue Badge Pre-Audit Readiness Index"}
             {serviceId === "news-pr" && "Media Authority & Google Impact Simulator"}
+            {serviceId === "web-development" && "Web Portal & Performance Architecture Estimator"}
           </h4>
         </div>
-        <Sparkles className="w-6 h-6 text-amber-400 shrink-0" />
+        <Sparkles className="w-6 h-6 text-amber-400 shrink-0 self-start sm:self-auto" />
       </div>
 
       {/* Wikipedia specific diagnostic */}
@@ -130,20 +131,20 @@ export default function ServiceDiagnosticTool({
             )}
           </div>
 
-          <div className="bg-zinc-950/80 border border-zinc-800/80 rounded-xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center space-x-4">
-              <div className="relative w-16 h-16 rounded-full bg-zinc-900 border-2 border-indigo-500 flex items-center justify-center shrink-0">
-                <span className="font-mono text-xl font-bold text-white">{wikiScore}%</span>
+          <div className="bg-zinc-950/80 border border-zinc-800/80 rounded-xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="flex items-center space-x-3 sm:space-x-4 min-w-0">
+              <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-zinc-900 border-2 border-indigo-500 flex items-center justify-center shrink-0">
+                <span className="font-mono text-lg sm:text-xl font-bold text-white">{wikiScore}%</span>
               </div>
-              <div>
-                <h5 className="text-sm font-display font-bold text-white">
+              <div className="min-w-0">
+                <h5 className="text-xs sm:text-sm font-display font-bold text-white break-words">
                   {isExistingPage
                     ? "Existing Page Maintenance Eligible (Immediate Deployment)"
                     : wikiScore > 75
                     ? "Prime Candidate for Official Wikipedia Page"
                     : "Qualifies with Bundled PR Distribution Pathway"}
                 </h5>
-                <p className="text-xs text-zinc-400 mt-0.5">
+                <p className="text-xs text-zinc-400 mt-0.5 break-words">
                   {isExistingPage
                     ? "We can connect your page to our automated revision monitor within 2 hours."
                     : wikiScore > 75
@@ -153,12 +154,12 @@ export default function ServiceDiagnosticTool({
               </div>
             </div>
 
-            <div className="flex items-center space-x-2 w-full sm:w-auto shrink-0">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full md:w-auto shrink-0">
               <button
                 onClick={onOpenBrief}
-                className="flex-1 sm:flex-initial bg-white hover:bg-zinc-100 text-black text-xs font-bold px-4 py-2.5 rounded-xl transition"
+                className="bg-white hover:bg-zinc-100 text-black text-xs font-bold px-4 py-2.5 rounded-xl transition text-center"
               >
-                Start Strategy Brief
+                Request Quote
               </button>
               <a
                 href={directWhatsAppLink(
@@ -168,9 +169,9 @@ export default function ServiceDiagnosticTool({
                 )}
                 target="_blank"
                 rel="noreferrer"
-                className="flex-1 sm:flex-initial bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center justify-center space-x-1.5 transition"
+                className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center justify-center space-x-1.5 transition text-center"
               >
-                <MessageCircle className="w-3.5 h-3.5" />
+                <MessageCircle className="w-3.5 h-3.5 shrink-0" />
                 <span>Fast-Track</span>
               </a>
             </div>
@@ -214,18 +215,18 @@ export default function ServiceDiagnosticTool({
             </div>
           </div>
 
-          <div className="bg-zinc-950/80 border border-zinc-800/80 rounded-xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div>
+          <div className="bg-zinc-950/80 border border-zinc-800/80 rounded-xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="min-w-0">
               <div className="flex items-center space-x-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
                 <span className="text-xs font-mono text-emerald-400 font-bold uppercase">
                   94.6% Historical Recovery Probability
                 </span>
               </div>
-              <h5 className="text-sm font-display font-bold text-white mt-1">
+              <h5 className="text-xs sm:text-sm font-display font-bold text-white mt-1 break-words">
                 Estimated Recovery Window: 24 to 72 Hours via Meta Direct Representative
               </h5>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-zinc-400 mt-0.5 break-words">
                 Protected by our 100% Pay On Success Guarantee. If we cannot restore your account, you pay $0.
               </p>
             </div>
@@ -234,9 +235,9 @@ export default function ServiceDiagnosticTool({
               href={directWhatsAppLink(`Hello Notorious Media, I have an urgent Instagram account suspension (${banType}, ${daysBanned}). I want an immediate Pay-On-Success review.`)}
               target="_blank"
               rel="noreferrer"
-              className="w-full sm:w-auto bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-display font-bold text-xs px-5 py-3 rounded-xl flex items-center justify-center space-x-2 shrink-0 transition shadow-lg shadow-rose-900/30"
+              className="w-full md:w-auto bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-display font-bold text-xs px-5 py-3 rounded-xl flex items-center justify-center space-x-2 shrink-0 transition shadow-lg shadow-rose-900/30 text-center"
             >
-              <MessageCircle className="w-4 h-4" />
+              <MessageCircle className="w-4 h-4 shrink-0" />
               <span>Submit Urgent Case to WhatsApp</span>
             </a>
           </div>
@@ -280,12 +281,12 @@ export default function ServiceDiagnosticTool({
             </div>
           </div>
 
-          <div className="bg-zinc-950/80 border border-zinc-800/80 rounded-xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div>
-              <h5 className="text-sm font-display font-bold text-white">
+          <div className="bg-zinc-950/80 border border-zinc-800/80 rounded-xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="min-w-0">
+              <h5 className="text-xs sm:text-sm font-display font-bold text-white break-words">
                 Transfer Feasibility: High (via Media Portal Inactivity Rights)
               </h5>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-zinc-400 mt-0.5 break-words">
                 Accounts inactive for 2+ years can be released directly to matching brand entities.
               </p>
             </div>
@@ -293,9 +294,9 @@ export default function ServiceDiagnosticTool({
               href={directWhatsAppLink(`Hello Notorious Media, I want to claim a username on ${platform} (${handleLength}). Please check handle availability.`)}
               target="_blank"
               rel="noreferrer"
-              className="w-full sm:w-auto bg-cyan-600 hover:bg-cyan-500 text-white font-display font-bold text-xs px-5 py-3 rounded-xl flex items-center justify-center space-x-2 shrink-0 transition"
+              className="w-full md:w-auto bg-cyan-600 hover:bg-cyan-500 text-white font-display font-bold text-xs px-5 py-3 rounded-xl flex items-center justify-center space-x-2 shrink-0 transition text-center"
             >
-              <MessageCircle className="w-4 h-4" />
+              <MessageCircle className="w-4 h-4 shrink-0" />
               <span>Check Handle on WhatsApp</span>
             </a>
           </div>
@@ -305,32 +306,32 @@ export default function ServiceDiagnosticTool({
       {/* Meta verify diagnostic */}
       {serviceId === "meta-verify" && (
         <div className="space-y-6">
-          <div className="bg-zinc-950/80 border border-zinc-800/80 rounded-xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div>
+          <div className="bg-zinc-950/80 border border-zinc-800/80 rounded-xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="min-w-0">
               <span className="text-emerald-400 font-mono text-xs font-semibold">
                 ✓ Agency Fast-Track Submission Active
               </span>
-              <h5 className="text-sm font-display font-bold text-white mt-1">
+              <h5 className="text-xs sm:text-sm font-display font-bold text-white mt-1 break-words">
                 Legacy Verified Blue Badge Consultation
               </h5>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-zinc-400 mt-0.5 break-words">
                 Skip the basic subscription. Build a permanent public figure profile dossier backed by press citations.
               </p>
             </div>
-            <div className="flex gap-2 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto shrink-0">
               <button
                 onClick={onOpenBrief}
-                className="flex-1 sm:flex-initial bg-white hover:bg-zinc-100 text-black text-xs font-bold px-4 py-2.5 rounded-xl transition"
+                className="bg-white hover:bg-zinc-100 text-black text-xs font-bold px-4 py-2.5 rounded-xl transition text-center"
               >
-                Audit Profile
+                Request Quote
               </button>
               <a
                 href={directWhatsAppLink("Hello Notorious Media, I want to apply for the official Meta/Instagram Verified Blue Badge. Please assess my profile.")}
                 target="_blank"
                 rel="noreferrer"
-                className="flex-1 sm:flex-initial bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center justify-center space-x-1.5 transition"
+                className="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center justify-center space-x-1.5 transition text-center"
               >
-                <MessageCircle className="w-3.5 h-3.5" />
+                <MessageCircle className="w-3.5 h-3.5 shrink-0" />
                 <span>WhatsApp</span>
               </a>
             </div>
@@ -341,32 +342,68 @@ export default function ServiceDiagnosticTool({
       {/* Press PR diagnostic */}
       {serviceId === "news-pr" && (
         <div className="space-y-6">
-          <div className="bg-zinc-950/80 border border-zinc-800/80 rounded-xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div>
+          <div className="bg-zinc-950/80 border border-zinc-800/80 rounded-xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="min-w-0">
               <span className="text-amber-400 font-mono text-xs font-semibold">
                 ✓ Guaranteed Editorial Publishing Contracts
               </span>
-              <h5 className="text-sm font-display font-bold text-white mt-1">
+              <h5 className="text-xs sm:text-sm font-display font-bold text-white mt-1 break-words">
                 Tier-1 Publication Package (Forbes, Bloomberg, TechCrunch)
               </h5>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-zinc-400 mt-0.5 break-words">
                 High-DA permanent backlinks, Google News indexing, and immediate notability for Wikipedia.
               </p>
             </div>
-            <div className="flex gap-2 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto shrink-0">
               <button
                 onClick={onOpenBrief}
-                className="flex-1 sm:flex-initial bg-white hover:bg-zinc-100 text-black text-xs font-bold px-4 py-2.5 rounded-xl transition"
+                className="bg-white hover:bg-zinc-100 text-black text-xs font-bold px-4 py-2.5 rounded-xl transition text-center"
               >
-                Select Publications
+                Request Quote
               </button>
               <a
                 href={directWhatsAppLink("Hello Notorious Media, I want to publish articles on Forbes/Bloomberg/top news. Please share current publication slots and pricing.")}
                 target="_blank"
                 rel="noreferrer"
-                className="flex-1 sm:flex-initial bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold px-4 py-2.5 rounded-xl flex items-center justify-center space-x-1.5 transition"
+                className="bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold px-4 py-2.5 rounded-xl flex items-center justify-center space-x-1.5 transition text-center"
               >
-                <MessageCircle className="w-3.5 h-3.5" />
+                <MessageCircle className="w-3.5 h-3.5 shrink-0" />
+                <span>Inquire on WhatsApp</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Web Development diagnostic */}
+      {serviceId === "web-development" && (
+        <div className="space-y-6">
+          <div className="bg-zinc-950/80 border border-zinc-800/80 rounded-xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="min-w-0">
+              <span className="text-cyan-400 font-mono text-xs font-semibold">
+                ✓ Full-Stack Engineering &amp; High-Speed Architecture
+              </span>
+              <h5 className="text-xs sm:text-sm font-display font-bold text-white mt-1 break-words">
+                Bespoke Corporate Portals, Agency Platforms &amp; Client Engines
+              </h5>
+              <p className="text-xs text-zinc-400 mt-0.5 break-words">
+                React/Next.js stacks, Lighthouse score 98+, tailored quote workflows, SSL security hardening, and complete SEO schema.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto shrink-0">
+              <button
+                onClick={onOpenBrief}
+                className="bg-white hover:bg-zinc-100 text-black text-xs font-bold px-4 py-2.5 rounded-xl transition text-center"
+              >
+                Request Quote
+              </button>
+              <a
+                href={directWhatsAppLink("Hello Notorious Media, I want to inquire about custom Web Development and digital infrastructure for my brand.")}
+                target="_blank"
+                rel="noreferrer"
+                className="bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center justify-center space-x-1.5 transition text-center"
+              >
+                <MessageCircle className="w-3.5 h-3.5 shrink-0" />
                 <span>Inquire on WhatsApp</span>
               </a>
             </div>

@@ -31,13 +31,15 @@ if (process.env.GEMINI_API_KEY) {
   console.warn("GEMINI_API_KEY is not defined. Falling back to local template compiler.");
 }
 
-// Global WhatsApp redirect number
+// Global WhatsApp redirect number and Agency Email
 const DEFAULT_WHATSAPP_NUMBER = "+919103908189";
+const DEFAULT_AGENCY_EMAIL = "notoriousdigitalmedia@gmail.com";
 
 // API: Server configuration settings
 app.get("/api/settings", (req, res) => {
   res.json({
     whatsappNumber: DEFAULT_WHATSAPP_NUMBER,
+    agencyEmail: DEFAULT_AGENCY_EMAIL,
     hasGemini: !!ai,
   });
 });
