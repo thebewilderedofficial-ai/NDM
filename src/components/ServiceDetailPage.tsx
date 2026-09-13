@@ -26,6 +26,8 @@ import { EXTENDED_SERVICE_DATA } from "../data/serviceDetails";
 import Interactive3DStage from "./Interactive3DStage";
 import WikipediaRealtimeChart from "./WikipediaRealtimeChart";
 import ServiceDiagnosticTool from "./ServiceDiagnosticTool";
+import ThemeToggle from "./ThemeToggle";
+import Footer from "./Footer";
 
 interface ServiceDetailPageProps {
   service: Service;
@@ -117,6 +119,9 @@ export default function ServiceDetailPage({
           </div>
 
           <div className="flex items-center space-x-2 shrink-0">
+            {/* Theme Toggle */}
+            <ThemeToggle />
+
             {/* Hamburger Services Menu Button */}
             {onOpenMenu && (
               <button
@@ -498,10 +503,13 @@ export default function ServiceDetailPage({
         </div>
       </section>
 
-      {/* Footer attribution */}
-      <footer className="text-center pt-8 border-t border-zinc-900 text-xs text-zinc-500">
-        <p>&copy; {new Date().getFullYear()} NOTORIOUS DIGITAL MEDIA. ALL RIGHTS RESERVED.</p>
-      </footer>
+      {/* Elegant Footer attribution identical to homepage */}
+      <Footer 
+        whatsappNumber={whatsappNumber} 
+        onSelectService={onSelectService}
+        onNavigateHome={onBackToHome}
+        className="mt-8" 
+      />
     </div>
   );
 }

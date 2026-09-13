@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useTheme } from "../context/ThemeContext";
 
 interface TypewriterHeadlineProps {
   phrases?: string[];
@@ -15,59 +16,75 @@ interface TypewriterHeadlineProps {
 }
 
 const DEFAULT_PHRASES = [
+  "Build high-performance Websites",
   "Create your Wikipedia page",
   "Claim Username Profiles",
   "Publish you in Major media outlets",
   "Recover disabled Instagram accounts",
 ];
 
-// Visual color themes precisely matching the 3D graphics
-function getPhraseTheme(phrase: string, index: number) {
+// Visual color themes precisely matching the 3D graphics (with dark & light mode support)
+function getPhraseTheme(phrase: string, index: number, isLight: boolean = false) {
   const lower = (phrase || "").toLowerCase();
+  if (lower.includes("web") || lower.includes("portal") || lower.includes("code") || lower.includes("develop")) {
+    return {
+      gradient: isLight
+        ? "from-emerald-600 via-teal-600 to-cyan-700"
+        : "from-emerald-400 via-green-300 to-teal-300",
+      cursor: isLight
+        ? "bg-emerald-600 shadow-[0_0_10px_rgba(5,150,105,0.8)]"
+        : "bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.95)]",
+    };
+  }
   if (lower.includes("wiki")) {
     return {
-      gradient: "from-blue-400 via-sky-300 to-indigo-300",
-      cursor: "bg-blue-400 shadow-[0_0_12px_rgba(96,165,250,0.95)]",
+      gradient: isLight
+        ? "from-blue-600 via-indigo-600 to-sky-700"
+        : "from-blue-400 via-sky-300 to-indigo-300",
+      cursor: isLight
+        ? "bg-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.8)]"
+        : "bg-blue-400 shadow-[0_0_12px_rgba(96,165,250,0.95)]",
     };
   }
   if (lower.includes("user") || lower.includes("claim") || lower.includes("@")) {
     return {
-      gradient: "from-cyan-400 via-teal-300 to-sky-300",
-      cursor: "bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.95)]",
+      gradient: isLight
+        ? "from-cyan-600 via-blue-600 to-indigo-600"
+        : "from-cyan-400 via-teal-300 to-sky-300",
+      cursor: isLight
+        ? "bg-cyan-600 shadow-[0_0_10px_rgba(8,145,178,0.8)]"
+        : "bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.95)]",
     };
   }
   if (lower.includes("media") || lower.includes("publish") || lower.includes("press") || lower.includes("outlet")) {
     return {
-      gradient: "from-indigo-300 via-purple-300 to-amber-200",
-      cursor: "bg-indigo-400 shadow-[0_0_12px_rgba(129,140,248,0.95)]",
+      gradient: isLight
+        ? "from-purple-600 via-indigo-600 to-violet-700"
+        : "from-indigo-300 via-purple-300 to-amber-200",
+      cursor: isLight
+        ? "bg-purple-600 shadow-[0_0_10px_rgba(147,51,234,0.8)]"
+        : "bg-indigo-400 shadow-[0_0_12px_rgba(129,140,248,0.95)]",
     };
   }
   if (lower.includes("instagram") || lower.includes("account") || lower.includes("recover")) {
     return {
-      gradient: "from-amber-400 via-rose-400 to-pink-500",
-      cursor: "bg-rose-400 shadow-[0_0_12px_rgba(251,113,133,0.95)]",
+      gradient: isLight
+        ? "from-rose-600 via-pink-600 to-amber-600"
+        : "from-amber-400 via-rose-400 to-pink-500",
+      cursor: isLight
+        ? "bg-rose-600 shadow-[0_0_10px_rgba(225,29,72,0.8)]"
+        : "bg-rose-400 shadow-[0_0_12px_rgba(251,113,133,0.95)]",
     };
   }
-  // Fallback cycled index
-  const indexThemes = [
-    {
-      gradient: "from-blue-400 via-sky-300 to-indigo-300",
-      cursor: "bg-blue-400 shadow-[0_0_12px_rgba(96,165,250,0.95)]",
-    },
-    {
-      gradient: "from-cyan-400 via-teal-300 to-sky-300",
-      cursor: "bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.95)]",
-    },
-    {
-      gradient: "from-indigo-300 via-purple-300 to-amber-200",
-      cursor: "bg-indigo-400 shadow-[0_0_12px_rgba(129,140,248,0.95)]",
-    },
-    {
-      gradient: "from-amber-400 via-rose-400 to-pink-500",
-      cursor: "bg-rose-400 shadow-[0_0_12px_rgba(251,113,133,0.95)]",
-    },
-  ];
-  return indexThemes[index % indexThemes.length];
+  // Fallback
+  return {
+    gradient: isLight
+      ? "from-indigo-600 via-blue-600 to-cyan-700"
+      : "from-indigo-300 via-purple-300 to-amber-200",
+    cursor: isLight
+      ? "bg-indigo-600 shadow-[0_0_10px_rgba(79,70,229,0.8)]"
+      : "bg-indigo-400 shadow-[0_0_12px_rgba(129,140,248,0.95)]",
+  };
 }
 
 export default function TypewriterHeadline({
@@ -130,8 +147,10 @@ export default function TypewriterHeadline({
     return () => clearTimeout(timer);
   }, [currentText, isDeleting, currentPhraseIndex, phrases, typingSpeed, deletingSpeed, pauseDuration]);
 
+  const { theme: activeTheme } = useTheme();
+  const isLight = activeTheme === "light";
   const currentPhrase = phrases[currentPhraseIndex] || "";
-  const theme = getPhraseTheme(currentPhrase, currentPhraseIndex);
+  const theme = getPhraseTheme(currentPhrase, currentPhraseIndex, isLight);
 
   return (
     <span

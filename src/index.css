@@ -10,12 +10,988 @@
 html,
 body,
 #root {
-  background-color: #0c0a09;
-  color: #f5f5f4;
   font-family: var(--font-sans);
   overflow-x: hidden;
   max-width: 100vw;
   width: 100%;
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* =========================================================
+   DARK MODE (STAYS 100% COMPLETELY UNTOUCHED AS ORIGINAL)
+   ========================================================= */
+html.dark,
+html.dark body,
+html.dark #root {
+  background-color: #09090b;
+  color: #f4f4f5;
+}
+
+/* =========================================================
+   TOP-NOTCH LIGHT MODE: LUXURIOUS AURORA GRADIENTS & CRISP TEXT
+   Rich contrast, ultra-readable typography, luminous gradient boxes
+   ========================================================= */
+
+html.light,
+html.light body,
+html.light #root {
+  background-color: #f8fafc;
+  color: #090d16;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.14) 0px, transparent 45%),
+    radial-gradient(at 100% 0%, rgba(56, 189, 248, 0.16) 0px, transparent 45%),
+    radial-gradient(at 100% 45%, rgba(244, 63, 94, 0.10) 0px, transparent 45%),
+    radial-gradient(at 0% 75%, rgba(16, 185, 129, 0.12) 0px, transparent 45%),
+    radial-gradient(at 50% 100%, rgba(139, 92, 246, 0.14) 0px, transparent 50%),
+    linear-gradient(180deg, #ffffff 0%, #f8fafc 40%, #f1f5f9 100%);
+  background-attachment: fixed;
+}
+
+/* Page Root Backgrounds in Light Mode */
+html.light #agency-root,
+html.light [id^="service-page-"],
+html.light .bg-zinc-950 {
+  background-color: transparent !important;
+  color: #090d16 !important;
+}
+
+/* Floating Ambient Atmosphere Glows */
+html.light .bg-indigo-900\/10 {
+  background-color: rgba(99, 102, 241, 0.20) !important;
+  filter: blur(110px) !important;
+}
+
+html.light .bg-rose-900\/5 {
+  background-color: rgba(244, 63, 94, 0.16) !important;
+  filter: blur(100px) !important;
+}
+
+html.light .bg-emerald-950\/10 {
+  background-color: rgba(16, 185, 129, 0.18) !important;
+  filter: blur(120px) !important;
+}
+
+html.light .bg-blue-900\/10 {
+  background-color: rgba(59, 130, 246, 0.20) !important;
+  filter: blur(110px) !important;
+}
+
+/* =========================================================
+   TEXT LEGIBILITY OVERRIDES (CRISP & BOLD HIGH CONTRAST)
+   ========================================================= */
+
+html.light .text-white {
+  color: #090d16 !important;
+}
+
+html.light .text-stone-200,
+html.light .text-zinc-200,
+html.light .text-zinc-300 {
+  color: #1e293b !important;
+}
+
+html.light .text-zinc-400 {
+  color: #334155 !important;
+  font-weight: 450;
+}
+
+html.light .text-zinc-500 {
+  color: #475569 !important;
+}
+
+html.light .text-zinc-600 {
+  color: #334155 !important;
+}
+
+html.light .text-zinc-650 {
+  color: #64748b !important;
+}
+
+/* Hero Section Typography in Light Mode */
+html.light #agency-hero h1 {
+  color: #090d16 !important;
+}
+
+html.light #agency-hero p {
+  color: #334155 !important;
+  font-weight: 450;
+}
+
+/* Light mode link text contrast */
+html.light nav a.text-zinc-400 {
+  color: #334155 !important;
+}
+
+html.light nav a.text-zinc-400:hover {
+  color: #4338ca !important;
+}
+
+/* Top Navigation Bar with subtle iridescent frosted glass */
+html.light #agency-header,
+html.light #service-subnav,
+html.light .bg-zinc-950\/75,
+html.light .bg-zinc-950\/80,
+html.light .bg-zinc-950\/85,
+html.light .bg-zinc-950\/90 {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 250, 252, 0.88) 100%) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(203, 213, 225, 0.8) !important;
+  box-shadow: 0 4px 20px -4px rgba(99, 102, 241, 0.08), 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+}
+
+/* Header SLA Indicator in Light Mode */
+html.light #agency-header .bg-zinc-900 {
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html.light #agency-header .bg-zinc-900 * {
+  color: #334155 !important;
+}
+
+/* Hamburger Services Menu Button in Light Mode */
+html.light #header-services-menu-btn {
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html.light #header-services-menu-btn:hover {
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%) !important;
+  border-color: #a5b4fc !important;
+  color: #4338ca !important;
+}
+
+/* =========================================================
+   SERVICE CARDS (LUMINOUS GRADIENTS, HIGH CONTRAST COPY)
+   ========================================================= */
+
+html.light #agency-services-grid > div {
+  background: linear-gradient(165deg, #ffffff 0%, #f8fafc 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 
+    0 10px 25px -4px rgba(99, 102, 241, 0.08), 
+    0 4px 10px -2px rgba(15, 23, 42, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+  backdrop-filter: blur(12px) !important;
+  position: relative;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+html.light #agency-services-grid > div::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3.5px;
+  background: linear-gradient(90deg, #4f46e5 0%, #0284c7 50%, #db2777 100%);
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  opacity: 0.95;
+}
+
+html.light #agency-services-grid > div:hover {
+  transform: translateY(-5px);
+  background: linear-gradient(165deg, #ffffff 0%, #f1f5f9 100%) !important;
+  border-color: #818cf8 !important;
+  box-shadow: 
+    0 24px 48px -10px rgba(99, 102, 241, 0.18), 
+    0 12px 24px -4px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+}
+
+/* Service Card Headings & Taglines in Light Mode */
+html.light #agency-services-grid h3 {
+  color: #090d16 !important;
+}
+
+html.light #agency-services-grid h3:hover {
+  color: #4338ca !important;
+}
+
+html.light #agency-services-grid p {
+  color: #334155 !important;
+  font-weight: 450 !important;
+}
+
+/* Small Tags & Timeline Badges inside Card */
+html.light #agency-services-grid .bg-white\/5 {
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%) !important;
+  border: 1px solid #c7d2fe !important;
+  color: #3730a3 !important;
+  font-weight: 600 !important;
+}
+
+html.light #agency-services-grid .text-zinc-500 {
+  color: #475569 !important;
+  font-weight: 500;
+}
+
+/* Card Benefit Checkmarks & Text */
+html.light #agency-services-grid li span {
+  color: #1e293b !important;
+  font-weight: 500;
+}
+
+html.light #agency-services-grid li svg {
+  color: #4f46e5 !important;
+}
+
+/* Card Wikipedia Callout Note */
+html.light #agency-services-grid .bg-blue-500\/10 {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
+  border: 1px solid #93c5fd !important;
+  color: #1e40af !important;
+  font-weight: 550 !important;
+}
+
+html.light #agency-services-grid .bg-blue-500\/10 * {
+  color: #1e40af !important;
+}
+
+/* Category Filter Tabs with Gradient Active State in Light Mode */
+html.light #category-filters-container,
+html.light .bg-zinc-900\/60.border-zinc-800 {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  color: #626a7d !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.06), inset 0 1px 0 #ffffff !important;
+}
+
+html.light #category-filters-container button,
+html.light .bg-zinc-900\/60.border-zinc-800 button {
+  color: #626a7d !important;
+}
+
+html.light .bg-zinc-800.text-white.shadow-md {
+  background: linear-gradient(135deg, #4338ca 0%, #6366f1 50%, #0284c7 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35) !important;
+}
+
+/* Interactive Card Buttons */
+html.light button[id^="view-page-btn-"] {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.05) !important;
+  font-weight: 600;
+}
+
+html.light button[id^="view-page-btn-"]:hover {
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%) !important;
+  color: #4338ca !important;
+  border-color: #818cf8 !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.18) !important;
+}
+
+html.light button[id^="utility-btn-"] {
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%) !important;
+  color: #3730a3 !important;
+  border: 1px solid #c7d2fe !important;
+  box-shadow: 0 2px 6px rgba(99, 102, 241, 0.12) !important;
+  font-weight: 600;
+}
+
+html.light button[id^="utility-btn-"]:hover {
+  background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%) !important;
+  color: #ffffff !important;
+  border-color: #4338ca !important;
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.35) !important;
+}
+
+html.light button[id^="utility-btn-"]:hover * {
+  color: #ffffff !important;
+}
+
+/* =========================================================
+   BENTO STATS DASHBOARD (CRISP TYPOGRAPHY & GRADIENT CARDS)
+   ========================================================= */
+
+html.light #stats-dashboard-container > div {
+  background: linear-gradient(150deg, #ffffff 0%, #f8fafc 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 
+    0 10px 25px -4px rgba(99, 102, 241, 0.07),
+    0 4px 8px -2px rgba(15, 23, 42, 0.04),
+    inset 0 1px 0 #ffffff !important;
+}
+
+html.light #stats-dashboard-container > div:hover {
+  border-color: #818cf8 !important;
+  box-shadow: 0 16px 36px -6px rgba(99, 102, 241, 0.16) !important;
+}
+
+html.light #stats-dashboard-container .text-3xl {
+  color: #090d16 !important;
+}
+
+html.light #stats-dashboard-container .text-xs {
+  color: #334155 !important;
+  font-weight: 600;
+}
+
+html.light #stats-dashboard-container p {
+  color: #475569 !important;
+}
+
+/* Bento Stat Icon Badges in Light Mode */
+html.light #stats-dashboard-container .bg-blue-500\/10 {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
+  color: #1d4ed8 !important;
+  border: 1px solid #bfdbfe;
+}
+
+html.light #stats-dashboard-container .bg-pink-500\/10 {
+  background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%) !important;
+  color: #be185d !important;
+  border: 1px solid #fbcfe8;
+}
+
+html.light #stats-dashboard-container .bg-cyan-500\/10 {
+  background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%) !important;
+  color: #0e7490 !important;
+  border: 1px solid #a5f3fc;
+}
+
+html.light #stats-dashboard-container .bg-emerald-500\/10 {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%) !important;
+  color: #047857 !important;
+  border: 1px solid #a7f3d0;
+}
+
+/* =========================================================
+   TESTIMONIALS / REVIEWS BLOCK (SHARP LEGIBILITY)
+   ========================================================= */
+
+html.light #testimonials-block {
+  background: linear-gradient(180deg, rgba(241, 245, 249, 0.6) 0%, rgba(226, 232, 240, 0.5) 100%) !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light #testimonials-block h3 {
+  color: #475569 !important;
+  font-weight: 700;
+}
+
+html.light #testimonials-block .grid > div {
+  background: linear-gradient(150deg, #ffffff 0%, #f8fafc 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 10px 25px -4px rgba(15, 23, 42, 0.06) !important;
+}
+
+html.light #testimonials-block p.italic {
+  color: #1e293b !important;
+  font-weight: 500 !important;
+}
+
+html.light #testimonials-block h5 {
+  color: #090d16 !important;
+}
+
+html.light #testimonials-block p.text-zinc-500 {
+  color: #475569 !important;
+}
+
+html.light #testimonials-block .bg-zinc-800 {
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%) !important;
+  border: 1px solid #c7d2fe !important;
+  color: #3730a3 !important;
+  font-weight: 600;
+}
+
+/* =========================================================
+   ADVISORY & FAQ SECTION (HIGH CONTRAST & ACCORDION CARDS)
+   ========================================================= */
+
+html.light #advisory-faq h2 {
+  color: #090d16 !important;
+}
+
+html.light #advisory-faq p.text-zinc-500 {
+  color: #334155 !important;
+}
+
+html.light #advisory-faq .space-y-4 > div {
+  background: linear-gradient(150deg, #ffffff 0%, #f8fafc 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 4px 15px -2px rgba(15, 23, 42, 0.05) !important;
+}
+
+html.light #advisory-faq .space-y-4 > div:hover {
+  border-color: #818cf8 !important;
+  box-shadow: 0 10px 25px -3px rgba(99, 102, 241, 0.12) !important;
+}
+
+html.light #advisory-faq h4 {
+  color: #090d16 !important;
+  font-weight: 700 !important;
+}
+
+html.light #advisory-faq p.text-zinc-400 {
+  color: #334155 !important;
+  font-size: 0.875rem !important;
+  line-height: 1.625 !important;
+  font-weight: 450 !important;
+}
+
+/* =========================================================
+   INTERACTIVE DIAGNOSTIC ENGINE & AUDIT BOXES
+   ========================================================= */
+
+html.light #service-diagnostic-tool {
+  background: linear-gradient(160deg, #ffffff 0%, #f8fafc 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 15px 35px -5px rgba(99, 102, 241, 0.09) !important;
+}
+
+html.light #service-diagnostic-tool h4 {
+  color: #090d16 !important;
+}
+
+html.light #service-diagnostic-tool label {
+  color: #1e293b !important;
+  font-weight: 700 !important;
+}
+
+html.light #service-diagnostic-tool .bg-zinc-950\/60,
+html.light #service-diagnostic-tool .bg-zinc-950\/80 {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html.light #service-diagnostic-tool .bg-zinc-800 {
+  background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%) !important;
+  border-color: #4338ca !important;
+  color: #ffffff !important;
+}
+
+html.light #service-diagnostic-tool .bg-zinc-900 {
+  background: #ffffff !important;
+  border: 2px solid #6366f1 !important;
+}
+
+html.light #service-diagnostic-tool .bg-zinc-900 span {
+  color: #4338ca !important;
+}
+
+/* =========================================================
+   WIKIPEDIA REAL-TIME CHART CARD
+   ========================================================= */
+
+html.light #wikipedia-realtime-chart-card {
+  background: linear-gradient(160deg, #ffffff 0%, #f8fafc 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 15px 35px -5px rgba(99, 102, 241, 0.08) !important;
+}
+
+html.light #wikipedia-realtime-chart-card h3 {
+  color: #090d16 !important;
+}
+
+html.light #wikipedia-realtime-chart-card p {
+  color: #334155 !important;
+}
+
+html.light #wikipedia-realtime-chart-card .bg-zinc-950\/70 {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+html.light #wikipedia-realtime-chart-card .text-2xl {
+  color: #090d16 !important;
+}
+
+/* =========================================================
+   SERVICE DETAIL PAGE ACCENTS (MARKET REALITY & METRICS)
+   ========================================================= */
+
+html.light [id^="service-page-"] h1 {
+  color: #090d16 !important;
+}
+
+html.light [id^="service-page-"] p {
+  color: #334155 !important;
+}
+
+/* Urgency Market Reality Hook */
+html.light [id^="service-page-"] .bg-zinc-900\/80.border-l-4 {
+  background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%) !important;
+  border-left-color: #4f46e5 !important;
+  border-top-color: #c7d2fe !important;
+  border-right-color: #c7d2fe !important;
+  border-bottom-color: #c7d2fe !important;
+}
+
+html.light [id^="service-page-"] .bg-zinc-900\/80.border-l-4 p {
+  color: #1e293b !important;
+}
+
+html.light [id^="service-page-"] .bg-zinc-900\/80.border-l-4 span {
+  color: #090d16 !important;
+}
+
+/* Metrics Bar */
+html.light [id^="service-page-"] .border-y.border-zinc-900 {
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%) !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light [id^="service-page-"] .border-l.border-zinc-800\/80 {
+  border-color: #cbd5e1 !important;
+}
+
+html.light [id^="service-page-"] .text-xl,
+html.light [id^="service-page-"] .text-2xl,
+html.light [id^="service-page-"] .text-3xl {
+  color: #090d16 !important;
+}
+
+/* Sub-Header Navigation & Quick Service Switcher Tabs in Service Page */
+html.light #service-subnav {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(248, 250, 252, 0.9) 100%) !important;
+  border-bottom: 1px solid #cbd5e1 !important;
+  box-shadow: 0 4px 20px -4px rgba(99, 102, 241, 0.08) !important;
+}
+
+html.light #back-to-home-btn {
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #090d16 !important;
+}
+
+html.light #back-to-home-btn:hover {
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%) !important;
+  border-color: #818cf8 !important;
+  color: #4338ca !important;
+}
+
+/* Service Switcher Tabs Bar */
+html.light #service-subnav .bg-zinc-900\/60 {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
+}
+
+html.light #service-subnav .bg-zinc-900\/60 button {
+  color: #475569 !important;
+  font-weight: 500;
+}
+
+html.light #service-subnav .bg-zinc-900\/60 button:hover {
+  color: #4338ca !important;
+}
+
+html.light #service-subnav .bg-zinc-900\/60 button.bg-zinc-800 {
+  background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%) !important;
+  color: #ffffff !important;
+  border-color: #4338ca !important;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.35) !important;
+}
+
+/* Hamburger Services Menu Button on Service Detail Page */
+html.light #service-detail-menu-btn {
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #090d16 !important;
+}
+
+html.light #service-detail-menu-btn:hover {
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%) !important;
+  border-color: #818cf8 !important;
+  color: #4338ca !important;
+}
+
+html.light #service-detail-menu-btn svg {
+  color: #475569 !important;
+}
+
+/* Duration & Spec Badges in Hero */
+html.light [id^="service-page-"] .bg-zinc-900.border-zinc-800 {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+  border-color: #cbd5e1 !important;
+  color: #1e293b !important;
+  font-weight: 600;
+}
+
+/* Detailed Amazing Benefits Cards in Light Mode */
+html.light #detailed-benefits .bg-zinc-900\/40,
+html.light [id^="service-page-"] .bg-zinc-900\/40 {
+  background: linear-gradient(160deg, #ffffff 0%, #f8fafc 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 10px 25px -4px rgba(99, 102, 241, 0.07), inset 0 1px 0 #ffffff !important;
+}
+
+html.light #detailed-benefits .bg-zinc-900\/40:hover,
+html.light [id^="service-page-"] .bg-zinc-900\/40:hover {
+  border-color: #818cf8 !important;
+  box-shadow: 0 20px 40px -8px rgba(99, 102, 241, 0.16) !important;
+}
+
+html.light #detailed-benefits h3,
+html.light [id^="service-page-"] #detailed-benefits h3 {
+  color: #090d16 !important;
+}
+
+html.light #detailed-benefits p,
+html.light [id^="service-page-"] #detailed-benefits p {
+  color: #334155 !important;
+}
+
+html.light #detailed-benefits .bg-zinc-800 {
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%) !important;
+  border: 1px solid #c7d2fe !important;
+  color: #3730a3 !important;
+  font-weight: 600 !important;
+}
+
+html.light #detailed-benefits .border-zinc-800\/50 {
+  border-color: #e2e8f0 !important;
+}
+
+/* 4-Phase Proven Execution Roadmap in Light Mode */
+html.light [id^="service-page-"] .bg-zinc-900\/30 {
+  background: linear-gradient(165deg, #ffffff 0%, #f8fafc 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 10px 30px -5px rgba(99, 102, 241, 0.06) !important;
+}
+
+html.light [id^="service-page-"] .bg-zinc-900\/30 h3 {
+  color: #090d16 !important;
+}
+
+html.light [id^="service-page-"] .bg-zinc-950\/70 {
+  background: linear-gradient(150deg, #ffffff 0%, #f8fafc 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05) !important;
+}
+
+html.light [id^="service-page-"] .bg-zinc-950\/70 h4 {
+  color: #090d16 !important;
+}
+
+html.light [id^="service-page-"] .bg-zinc-950\/70 p {
+  color: #334155 !important;
+}
+
+html.light [id^="service-page-"] .bg-zinc-950\/70 .bg-zinc-900 {
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%) !important;
+  border-color: #c7d2fe !important;
+  color: #3730a3 !important;
+  font-weight: 600;
+}
+
+/* Deliverables Checklist & Specific FAQs in Light Mode */
+html.light [id^="service-page-"] .bg-zinc-900\/20 {
+  background: linear-gradient(160deg, #ffffff 0%, #f8fafc 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 8px 25px -4px rgba(15, 23, 42, 0.05) !important;
+}
+
+html.light [id^="service-page-"] .bg-zinc-900\/20 h4,
+html.light [id^="service-page-"] .bg-zinc-900\/40 h4 {
+  color: #090d16 !important;
+}
+
+html.light [id^="service-page-"] .bg-zinc-900\/20 p,
+html.light [id^="service-page-"] .bg-zinc-900\/40 p {
+  color: #334155 !important;
+}
+
+html.light [id^="service-page-"] ul li span {
+  color: #1e293b !important;
+  font-weight: 500;
+}
+
+html.light [id^="service-page-"] .bg-zinc-950\/60 {
+  background: linear-gradient(150deg, #ffffff 0%, #f8fafc 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+html.light [id^="service-page-"] .bg-zinc-950\/60 h5 {
+  color: #090d16 !important;
+  font-weight: 700;
+}
+
+html.light [id^="service-page-"] .bg-zinc-950\/60 p {
+  color: #334155 !important;
+}
+
+/* Deliverables Request Quote Button */
+html.light [id^="service-page-"] button.bg-white.text-black {
+  background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid #4338ca !important;
+  box-shadow: 0 6px 18px rgba(79, 70, 229, 0.35) !important;
+  font-weight: 700;
+}
+
+html.light [id^="service-page-"] button.bg-white.text-black:hover {
+  background: linear-gradient(135deg, #3730a3 0%, #4f46e5 100%) !important;
+}
+
+/* SPECIAL HIGHLIGHT: Wikipedia Maintenance Section in Light Mode */
+html.light #wikipedia-maintenance-section > div {
+  background: linear-gradient(150deg, #ffffff 0%, #eff6ff 60%, #e0e7ff 100%) !important;
+  border: 2px solid #818cf8 !important;
+  box-shadow: 0 20px 50px -10px rgba(99, 102, 241, 0.18) !important;
+}
+
+html.light #wikipedia-maintenance-section h3 {
+  color: #090d16 !important;
+}
+
+html.light #wikipedia-maintenance-section p {
+  color: #1e293b !important;
+  font-weight: 450;
+}
+
+html.light #wikipedia-maintenance-section .bg-zinc-950\/70 {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05) !important;
+}
+
+html.light #wikipedia-maintenance-section .bg-zinc-950\/70 span {
+  color: #0f172a !important;
+  font-weight: 550;
+}
+
+html.light #wikipedia-maintenance-cta {
+  background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid #4338ca !important;
+  box-shadow: 0 6px 18px rgba(79, 70, 229, 0.35) !important;
+}
+
+html.light #wikipedia-maintenance-cta svg {
+  color: #ffffff !important;
+}
+
+html.light #wikipedia-maintenance-section button.bg-indigo-900\/60 {
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%) !important;
+  color: #3730a3 !important;
+  border: 1.5px solid #a5b4fc !important;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(99, 102, 241, 0.12) !important;
+}
+
+html.light #wikipedia-maintenance-section button.bg-indigo-900\/60:hover {
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%) !important;
+  border-color: #6366f1 !important;
+}
+
+/* Bottom Conversion Box in Light Mode (replaces dark white-to-black gradient) */
+html.light [id^="service-page-"] section:has(h3:contains("Ready to Lock In Your Authority?")),
+html.light [id^="service-page-"] .from-blue-900\/40.via-indigo-900\/40.to-zinc-900 {
+  background: linear-gradient(150deg, #ffffff 0%, #eef2ff 50%, #e0e7ff 100%) !important;
+  border: 2px solid #818cf8 !important;
+  box-shadow: 0 25px 60px -10px rgba(99, 102, 241, 0.22), inset 0 1px 0 #ffffff !important;
+}
+
+html.light [id^="service-page-"] .from-blue-900\/40.via-indigo-900\/40.to-zinc-900 h3 {
+  color: #090d16 !important;
+}
+
+html.light [id^="service-page-"] .from-blue-900\/40.via-indigo-900\/40.to-zinc-900 p {
+  color: #1e293b !important;
+  font-weight: 500;
+}
+
+html.light [id^="service-page-"] .from-blue-900\/40.via-indigo-900\/40.to-zinc-900 .bg-white\/10 {
+  background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%) !important;
+  border: 1px solid #a5b4fc !important;
+  color: #3730a3 !important;
+  font-weight: 700;
+}
+
+/* Interactive 3D Stage in Light Mode */
+html.light [id^="verification-stage-"] .bg-zinc-900\/70 {
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #1e293b !important;
+}
+
+html.light [id^="verification-stage-"] .from-zinc-900\/90.via-zinc-950.to-black {
+  background: linear-gradient(160deg, #ffffff 0%, #f8fafc 60%, #eef2ff 100%) !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 20px 45px -8px rgba(99, 102, 241, 0.16) !important;
+}
+
+html.light [id^="verification-stage-"] h4 {
+  color: #090d16 !important;
+}
+
+html.light [id^="verification-stage-"] .bg-zinc-950 {
+  background: #e2e8f0 !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light [id^="verification-stage-"] span.text-zinc-300 {
+  color: #090d16 !important;
+}
+
+html.light [id^="verification-stage-"] span.text-zinc-400,
+html.light [id^="verification-stage-"] span.text-zinc-500 {
+  color: #334155 !important;
+}
+
+/* Service Detail Page WhatsApp Direct Button */
+html.light #hero-whatsapp-direct-btn {
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #090d16 !important;
+}
+
+html.light #hero-whatsapp-direct-btn:hover {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%) !important;
+  border-color: #6ee7b7 !important;
+  color: #065f46 !important;
+}
+
+/* =========================================================
+   MODAL POP-UPS & BRIEF FORMS (CRISP INPUTS & LABELS)
+   ========================================================= */
+
+html.light #agency-modal-panel,
+html.light [id^="utility-modal-"] {
+  background: linear-gradient(160deg, #ffffff 0%, #f8fafc 60%, #eef2ff 100%) !important;
+  border: 1px solid #c7d2fe !important;
+  box-shadow: 
+    0 25px 60px -12px rgba(15, 23, 42, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset !important;
+}
+
+html.light #agency-modal-panel h3,
+html.light [id^="utility-modal-"] h3 {
+  color: #090d16 !important;
+}
+
+html.light #agency-modal-panel p,
+html.light [id^="utility-modal-"] p {
+  color: #334155 !important;
+}
+
+html.light #agency-modal-panel label,
+html.light [id^="utility-modal-"] label {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+html.light #agency-modal-panel .bg-zinc-900\/50,
+html.light [id^="utility-modal-"] .bg-zinc-900\/50,
+html.light [id^="utility-modal-"] .bg-zinc-900\/70,
+html.light [id^="utility-modal-"] .bg-zinc-900\/80 {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+/* Form Inputs in Light Mode with vibrant focus ring */
+html.light input[type="text"],
+html.light input[type="email"],
+html.light input[type="url"],
+html.light select,
+html.light textarea {
+  background: #ffffff !important;
+  color: #090d16 !important;
+  border: 1.5px solid #cbd5e1 !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+  font-weight: 500 !important;
+}
+
+html.light input:focus,
+html.light select:focus,
+html.light textarea:focus {
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 3.5px rgba(99, 102, 241, 0.22) !important;
+  background: #ffffff !important;
+  color: #090d16 !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #64748b !important;
+}
+
+html.light select option {
+  background-color: #ffffff !important;
+  color: #090d16 !important;
+}
+
+/* =========================================================
+   NAVIGATION DRAWER (HARDWARE ACCELERATION & ZERO LAG)
+   ========================================================= */
+
+#navigation-drawer-portal {
+  contain: layout size style;
+}
+
+#navigation-drawer-panel {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+html.light #navigation-drawer-panel {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 70%, #f1f5f9 100%) !important;
+  border-left: 1px solid #cbd5e1 !important;
+  box-shadow: -15px 0 45px rgba(15, 23, 42, 0.16) !important;
+}
+
+html.light #navigation-drawer-panel h3,
+html.light #navigation-drawer-panel h4 {
+  color: #090d16 !important;
+}
+
+html.light #navigation-drawer-panel p {
+  color: #475569 !important;
+}
+
+html.light #navigation-drawer-panel button[id^="nav-service-link-"] {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+html.light #navigation-drawer-panel button[id^="nav-service-link-"]:hover {
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%) !important;
+  border-color: #818cf8 !important;
+}
+
+html.light #navigation-drawer-panel button[id^="nav-service-link-"]:hover h4 {
+  color: #4338ca !important;
+}
+
+html.light #navigation-drawer-panel .bg-zinc-950 {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+/* =========================================================
+   FOOTER ATTRIBUTION (LIGHT MODE)
+   ========================================================= */
+
+html.light footer {
+  border-top-color: #cbd5e1 !important;
+}
+
+html.light footer a {
+  color: #334155 !important;
+  font-weight: 500;
+}
+
+html.light footer a:hover {
+  color: #4338ca !important;
+}
+
+html.light footer p {
+  color: #64748b !important;
 }
 
 /* Custom shimmering/glowing animations */
@@ -41,4 +1017,190 @@ body,
 .glow-hover:hover {
   box-shadow: 0 0 25px var(--hover-shadow, rgba(99, 102, 241, 0.25));
 }
+
+/* =========================================================
+   USER FOCUS MODE STYLE CUSTOMIZATIONS
+   ========================================================= */
+
+/* CSS selector 1: Quote button span for web development */
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#featured-services:nth-of-type(2) > div#agency-services-grid:nth-of-type(2) > div#card-web-development:nth-of-type(6) > div:nth-of-type(3) > button#quote-btn-web-development:nth-of-type(1) > span:nth-of-type(1) {
+  color: #e5ffe7 !important;
+}
+
+/* CSS selector 2: Quote button svg for web development */
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#featured-services:nth-of-type(2) > div#agency-services-grid:nth-of-type(2) > div#card-web-development:nth-of-type(6) > div:nth-of-type(3) > button#quote-btn-web-development:nth-of-type(1) > svg:nth-of-type(1) {
+  color: #c3dde3 !important;
+}
+
+/* CSS selector 3: Quote button span for news pr */
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#featured-services:nth-of-type(2) > div#agency-services-grid:nth-of-type(2) > div#card-news-pr:nth-of-type(5) > div:nth-of-type(3) > button#quote-btn-news-pr:nth-of-type(1) > span:nth-of-type(1) {
+  color: #d6dcea !important;
+}
+
+/* CSS selector 5: Quote button svg for news pr */
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#featured-services:nth-of-type(2) > div#agency-services-grid:nth-of-type(2) > div#card-news-pr:nth-of-type(5) > div:nth-of-type(3) > button#quote-btn-news-pr:nth-of-type(1) > svg:nth-of-type(1) {
+  color: #e3e8f2 !important;
+}
+
+/* CSS selectors 6, 7, 8, 9: Advisory FAQ paragraph font-size */
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#advisory-faq:nth-of-type(4) > div:nth-of-type(2) > div:nth-of-type(4) > p:nth-of-type(1),
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#advisory-faq:nth-of-type(4) > div:nth-of-type(2) > div:nth-of-type(3) > p:nth-of-type(1),
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#advisory-faq:nth-of-type(4) > div:nth-of-type(2) > div:nth-of-type(2) > p:nth-of-type(1),
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#advisory-faq:nth-of-type(4) > div:nth-of-type(2) > div:nth-of-type(1) > p:nth-of-type(1) {
+  font-size: 12px !important;
+}
+
+/* CSS selector 10: Category filter tabs container in Light mode (keeps as is) */
+html.light div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#featured-services:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2),
+html.light #category-filters-container {
+  color: #626a7d !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Category Filter Tabs with Gradient Aesthetic ONLY in Dark Mode */
+html.dark div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#featured-services:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2),
+html.dark #category-filters-container,
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#featured-services:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2):not(html.light *),
+#category-filters-container:not(html.light *) {
+  background: linear-gradient(135deg, rgba(24, 24, 27, 0.95) 0%, rgba(39, 39, 42, 0.85) 45%, rgba(49, 46, 129, 0.4) 80%, rgba(30, 27, 75, 0.6) 100%) !important;
+  border: 1px solid rgba(99, 102, 241, 0.35) !important;
+  box-shadow: 0 8px 32px -4px rgba(79, 70, 229, 0.25), 0 0 15px rgba(99, 102, 241, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+/* CSS selector 1: Hero Wikipedia button span (applied in Dark Mode only, Light Mode kept as is) */
+html.light div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#agency-hero:nth-of-type(1) > div:nth-of-type(2) > button:nth-of-type(1) > span:nth-of-type(1) {
+  color: #1c1d1f !important;
+}
+
+html.dark div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#agency-hero:nth-of-type(1) > div:nth-of-type(2) > button:nth-of-type(1) > span:nth-of-type(1),
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#agency-hero:nth-of-type(1) > div:nth-of-type(2) > button:nth-of-type(1) > span:nth-of-type(1):not(html.light *) {
+  color: #cdd4e1 !important;
+}
+
+/* CSS selector 13: Hero Our Services link span */
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#agency-hero:nth-of-type(1) > div:nth-of-type(2) > a:nth-of-type(1) > span:nth-of-type(1) {
+  border-color: #e3e8f1 !important;
+  color: #f0f0f2 !important;
+}
+
+/* CSS selector 14: Hero Our Services link arrow svg */
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#agency-hero:nth-of-type(1) > div:nth-of-type(2) > a:nth-of-type(1) > svg:nth-of-type(1) {
+  color: #e4e7f4 !important;
+}
+
+/* =========================================================
+   UNIVERSAL AGENCY FOOTER IN LIGHT MODE
+   ========================================================= */
+
+html.light #universal-agency-footer {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 40%, #f1f5f9 100%) !important;
+  border-top: 1px solid #cbd5e1 !important;
+  color: #334155 !important;
+}
+
+html.light #universal-agency-footer .border-b.border-zinc-900\/80 {
+  background: rgba(241, 245, 249, 0.85) !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+html.light #universal-agency-footer .border-b.border-zinc-900\/80 span.text-zinc-400 {
+  color: #475569 !important;
+}
+
+html.light #universal-agency-footer .border-b.border-zinc-900\/80 span.text-zinc-500 {
+  color: #64748b !important;
+}
+
+html.light #universal-agency-footer span.font-display.font-bold.text-white {
+  color: #090d16 !important;
+}
+
+html.light #universal-agency-footer h4 span,
+html.light #universal-agency-footer h4 {
+  color: #090d16 !important;
+}
+
+html.light #universal-agency-footer p.text-zinc-400 {
+  color: #475569 !important;
+}
+
+html.light #universal-agency-footer .bg-zinc-900\/50 {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+}
+
+html.light #universal-agency-footer .bg-zinc-900\/50 span.text-zinc-300 {
+  color: #0f172a !important;
+  font-weight: 500;
+}
+
+html.light #universal-agency-footer .bg-zinc-900\/50 span.bg-zinc-800 {
+  background: #eef2ff !important;
+  border-color: #c7d2fe !important;
+  color: #3730a3 !important;
+}
+
+html.light #footer-email-badge,
+html.light #footer-website-badge {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05) !important;
+}
+
+html.light #footer-email-badge:hover,
+html.light #footer-website-badge:hover {
+  background: #f8fafc !important;
+  border-color: #818cf8 !important;
+  color: #4338ca !important;
+}
+
+html.light #universal-agency-footer button.text-zinc-400,
+html.light #universal-agency-footer a.text-zinc-400 {
+  color: #475569 !important;
+}
+
+html.light #universal-agency-footer button.text-zinc-400:hover,
+html.light #universal-agency-footer a.text-zinc-400:hover {
+  color: #4338ca !important;
+}
+
+html.light #universal-agency-footer .from-blue-950\/30.via-indigo-950\/40.to-zinc-900\/60 {
+  background: linear-gradient(135deg, #ffffff 0%, #eef2ff 60%, #e0e7ff 100%) !important;
+  border: 1.5px solid #818cf8 !important;
+  box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.15) !important;
+}
+
+html.light #universal-agency-footer .from-blue-950\/30.via-indigo-950\/40.to-zinc-900\/60 h5 {
+  color: #090d16 !important;
+}
+
+html.light #universal-agency-footer .from-blue-950\/30.via-indigo-950\/40.to-zinc-900\/60 p {
+  color: #334155 !important;
+}
+
+html.light #universal-agency-footer .border-t.border-zinc-900 {
+  border-color: #cbd5e1 !important;
+}
+
+html.light #universal-agency-footer .border-t.border-zinc-900 p,
+html.light #universal-agency-footer .border-t.border-zinc-900 span,
+html.light #universal-agency-footer .border-t.border-zinc-900 a {
+  color: #64748b !important;
+}
+
+html.light #universal-agency-footer .border-t.border-zinc-900 a:hover {
+  color: #4338ca !important;
+}
+
+/* CSS selector 1 & 2: Footer Chat on WhatsApp link span in Light Mode */
+html.light div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > footer#universal-agency-footer:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(3) > ul:nth-of-type(1) > li:nth-of-type(2) > a:nth-of-type(1) > span:nth-of-type(1) {
+  color: #dae0ed !important;
+}
+
 

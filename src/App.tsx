@@ -29,17 +29,19 @@ import ServiceDetailPage from "./components/ServiceDetailPage";
 import TypewriterHeadline from "./components/TypewriterHeadline";
 import NavigationDrawer from "./components/NavigationDrawer";
 import HeroTypewriterVisual from "./components/HeroTypewriterVisual";
+import ThemeToggle from "./components/ThemeToggle";
+import Footer from "./components/Footer";
 
 // Fixed WhatsApp line across all dispatches and calls
 const FIXED_WHATSAPP = "+919103908189";
 const FIXED_EMAIL = "notoriousdigitalmedia@gmail.com";
 
 const HERO_TYPEWRITER_PHRASES = [
+  "Build high-performance Websites",
   "Create your Wikipedia page",
   "Claim Username Profiles",
   "Publish you in Major media outlets",
   "Recover disabled Instagram accounts",
-  "Build high-performance Web Portals",
 ];
 
 const FAQS = [
@@ -206,8 +208,8 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
           
           <div className="flex items-center space-x-3.5 cursor-pointer" onClick={backToAllServices}>
-            <div className="w-9 h-9 bg-gradient-to-tr from-blue-500 via-indigo-500 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg shadow-black/40">
-              <span className="font-display font-bold text-white text-lg">N</span>
+            <div className="w-10 h-9 bg-gradient-to-tr from-blue-500 via-indigo-500 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg shadow-black/40 px-1">
+              <span className="font-display font-extrabold text-white text-xs tracking-tight">NDM</span>
             </div>
             <div>
               <span className="font-display font-bold text-white text-base tracking-tight block">NOTORIOUS</span>
@@ -242,6 +244,9 @@ export default function App() {
               <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping" />
               <span className="text-zinc-400 uppercase">Live SLA: 3m</span>
             </div>
+
+            {/* Light / Dark Mode Toggle */}
+            <ThemeToggle />
 
             {/* Hamburger Services Navigation Menu */}
             <button
@@ -335,7 +340,7 @@ export default function App() {
           </div>
 
           {/* Categories pill controls */}
-          <div className="flex flex-wrap gap-2 mt-5 md:mt-0 bg-zinc-900/60 border border-zinc-800/80 p-1.5 rounded-xl">
+          <div id="category-filters-container" className="flex flex-wrap gap-2 mt-5 md:mt-0 bg-zinc-900/60 border border-zinc-800/80 p-1.5 rounded-xl">
             {[
               { id: "all", label: "All Services" },
               { id: "pr", label: "PR & Wikipedia" },
@@ -554,30 +559,13 @@ export default function App() {
         />
       )}
 
-      {/* Elegant Footer attribution with fixed WhatsApp */}
-      <footer className="text-center pt-16 border-t border-zinc-900 pb-1 flex flex-col items-center justify-center space-y-2">
-        <div className="flex flex-wrap justify-center items-center gap-6 text-xs text-zinc-500 font-medium">
-          <a href="https://www.notoriousdigitalmedia.com" target="_blank" rel="noreferrer" className="hover:text-amber-400 transition flex items-center space-x-1">
-            <span>www.notoriousdigitalmedia.com</span>
-            <ExternalLink className="w-3.5 h-3.5" />
-          </a>
-          <a
-            href={`https://api.whatsapp.com/send?phone=${cleanPhone}&text=Hello%20Notorious%20Digital%20Media%2C%20I%20am%20reaching%20out%20for%20PR%20and%20social%20services.`}
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-emerald-400 transition flex items-center space-x-1"
-          >
-            <Phone className="w-3 h-3 text-emerald-400" />
-            <span>WhatsApp: +91 9103908189</span>
-          </a>
-          <a href="mailto:notoriousdigitalmedia@gmail.com" className="hover:text-indigo-400 transition flex items-center space-x-1">
-            <span>notoriousdigitalmedia@gmail.com</span>
-          </a>
-        </div>
-        <p className="text-[10px] text-zinc-650 font-mono mt-1">
-          &copy; {new Date().getFullYear()} NOTORIOUS DIGITAL MEDIA. ALL OPERATIONS SECURED VIA FIXED DESK (+919103908189).
-        </p>
-      </footer>
+      {/* Elegant Footer attribution identical across all pages */}
+      <Footer 
+        whatsappNumber={FIXED_WHATSAPP} 
+        agencyEmail={FIXED_EMAIL} 
+        onSelectService={openServicePage}
+        onNavigateHome={backToAllServices}
+      />
 
       {/* Slide-in Navigation Drawer */}
       <NavigationDrawer

@@ -14,6 +14,7 @@ import {
   Code
 } from "lucide-react";
 import { Service } from "../types";
+import ThemeToggle from "./ThemeToggle";
 
 interface NavigationDrawerProps {
   isOpen: boolean;
@@ -83,30 +84,26 @@ export default function NavigationDrawer({
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex justify-end" id="navigation-drawer-portal">
-          {/* Backdrop Blur Overlay */}
+          {/* Backdrop Overlay (No blur for instantaneous 60fps opening on shared hosting / lower tier CPUs) */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm cursor-pointer"
+            className="fixed inset-0 bg-black/60 cursor-pointer will-change-[opacity]"
             aria-hidden="true"
           />
 
-          {/* Drawer Sidebar */}
+          {/* Drawer Sidebar: Hardware accelerated GPU transform, clean solid background */}
           <motion.aside
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 30, stiffness: 320 }}
-            className="relative w-full max-w-md bg-zinc-950/95 border-l border-zinc-900 shadow-2xl flex flex-col h-full z-10 overflow-hidden text-zinc-200"
+            initial={{ transform: "translate3d(100%, 0, 0)" }}
+            animate={{ transform: "translate3d(0, 0, 0)" }}
+            exit={{ transform: "translate3d(100%, 0, 0)" }}
+            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-full max-w-md bg-zinc-950 border-l border-zinc-900 shadow-2xl flex flex-col h-full z-10 overflow-hidden text-zinc-200 will-change-transform"
             id="navigation-drawer-panel"
           >
-            {/* Ambient subtle glow inside drawer */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/10 rounded-full blur-[90px] pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-600/5 rounded-full blur-[90px] pointer-events-none" />
-
             {/* Header */}
             <div className="p-5 sm:p-6 border-b border-zinc-900 flex items-center justify-between relative shrink-0">
               <div
@@ -116,8 +113,8 @@ export default function NavigationDrawer({
                   onClose();
                 }}
               >
-                <div className="w-9 h-9 bg-gradient-to-tr from-blue-500 via-indigo-500 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg shadow-black/40">
-                  <span className="font-display font-bold text-white text-lg">N</span>
+                <div className="w-10 h-9 bg-gradient-to-tr from-blue-500 via-indigo-500 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg shadow-black/40 px-1">
+                  <span className="font-display font-extrabold text-white text-xs tracking-tight">NDM</span>
                 </div>
                 <div>
                   <span className="font-display font-bold text-white text-base tracking-tight block group-hover:text-blue-400 transition">
@@ -129,18 +126,21 @@ export default function NavigationDrawer({
                 </div>
               </div>
 
-              <button
-                onClick={onClose}
-                className="p-2 rounded-xl text-zinc-400 hover:text-white bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 transition"
-                aria-label="Close menu"
-                id="close-navigation-drawer-btn"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <div className="flex items-center space-x-2">
+                <ThemeToggle />
+                <button
+                  onClick={onClose}
+                  className="p-2 rounded-xl text-zinc-400 hover:text-white bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 transition"
+                  aria-label="Close menu"
+                  id="close-navigation-drawer-btn"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
             {/* Scrollable Content */}
-            <div className="flex-1 overflow-y-auto px-5 sm:px-6 py-6 space-y-6 scrollbar-thin scrollbar-thumb-zinc-800">
+            <div className="flex-1 overflow-y-auto px-5 sm:px-6 py-6 space-y-6 overscroll-contain">
               
               {/* Dedicated Services Section */}
               <div>
@@ -214,7 +214,7 @@ export default function NavigationDrawer({
                       setTimeout(() => {
                         const el = document.getElementById("featured-services");
                         el?.scrollIntoView({ behavior: "smooth" });
-                      }, 100);
+                      }, 50);
                     }}
                     className="p-3 bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/70 hover:border-zinc-700 rounded-xl text-left text-zinc-300 hover:text-white transition flex items-center justify-between"
                   >
@@ -229,7 +229,7 @@ export default function NavigationDrawer({
                       setTimeout(() => {
                         const el = document.getElementById("stats-dashboard");
                         el?.scrollIntoView({ behavior: "smooth" });
-                      }, 100);
+                      }, 50);
                     }}
                     className="p-3 bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/70 hover:border-zinc-700 rounded-xl text-left text-zinc-300 hover:text-white transition flex items-center justify-between"
                   >
@@ -244,7 +244,7 @@ export default function NavigationDrawer({
                       setTimeout(() => {
                         const el = document.getElementById("testimonials-block");
                         el?.scrollIntoView({ behavior: "smooth" });
-                      }, 100);
+                      }, 50);
                     }}
                     className="p-3 bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/70 hover:border-zinc-700 rounded-xl text-left text-zinc-300 hover:text-white transition flex items-center justify-between"
                   >
@@ -259,7 +259,7 @@ export default function NavigationDrawer({
                       setTimeout(() => {
                         const el = document.getElementById("advisory-faq");
                         el?.scrollIntoView({ behavior: "smooth" });
-                      }, 100);
+                      }, 50);
                     }}
                     className="p-3 bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/70 hover:border-zinc-700 rounded-xl text-left text-zinc-300 hover:text-white transition flex items-center justify-between"
                   >
@@ -282,7 +282,7 @@ export default function NavigationDrawer({
             </div>
 
             {/* Bottom Sticky Action Footer */}
-            <div className="p-5 sm:p-6 border-t border-zinc-900 bg-zinc-950/80 backdrop-blur-md shrink-0 space-y-3">
+            <div className="p-5 sm:p-6 border-t border-zinc-900 bg-zinc-950 shrink-0 space-y-3">
               <div className="flex items-center justify-between text-xs">
                 <div className="flex items-center space-x-2 font-mono text-[11px] text-zinc-400">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />

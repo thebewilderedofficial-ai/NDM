@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Sparkles, Check, Globe, AtSign, Newspaper, ShieldAlert } from "lucide-react";
+import { Sparkles, Check, Globe, AtSign, Newspaper, ShieldAlert, Code2, Cpu, Terminal, Layout } from "lucide-react";
 
 interface HeroTypewriterVisualProps {
   phraseIndex: number;
@@ -21,8 +21,8 @@ export default function HeroTypewriterVisual({
     }
   }, [phraseIndex, isVisible]);
 
-  // Normalize index modulo 4
-  const activeIdx = displayedIndex % 4;
+  // Normalize index modulo 5 (now matching all 5 phrases)
+  const activeIdx = displayedIndex % 5;
 
   return (
     <div
@@ -33,8 +33,59 @@ export default function HeroTypewriterVisual({
       }`}
       style={{ willChange: "transform, opacity" }}
     >
-      {/* 3D Visual Item 0: Wikipedia */}
+      {/* 3D Visual Item 0: Web Development / Web Portals (Emerald / Green Theme) */}
       {activeIdx === 0 && (
+        <div className="relative flex flex-col items-center animate-float">
+          {/* Ambient Green / Emerald Halo */}
+          <div className="absolute -inset-4 bg-gradient-to-tr from-emerald-600/30 via-teal-500/20 to-green-400/20 rounded-full blur-2xl -z-10 pointer-events-none" />
+
+          {/* 3D Modern Web Portal Code Stage */}
+          <div className="relative w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center [perspective:800px]">
+            {/* 3D Glass Window Layer */}
+            <div className="relative w-22 h-20 sm:w-24 sm:h-22 bg-gradient-to-br from-emerald-950/90 via-zinc-900/90 to-teal-950/80 backdrop-blur-xl border border-emerald-400/50 rounded-2xl shadow-[0_15px_35px_rgba(16,185,129,0.35)] flex flex-col justify-between p-2.5 [transform:rotateX(15deg)_rotateY(-10deg)] [transform-style:preserve-3d]">
+              {/* Browser window dots */}
+              <div className="flex items-center justify-between border-b border-emerald-500/30 pb-1.5 [transform:translateZ(10px)]">
+                <div className="flex items-center space-x-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/80" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-teal-400/80" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/80" />
+                </div>
+                <span className="text-[7px] font-mono text-emerald-300 font-bold tracking-wider">NEXT.JS &bull; 99/100</span>
+              </div>
+
+              {/* Code brackets and glowing core */}
+              <div className="flex items-center justify-center my-auto [transform:translateZ(18px)]">
+                <div className="flex items-center space-x-1.5">
+                  <Code2 className="w-8 h-8 text-emerald-400 filter drop-shadow-[0_0_12px_rgba(52,211,153,0.9)]" />
+                </div>
+              </div>
+
+              {/* Status bar */}
+              <div className="flex items-center justify-between text-[6px] font-mono text-emerald-300/90 pt-1 border-t border-emerald-500/20 [transform:translateZ(8px)]">
+                <span className="flex items-center gap-1">
+                  <span className="w-1 h-1 rounded-full bg-emerald-400 animate-ping" />
+                  <span>CORE WEB VITALS</span>
+                </span>
+                <span className="text-white font-bold">0.4s LCP</span>
+              </div>
+            </div>
+
+            {/* Orbiting Emerald Tech Ring */}
+            <div className="absolute inset-0 border border-dashed border-emerald-400/40 rounded-full [transform:rotateX(68deg)_rotateZ(30deg)] pointer-events-none animate-[spin_18s_linear_infinite]" />
+          </div>
+
+          {/* Mini Transparency Badge (Green) */}
+          <div className="mt-1 inline-flex items-center space-x-1.5 bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-md px-2.5 py-0.5 rounded-full">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+            <span className="text-[9px] sm:text-[10px] font-mono font-semibold tracking-wider text-emerald-300 uppercase">
+              Web Development
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* 3D Visual Item 1: Wikipedia */}
+      {activeIdx === 1 && (
         <div className="relative flex flex-col items-center animate-float">
           {/* Ambient Blue Halo */}
           <div className="absolute -inset-4 bg-gradient-to-tr from-blue-600/25 via-indigo-500/20 to-transparent rounded-full blur-2xl -z-10 pointer-events-none" />
@@ -75,8 +126,8 @@ export default function HeroTypewriterVisual({
         </div>
       )}
 
-      {/* 3D Visual Item 1: Claim Username Profiles */}
-      {activeIdx === 1 && (
+      {/* 3D Visual Item 2: Claim Username Profiles */}
+      {activeIdx === 2 && (
         <div className="relative flex flex-col items-center animate-float">
           {/* Ambient Cyan Halo */}
           <div className="absolute -inset-4 bg-gradient-to-tr from-cyan-500/25 via-teal-500/20 to-transparent rounded-full blur-2xl -z-10 pointer-events-none" />
@@ -109,8 +160,8 @@ export default function HeroTypewriterVisual({
         </div>
       )}
 
-      {/* 3D Visual Item 2: Major Media Outlets */}
-      {activeIdx === 2 && (
+      {/* 3D Visual Item 3: Major Media Outlets */}
+      {activeIdx === 3 && (
         <div className="relative flex flex-col items-center animate-float">
           {/* Ambient Indigo/Gold Halo */}
           <div className="absolute -inset-4 bg-gradient-to-tr from-indigo-500/25 via-purple-500/20 to-transparent rounded-full blur-2xl -z-10 pointer-events-none" />
@@ -157,8 +208,8 @@ export default function HeroTypewriterVisual({
         </div>
       )}
 
-      {/* 3D Visual Item 3: Instagram Account Recovery */}
-      {activeIdx === 3 && (
+      {/* 3D Visual Item 4: Instagram Account Recovery */}
+      {activeIdx === 4 && (
         <div className="relative flex flex-col items-center animate-float">
           {/* Ambient Rose Halo */}
           <div className="absolute -inset-4 bg-gradient-to-tr from-rose-500/25 via-pink-500/20 to-amber-500/15 rounded-full blur-2xl -z-10 pointer-events-none" />
