@@ -21,10 +21,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       if (saved === "light" || saved === "dark") {
         return saved;
       }
-      if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
-        return "light";
-      }
     }
+    // Dark mode is strictly the default theme
     return "dark";
   });
 
