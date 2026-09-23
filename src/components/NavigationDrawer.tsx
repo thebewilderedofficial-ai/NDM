@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import React, { useEffect, useCallback } from "react";
 import {
   X,
   ArrowRight,
@@ -57,6 +56,22 @@ export default function NavigationDrawer({
 
   const cleanPhone = whatsappNumber.replace("+", "").replace(/\s/g, "");
 
+  const handleSelect = useCallback((service: Service) => {
+    onSelectService(service);
+    onClose();
+  }, [onSelectService, onClose]);
+
+  const handleNavHome = useCallback((targetId?: string) => {
+    onNavigateHome();
+    onClose();
+    if (targetId) {
+      setTimeout(() => {
+        const el = document.getElementById(targetId);
+        el?.scrollIntoView({ behavior: "smooth" });
+      }, 30);
+    }
+  }, [onNavigateHome, onClose]);
+
   const getServiceIcon = (id: string) => {
     switch (id) {
       case "wikipedia":
@@ -81,231 +96,193 @@ export default function NavigationDrawer({
   };
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex justify-end" id="navigation-drawer-portal">
-          {/* Backdrop Overlay (No blur for instantaneous 60fps opening on shared hosting / lower tier CPUs) */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.18, ease: "easeOut" }}
-            onClick={onClose}
-            className="fixed inset-0 bg-black/60 cursor-pointer will-change-[opacity]"
-            aria-hidden="true"
-          />
+    <div
+      className={`fixed inset-0 z-50 flex justify-end transition-opacity duration-150 ${
+        isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+      }`}
+      id="navigation-drawer-portal"
+      aria-hidden={!isOpen}
+    >
+      {/* High-performance CSS Backdrop Overlay */}
+      <div
+        onClick={onClose}
+        className="fixed inset-0 bg-black/60 cursor-pointer"
+        aria-hidden="true"
+      />
 
-          {/* Drawer Sidebar: Hardware accelerated GPU transform, clean solid background */}
-          <motion.aside
-            initial={{ transform: "translate3d(100%, 0, 0)" }}
-            animate={{ transform: "translate3d(0, 0, 0)" }}
-            exit={{ transform: "translate3d(100%, 0, 0)" }}
-            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full max-w-md bg-zinc-950 border-l border-zinc-900 shadow-2xl flex flex-col h-full z-10 overflow-hidden text-zinc-200 will-change-transform"
-            id="navigation-drawer-panel"
+      {/* High-performance CSS Drawer with GPU translate3d hardware acceleration */}
+      <aside
+        className={`relative w-full max-w-md bg-zinc-950 border-l border-zinc-900 shadow-2xl flex flex-col h-full z-10 overflow-hidden text-zinc-200 transition-transform duration-200 ease-out will-change-transform ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+        id="navigation-drawer-panel"
+      >
+        {/* Header */}
+        <div className="p-5 sm:p-6 border-b border-zinc-900 flex items-center justify-between relative shrink-0">
+          <div
+            className="flex items-center space-x-3 cursor-pointer group"
+            onClick={() => handleNavHome()}
           >
-            {/* Header */}
-            <div className="p-5 sm:p-6 border-b border-zinc-900 flex items-center justify-between relative shrink-0">
-              <div
-                className="flex items-center space-x-3 cursor-pointer group"
-                onClick={() => {
-                  onNavigateHome();
-                  onClose();
-                }}
-              >
-                <div className="w-10 h-9 bg-gradient-to-tr from-blue-500 via-indigo-500 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg shadow-black/40 px-1">
-                  <span className="font-display font-extrabold text-white text-xs tracking-tight">NDM</span>
-                </div>
-                <div>
-                  <span className="font-display font-bold text-white text-base tracking-tight block group-hover:text-blue-400 transition">
-                    NOTORIOUS
-                  </span>
-                  <span className="text-[10px] text-zinc-500 font-mono tracking-widest uppercase block -mt-1">
-                    Digital Media
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <ThemeToggle />
-                <button
-                  onClick={onClose}
-                  className="p-2 rounded-xl text-zinc-400 hover:text-white bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 transition"
-                  aria-label="Close menu"
-                  id="close-navigation-drawer-btn"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
+            <div className="w-10 h-9 bg-gradient-to-tr from-blue-500 via-indigo-500 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg shadow-black/40 px-1">
+              <span className="font-display font-extrabold text-white text-xs tracking-tight">NDM</span>
             </div>
-
-            {/* Scrollable Content */}
-            <div className="flex-1 overflow-y-auto px-5 sm:px-6 py-6 space-y-6 overscroll-contain">
-              
-              {/* Dedicated Services Section */}
-              <div>
-                <div className="flex items-center justify-between mb-3 px-1">
-                  <span className="text-xs font-mono font-semibold tracking-wider text-zinc-400 uppercase">
-                    Our Services
-                  </span>
-                  <span className="text-[10px] font-mono text-zinc-500 bg-zinc-900 border border-zinc-800 px-2 py-0.5 rounded-full">
-                    {services.length} Capabilities
-                  </span>
-                </div>
-
-                <div className="space-y-2.5">
-                  {services.map((service) => {
-                    const isActive = activeServiceId === service.id;
-                    return (
-                      <button
-                        key={service.id}
-                        onClick={() => {
-                          onSelectService(service);
-                          onClose();
-                        }}
-                        className={`w-full text-left p-3.5 rounded-xl border transition group relative overflow-hidden flex items-start space-x-3.5 ${
-                          isActive
-                            ? "bg-blue-950/30 border-blue-500/50 shadow-[0_0_15px_rgba(59,130,246,0.15)]"
-                            : "bg-zinc-900/50 hover:bg-zinc-900 border-zinc-800/80 hover:border-zinc-700"
-                        }`}
-                        id={`nav-service-link-${service.id}`}
-                      >
-                        {/* Icon Container */}
-                        <div className="p-2.5 rounded-lg bg-zinc-950 border border-zinc-800 shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
-                          {getServiceIcon(service.id)}
-                        </div>
-
-                        {/* Text description */}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between space-x-2">
-                            <h4 className="text-sm font-display font-semibold text-white group-hover:text-blue-300 transition truncate">
-                              {service.title}
-                            </h4>
-                            <ChevronRight className="w-4 h-4 text-zinc-500 group-hover:text-white group-hover:translate-x-0.5 transition shrink-0" />
-                          </div>
-                          <p className="text-xs text-zinc-400 line-clamp-1 mt-0.5">
-                            {service.tagline}
-                          </p>
-                          <div className="flex items-center space-x-2 mt-2">
-                            <span className="text-[10px] font-mono bg-zinc-950 text-zinc-400 border border-zinc-800 px-2 py-0.5 rounded-md">
-                              {service.badge}
-                            </span>
-                            <span className="text-[10px] font-mono text-zinc-500">
-                              {service.avgTimeline}
-                            </span>
-                          </div>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Site Quick Links */}
-              <div>
-                <div className="text-xs font-mono font-semibold tracking-wider text-zinc-400 uppercase mb-3 px-1">
-                  Quick Navigation
-                </div>
-                <div className="grid grid-cols-2 gap-2 text-xs font-medium">
-                  <button
-                    onClick={() => {
-                      onNavigateHome();
-                      onClose();
-                      setTimeout(() => {
-                        const el = document.getElementById("featured-services");
-                        el?.scrollIntoView({ behavior: "smooth" });
-                      }, 50);
-                    }}
-                    className="p-3 bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/70 hover:border-zinc-700 rounded-xl text-left text-zinc-300 hover:text-white transition flex items-center justify-between"
-                  >
-                    <span>All Services Grid</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      onNavigateHome();
-                      onClose();
-                      setTimeout(() => {
-                        const el = document.getElementById("stats-dashboard");
-                        el?.scrollIntoView({ behavior: "smooth" });
-                      }, 50);
-                    }}
-                    className="p-3 bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/70 hover:border-zinc-700 rounded-xl text-left text-zinc-300 hover:text-white transition flex items-center justify-between"
-                  >
-                    <span>Authority Stats</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      onNavigateHome();
-                      onClose();
-                      setTimeout(() => {
-                        const el = document.getElementById("testimonials-block");
-                        el?.scrollIntoView({ behavior: "smooth" });
-                      }, 50);
-                    }}
-                    className="p-3 bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/70 hover:border-zinc-700 rounded-xl text-left text-zinc-300 hover:text-white transition flex items-center justify-between"
-                  >
-                    <span>Client Reviews</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      onNavigateHome();
-                      onClose();
-                      setTimeout(() => {
-                        const el = document.getElementById("advisory-faq");
-                        el?.scrollIntoView({ behavior: "smooth" });
-                      }, 50);
-                    }}
-                    className="p-3 bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/70 hover:border-zinc-700 rounded-xl text-left text-zinc-300 hover:text-white transition flex items-center justify-between"
-                  >
-                    <span>Advisory FAQ</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
-                  </button>
-                </div>
-
-                <a
-                  href="https://www.notoriousdigitalmedia.in"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-2 p-3 bg-zinc-900/30 hover:bg-zinc-900/70 border border-zinc-800/70 rounded-xl text-xs text-amber-400 hover:text-amber-300 transition flex items-center justify-between font-mono"
-                >
-                  <span>www.notoriousdigitalmedia.in</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
-              </div>
-
+            <div>
+              <span className="font-display font-bold text-white text-base tracking-tight block group-hover:text-blue-400 transition">
+                NOTORIOUS
+              </span>
+              <span className="text-[10px] text-zinc-500 font-mono tracking-widest uppercase block -mt-1">
+                Digital Media
+              </span>
             </div>
+          </div>
 
-            {/* Bottom Sticky Action Footer */}
-            <div className="p-5 sm:p-6 border-t border-zinc-900 bg-zinc-950 shrink-0 space-y-3">
-              <div className="flex items-center justify-between text-xs">
-                <div className="flex items-center space-x-2 font-mono text-[11px] text-zinc-400">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>Operations SLA: 3 min response</span>
-                </div>
-                <span className="text-zinc-500 font-mono text-[11px]">Confidential</span>
-              </div>
-
-              <a
-                href={`https://api.whatsapp.com/send?phone=${cleanPhone}&text=Hello%20Notorious%20Digital%20Media%2C%20I%20would%20like%20to%20request%20a%20priority%20consultation%20regarding%20your%20services.`}
-                target="_blank"
-                rel="noreferrer"
-                className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-display font-semibold text-sm py-3 rounded-xl flex items-center justify-center space-x-2 transition shadow-lg shadow-emerald-950/50"
-                id="drawer-whatsapp-btn"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span>Contact on WhatsApp</span>
-              </a>
-            </div>
-
-          </motion.aside>
+          <div className="flex items-center space-x-2">
+            <ThemeToggle />
+            <button
+              onClick={onClose}
+              className="p-2 rounded-xl text-zinc-400 hover:text-white bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 transition"
+              aria-label="Close menu"
+              id="close-navigation-drawer-btn"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
-      )}
-    </AnimatePresence>
+
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto px-5 sm:px-6 py-6 space-y-6 overscroll-contain">
+          
+          {/* Dedicated Services Section */}
+          <div>
+            <div className="flex items-center justify-between mb-3 px-1">
+              <span className="text-xs font-mono font-semibold tracking-wider text-zinc-400 uppercase">
+                Our Services
+              </span>
+              <span className="text-[10px] font-mono text-zinc-500 bg-zinc-900 border border-zinc-800 px-2 py-0.5 rounded-full">
+                {services.length} Capabilities
+              </span>
+            </div>
+
+            <div className="space-y-2.5">
+              {services.map((service) => {
+                const isActive = activeServiceId === service.id;
+                return (
+                  <button
+                    key={service.id}
+                    onClick={() => handleSelect(service)}
+                    className={`w-full text-left p-3.5 rounded-xl border transition group relative overflow-hidden flex items-start space-x-3.5 ${
+                      isActive
+                        ? "bg-blue-950/30 border-blue-500/50 shadow-[0_0_15px_rgba(59,130,246,0.15)]"
+                        : "bg-zinc-900/50 hover:bg-zinc-900 border-zinc-800/80 hover:border-zinc-700"
+                    }`}
+                    id={`nav-service-link-${service.id}`}
+                  >
+                    {/* Icon Container */}
+                    <div className="p-2.5 rounded-lg bg-zinc-950 border border-zinc-800 shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
+                      {getServiceIcon(service.id)}
+                    </div>
+
+                    {/* Text description */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between space-x-2">
+                        <h4 className="text-sm font-display font-semibold text-white group-hover:text-blue-300 transition truncate">
+                          {service.title}
+                        </h4>
+                        <ChevronRight className="w-4 h-4 text-zinc-500 group-hover:text-white group-hover:translate-x-0.5 transition shrink-0" />
+                      </div>
+                      <p className="text-xs text-zinc-400 line-clamp-1 mt-0.5">
+                        {service.tagline}
+                      </p>
+                      <div className="flex items-center space-x-2 mt-2">
+                        <span className="text-[10px] font-mono bg-zinc-950 text-zinc-400 border border-zinc-800 px-2 py-0.5 rounded-md">
+                          {service.badge}
+                        </span>
+                        <span className="text-[10px] font-mono text-zinc-500">
+                          {service.avgTimeline}
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Site Quick Links */}
+          <div>
+            <div className="text-xs font-mono font-semibold tracking-wider text-zinc-400 uppercase mb-3 px-1">
+              Quick Navigation
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-xs font-medium">
+              <button
+                onClick={() => handleNavHome("featured-services")}
+                className="p-3 bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/70 hover:border-zinc-700 rounded-xl text-left text-zinc-300 hover:text-white transition flex items-center justify-between"
+              >
+                <span>All Services Grid</span>
+                <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
+              </button>
+
+              <button
+                onClick={() => handleNavHome("stats-dashboard")}
+                className="p-3 bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/70 hover:border-zinc-700 rounded-xl text-left text-zinc-300 hover:text-white transition flex items-center justify-between"
+              >
+                <span>Authority Stats</span>
+                <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
+              </button>
+
+              <button
+                onClick={() => handleNavHome("testimonials-block")}
+                className="p-3 bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/70 hover:border-zinc-700 rounded-xl text-left text-zinc-300 hover:text-white transition flex items-center justify-between"
+              >
+                <span>Client Reviews</span>
+                <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
+              </button>
+
+              <button
+                onClick={() => handleNavHome("advisory-faq")}
+                className="p-3 bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/70 hover:border-zinc-700 rounded-xl text-left text-zinc-300 hover:text-white transition flex items-center justify-between"
+              >
+                <span>Advisory FAQ</span>
+                <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
+              </button>
+            </div>
+
+            <a
+              href="https://www.notoriousdigitalmedia.in"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-2 p-3 bg-zinc-900/30 hover:bg-zinc-900/70 border border-zinc-800/70 rounded-xl text-xs text-amber-400 hover:text-amber-300 transition flex items-center justify-between font-mono"
+            >
+              <span>www.notoriousdigitalmedia.in</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+        </div>
+
+        {/* Bottom Sticky Action Footer */}
+        <div className="p-5 sm:p-6 border-t border-zinc-900 bg-zinc-950 shrink-0 space-y-3">
+          <div className="flex items-center justify-between text-xs">
+            <div className="flex items-center space-x-2 font-mono text-[11px] text-zinc-400">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Operations SLA: 3 min response</span>
+            </div>
+            <span className="text-zinc-500 font-mono text-[11px]">Confidential</span>
+          </div>
+
+          <a
+            href={`https://api.whatsapp.com/send?phone=${cleanPhone}&text=Hello%20Notorious%20Digital%20Media%2C%20I%20would%20like%20to%20request%20a%20priority%20consultation%20regarding%20your%20services.`}
+            target="_blank"
+            rel="noreferrer"
+            className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-display font-semibold text-sm py-3 rounded-xl flex items-center justify-center space-x-2 transition shadow-lg shadow-emerald-950/50"
+            id="drawer-whatsapp-btn"
+          >
+            <MessageCircle className="w-4 h-4" />
+            <span>Contact on WhatsApp</span>
+          </a>
+        </div>
+
+      </aside>
+    </div>
   );
 }

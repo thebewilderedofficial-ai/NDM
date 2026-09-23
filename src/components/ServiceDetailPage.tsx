@@ -125,8 +125,11 @@ export default function ServiceDetailPage({
             {/* Hamburger Services Menu Button */}
             {onOpenMenu && (
               <button
+                onPointerDown={(e) => {
+                  if (e.button === 0) onOpenMenu();
+                }}
                 onClick={onOpenMenu}
-                className="group bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 hover:border-zinc-700 px-3 py-2 rounded-xl flex items-center space-x-1.5 text-xs font-semibold tracking-wide transition shadow-sm shrink-0"
+                className="group bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 hover:border-zinc-700 px-3 py-2 rounded-xl flex items-center space-x-1.5 text-xs font-semibold tracking-wide transition shadow-sm shrink-0 cursor-pointer select-none active:scale-95"
                 aria-label="Open Services Navigation Menu"
                 id="service-detail-menu-btn"
               >

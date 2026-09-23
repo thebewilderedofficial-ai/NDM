@@ -251,8 +251,12 @@ export default function App() {
 
             {/* Hamburger Services Navigation Menu */}
             <button
+              onPointerDown={(e) => {
+                // Instant trigger on finger touch or mouse down (bypasses 300ms mobile click delay)
+                if (e.button === 0) setIsNavDrawerOpen(true);
+              }}
               onClick={() => setIsNavDrawerOpen(true)}
-              className="group bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 hover:border-zinc-700 px-3 py-2 rounded-xl flex items-center space-x-1.5 text-xs font-semibold tracking-wide transition shadow-sm"
+              className="group bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 hover:border-zinc-700 px-3 py-2 rounded-xl flex items-center space-x-1.5 text-xs font-semibold tracking-wide transition shadow-sm cursor-pointer select-none active:scale-95"
               aria-label="Open Services Navigation Menu"
               id="header-services-menu-btn"
             >
