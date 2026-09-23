@@ -29,7 +29,7 @@ export default function Footer({
   const servicesList = [
     { label: "Wikipedia Page Creation", id: "wikipedia" },
     { label: "Instagram Recovery", id: "instagram-unban" },
-    { label: "Press Syndication", id: "press-syndication" },
+    { label: "Organic PR", id: "press-syndication" },
     { label: "News Wire PR", id: "news-pr" },
     { label: "Web Development", id: "web-development" },
   ];
@@ -111,14 +111,14 @@ export default function Footer({
             <ul className="space-y-1.5 text-xs">
               <li>
                 <a
-                  href="https://www.notoriousdigitalmedia.com"
+                  href="https://www.notoriousdigitalmedia.in"
                   target="_blank"
                   rel="noreferrer"
                   id="footer-website-badge"
                   className="inline-flex items-center space-x-1.5 text-zinc-400 hover:text-white transition"
                 >
                   <Globe className="w-3.5 h-3.5 text-blue-400" />
-                  <span>notoriousdigitalmedia.com</span>
+                  <span>notoriousdigitalmedia.in</span>
                   <ExternalLink className="w-3 h-3 text-zinc-500 ml-0.5" />
                 </a>
               </li>

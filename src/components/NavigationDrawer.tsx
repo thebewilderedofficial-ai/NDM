@@ -269,12 +269,12 @@ export default function NavigationDrawer({
                 </div>
 
                 <a
-                  href="https://www.notoriousdigitalmedia.com"
+                  href="https://www.notoriousdigitalmedia.in"
                   target="_blank"
                   rel="noreferrer"
                   className="mt-2 p-3 bg-zinc-900/30 hover:bg-zinc-900/70 border border-zinc-800/70 rounded-xl text-xs text-amber-400 hover:text-amber-300 transition flex items-center justify-between font-mono"
                 >
-                  <span>www.notoriousdigitalmedia.com</span>
+                  <span>www.notoriousdigitalmedia.in</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               </div>
@@ -299,7 +299,7 @@ export default function NavigationDrawer({
                 id="drawer-whatsapp-btn"
               >
                 <MessageCircle className="w-4 h-4" />
-                <span>Chat on WhatsApp (+91 9103908189)</span>
+                <span>Contact on WhatsApp</span>
               </a>
             </div>
 

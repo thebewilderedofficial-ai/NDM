@@ -425,7 +425,7 @@ export const EXTENDED_SERVICE_DATA: Record<string, ServiceDetailExtended> = {
 
   "news-pr": {
     id: "news-pr",
-    heroHeadline: "Get Featured on Tier-1 News Outlets (Forbes, Bloomberg & TechCrunch)",
+    heroHeadline: "Get Featured on Tier-1 News Outlets",
     heroSubheadline: "Guaranteed high-authority press placements that elevate your Google ranking, build undisputed credibility, and fulfill the strict notability prerequisites for Wikipedia and social media verification.",
     urgentHook: "Prospective buyers and investors Google your name before doing business. What does the first page of Google say about you right now?",
     conversionPunch: "A single feature in an authoritative publication provides permanent digital proof of your leadership and delivers high-DA backlinks forever.",

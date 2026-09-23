@@ -736,6 +736,47 @@ html.light [id^="service-page-"] button.bg-white.text-black:hover {
   background: linear-gradient(135deg, #3730a3 0%, #4f46e5 100%) !important;
 }
 
+/* SPECIAL HIGHLIGHT: Wikipedia Real-time Chart & Telemetry Card in Light Mode */
+html.light #wikipedia-realtime-chart-card {
+  background: linear-gradient(160deg, #ffffff 0%, #f8fafc 60%, #eff6ff 100%) !important;
+  border: 1.5px solid #cbd5e1 !important;
+  box-shadow: 0 15px 40px -10px rgba(99, 102, 241, 0.14) !important;
+}
+
+html.light #wikipedia-realtime-chart-card h3 {
+  color: #090d16 !important;
+}
+
+html.light #wikipedia-realtime-chart-card p {
+  color: #334155 !important;
+}
+
+html.light #wikipedia-realtime-chart-card .bg-zinc-950\/70,
+html.light #wikipedia-realtime-chart-card .bg-zinc-950\/80 {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04) !important;
+}
+
+html.light #wikipedia-realtime-chart-card .text-2xl.font-mono {
+  color: #090d16 !important;
+}
+
+html.light #wikipedia-realtime-chart-card span.text-indigo-300 {
+  color: #4338ca !important;
+}
+
+html.light #wikipedia-realtime-chart-card span.text-zinc-400,
+html.light #wikipedia-realtime-chart-card span.text-zinc-300,
+html.light #wikipedia-realtime-chart-card span.text-zinc-500 {
+  color: #475569 !important;
+}
+
+html.light #wikipedia-realtime-chart-card .border-t,
+html.light #wikipedia-realtime-chart-card .border-b {
+  border-color: #e2e8f0 !important;
+}
+
 /* SPECIAL HIGHLIGHT: Wikipedia Maintenance Section in Light Mode */
 html.light #wikipedia-maintenance-section > div {
   background: linear-gradient(150deg, #ffffff 0%, #eff6ff 60%, #e0e7ff 100%) !important;

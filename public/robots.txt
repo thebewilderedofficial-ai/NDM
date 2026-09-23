@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://notoriousdigitalmedia.com/sitemap.xml
+Sitemap: https://notoriousdigitalmedia.in/sitemap.xml

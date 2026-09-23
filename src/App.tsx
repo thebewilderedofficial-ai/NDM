@@ -23,6 +23,7 @@ import { SERVICES_DATA } from "./data";
 import { Service, AgencySettings } from "./types";
 import ThreeDIcon from "./components/ThreeDIcons";
 import StatsDashboard from "./components/StatsDashboard";
+import WikipediaRealtimeChart from "./components/WikipediaRealtimeChart";
 import ServiceModal from "./components/ServiceModal";
 import ServiceUtilityModal from "./components/ServiceUtilityModal";
 import ServiceDetailPage from "./components/ServiceDetailPage";
@@ -232,8 +233,8 @@ export default function App() {
             <a href="#stats-dashboard" className="hover:text-white transition">Authority Stats</a>
             <a href="#testimonials-block" className="hover:text-white transition">Reviews</a>
             <a href="#advisory-faq" className="hover:text-white transition">FAQ</a>
-            <a href="https://www.notoriousdigitalmedia.com" target="_blank" rel="noreferrer" className="text-amber-400 hover:text-amber-300 transition flex items-center space-x-1 lowercase font-mono">
-              <span>www.notoriousdigitalmedia.com</span>
+            <a href="https://www.notoriousdigitalmedia.in" target="_blank" rel="noreferrer" className="text-amber-400 hover:text-amber-300 transition flex items-center space-x-1 lowercase font-mono">
+              <span>www.notoriousdigitalmedia.in</span>
               <ExternalLink className="w-3 h-3" />
             </a>
           </nav>
@@ -318,6 +319,21 @@ export default function App() {
         {/* Bento Board component */}
         <div className="pt-2 border-t border-zinc-900/60" id="stats-dashboard">
           <StatsDashboard />
+        </div>
+
+        {/* Wikipedia Realtime Live Stats & Authority Trends on Homepage */}
+        <div className="mt-8 text-left" id="homepage-wikipedia-stats">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2 px-1">
+            <div className="flex items-center space-x-2">
+              <span className="text-[10px] font-mono tracking-widest text-blue-400 uppercase bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full inline-block">
+                What you are missing out on
+              </span>
+              <span className="hidden sm:inline-block text-zinc-500 font-mono text-xs">
+                Real-Time Global Fact &amp; Entity Search Impact
+              </span>
+            </div>
+          </div>
+          <WikipediaRealtimeChart />
         </div>
 
       </section>
