@@ -1369,5 +1369,20 @@ html.light #agency-services-grid > div:hover {
   }
 }
 
+/* =========================================================
+   HEADER GLOWY SCROLL PROGRESS BAR STYLING
+   ========================================================= */
+.header-scroll-track {
+  bottom: -1px;
+}
+
+html.light .header-scroll-track > div:first-child {
+  background-color: rgba(203, 213, 225, 0.5) !important;
+}
+
+html.light .header-scroll-track {
+  filter: drop-shadow(0 2px 8px rgba(99, 102, 241, 0.45));
+}
+
 
 

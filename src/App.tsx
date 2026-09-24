@@ -32,6 +32,7 @@ import NavigationDrawer from "./components/NavigationDrawer";
 import HeroTypewriterVisual from "./components/HeroTypewriterVisual";
 import ThemeToggle from "./components/ThemeToggle";
 import Footer from "./components/Footer";
+import ScrollProgressBar from "./components/ScrollProgressBar";
 
 // Fixed WhatsApp line across all dispatches and calls
 const FIXED_WHATSAPP = "+919103908189";
@@ -205,7 +206,7 @@ export default function App() {
       <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-emerald-950/10 rounded-full blur-[150px] -z-10 pointer-events-none" />
 
       {/* Primary Header */}
-      <header className="sticky top-0 z-50 bg-zinc-950/85 backdrop-blur-md border-b border-zinc-900/80 shadow-sm" id="agency-header">
+      <header className="sticky top-0 z-50 bg-zinc-950/85 backdrop-blur-md border-b border-zinc-900/80 shadow-sm relative" id="agency-header">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
           
           <div className="flex items-center space-x-3.5 cursor-pointer" onClick={backToAllServices}>
@@ -266,6 +267,9 @@ export default function App() {
           </div>
 
         </div>
+
+        {/* Glowy Scroll Progress Bar on the below side of header */}
+        <ScrollProgressBar />
       </header>
 
       {/* Hero Showcase Display */}

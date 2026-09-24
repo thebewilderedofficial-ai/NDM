@@ -28,6 +28,7 @@ import WikipediaRealtimeChart from "./WikipediaRealtimeChart";
 import ServiceDiagnosticTool from "./ServiceDiagnosticTool";
 import ThemeToggle from "./ThemeToggle";
 import Footer from "./Footer";
+import ScrollProgressBar from "./ScrollProgressBar";
 
 interface ServiceDetailPageProps {
   service: Service;
@@ -84,7 +85,7 @@ export default function ServiceDetailPage({
       </div>
 
       {/* Sub-Header Navigation */}
-      <div className="sticky top-0 z-50 bg-zinc-950/85 backdrop-blur-md border-b border-zinc-900/90 w-full shadow-sm" id="service-subnav">
+      <div className="sticky top-0 z-50 bg-zinc-950/85 backdrop-blur-md border-b border-zinc-900/90 w-full shadow-sm relative" id="service-subnav">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
           <div className="flex items-center space-x-3 min-w-0">
             <button
@@ -139,6 +140,9 @@ export default function ServiceDetailPage({
             )}
           </div>
         </div>
+
+        {/* Glowy Scroll Progress Bar on the below side of sub-header */}
+        <ScrollProgressBar gradient={service.gradient} />
       </div>
 
       {/* Hero Section */}
