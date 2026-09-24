@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { X, Sparkles, Copy, Check, Mail, ExternalLink, ArrowLeft } from "lucide-react";
 import { Service } from "../types";
+import BriefStepIndicator, { StepItem } from "./BriefStepIndicator";
 
 interface ServiceModalProps {
   service: Service;
@@ -9,6 +10,12 @@ interface ServiceModalProps {
   whatsappNumber?: string;
   agencyEmail?: string;
 }
+
+const BRIEF_STEPS: StepItem[] = [
+  { id: 1, label: "Specifications", description: "Project Scope" },
+  { id: 2, label: "Structuring", description: "Quotation Analysis" },
+  { id: 3, label: "Dispatch", description: "Formal Review Ready" },
+];
 
 const LOADING_STEPS = [
   "Structuring project parameters...",
@@ -171,6 +178,16 @@ Thank you!
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const currentStep = dispatchedInfo && !loading ? 3 : loading ? 2 : 1;
+  const requiredCount = service.fields.length;
+  const filledCount = service.fields.filter((f) => formData[f.name]?.trim()).length;
+  const completionDetail =
+    currentStep === 1
+      ? `${filledCount} of ${requiredCount} required parameters filled`
+      : currentStep === 2
+      ? LOADING_STEPS[loadingStep] || "Structuring parameters..."
+      : "Verified & ready to dispatch";
+
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="service-advisory-modal">
       <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
@@ -185,7 +202,7 @@ Thank you!
         {/* Modal content layout */}
         <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
         
-        <div className="inline-block w-full max-w-2xl my-8 overflow-hidden text-left align-middle transition-all transform bg-zinc-950 border border-zinc-800 rounded-2xl shadow-[0_24px_50px_rgba(0,0,0,0.8)] relative">
+        <div className="inline-block w-full max-w-2xl my-8 overflow-hidden text-left align-middle transition-all transform bg-zinc-950 border border-zinc-800 rounded-2xl shadow-[0_24px_50px_rgba(0,0,0,0.8)] relative" id="agency-modal-panel">
           
           {/* Glowing Top Frame */}
           <div className={`absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r ${service.gradient}`} />
@@ -207,6 +224,15 @@ Thank you!
               <X className="w-5 h-5" />
             </button>
           </div>
+
+          {/* Visual Step-Progress Indicator for Brief Building */}
+          <BriefStepIndicator
+            steps={BRIEF_STEPS}
+            currentStep={currentStep}
+            serviceGradient={service.gradient}
+            completionDetail={completionDetail}
+            isProcessing={loading}
+          />
 
           <div className="p-6">
             {!dispatchedInfo && !loading && (

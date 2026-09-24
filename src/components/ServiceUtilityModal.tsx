@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { 
   X, 
   Sparkles, 
@@ -18,6 +18,7 @@ import {
   Check
 } from "lucide-react";
 import { Service } from "../types";
+import BriefStepIndicator, { StepItem } from "./BriefStepIndicator";
 
 interface ServiceUtilityModalProps {
   service: Service;
@@ -27,6 +28,12 @@ interface ServiceUtilityModalProps {
   onOpenQuote: () => void;
 }
 
+const UTILITY_STEPS: StepItem[] = [
+  { id: 1, label: "Diagnostics", description: "Target & Scope" },
+  { id: 2, label: "Engine Audit", description: "Feasibility Check" },
+  { id: 3, label: "Action Brief", description: "Findings & Dispatch" },
+];
+
 export default function ServiceUtilityModal({
   service,
   isOpen,
@@ -34,6 +41,22 @@ export default function ServiceUtilityModal({
   whatsappNumber,
   onOpenQuote,
 }: ServiceUtilityModalProps) {
+  const [currentStep, setCurrentStep] = useState<number>(1);
+  const [stepDetail, setStepDetail] = useState<string>("");
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
+
+  useEffect(() => {
+    setCurrentStep(1);
+    setStepDetail("Configure diagnostic parameters");
+    setIsProcessing(false);
+  }, [service.id, isOpen]);
+
+  const handleStepChange = (step: number, detail?: string, processing?: boolean) => {
+    setCurrentStep(step);
+    if (detail !== undefined) setStepDetail(detail);
+    if (processing !== undefined) setIsProcessing(processing);
+  };
+
   if (!isOpen) return null;
 
   const cleanPhone = whatsappNumber.replace("+", "").replace(/\s/g, "");
@@ -81,30 +104,41 @@ export default function ServiceUtilityModal({
           </button>
         </div>
 
+        {/* Visual Step-Progress Indicator for Brief Building */}
+        <div className="-mx-5 sm:-mx-7 relative z-10">
+          <BriefStepIndicator
+            steps={UTILITY_STEPS}
+            currentStep={currentStep}
+            serviceGradient={service.gradient}
+            completionDetail={stepDetail}
+            isProcessing={isProcessing}
+          />
+        </div>
+
         {/* Dynamic Tool Content based on service.id */}
         <div className="py-5 relative z-10">
           {service.id === "web-development" && (
-            <SpeedAndSeoAuditor onWhatsApp={openWhatsApp} onOpenQuote={onOpenQuote} />
+            <SpeedAndSeoAuditor onWhatsApp={openWhatsApp} onOpenQuote={onOpenQuote} onStepChange={handleStepChange} />
           )}
 
           {service.id === "wikipedia" && (
-            <WikipediaNotabilityAuditor onWhatsApp={openWhatsApp} onOpenQuote={onOpenQuote} />
+            <WikipediaNotabilityAuditor onWhatsApp={openWhatsApp} onOpenQuote={onOpenQuote} onStepChange={handleStepChange} />
           )}
 
           {service.id === "username-claim" && (
-            <HandleClaimChecker onWhatsApp={openWhatsApp} onOpenQuote={onOpenQuote} />
+            <HandleClaimChecker onWhatsApp={openWhatsApp} onOpenQuote={onOpenQuote} onStepChange={handleStepChange} />
           )}
 
           {service.id === "instagram-unban" && (
-            <AccountRecoveryTriage onWhatsApp={openWhatsApp} onOpenQuote={onOpenQuote} />
+            <AccountRecoveryTriage onWhatsApp={openWhatsApp} onOpenQuote={onOpenQuote} onStepChange={handleStepChange} />
           )}
 
           {service.id === "meta-verify" && (
-            <VerificationReadinessCalculator onWhatsApp={openWhatsApp} onOpenQuote={onOpenQuote} />
+            <VerificationReadinessCalculator onWhatsApp={openWhatsApp} onOpenQuote={onOpenQuote} onStepChange={handleStepChange} />
           )}
 
           {service.id === "news-pr" && (
-            <MediaImpactCalculator onWhatsApp={openWhatsApp} onOpenQuote={onOpenQuote} />
+            <MediaImpactCalculator onWhatsApp={openWhatsApp} onOpenQuote={onOpenQuote} onStepChange={handleStepChange} />
           )}
         </div>
 
@@ -180,15 +214,23 @@ function getToolSubheader(serviceId: string): string {
 // -------------------------------------------------------------
 function SpeedAndSeoAuditor({ 
   onWhatsApp, 
-  onOpenQuote 
+  onOpenQuote,
+  onStepChange,
 }: { 
   onWhatsApp: (msg: string) => void; 
   onOpenQuote: () => void; 
+  onStepChange?: (step: number, detail?: string, processing?: boolean) => void;
 }) {
   const [url, setUrl] = useState("");
   const [device, setDevice] = useState<"mobile" | "desktop">("mobile");
   const [analyzing, setAnalyzing] = useState(false);
   const [result, setResult] = useState<any>(null);
+
+  useEffect(() => {
+    if (!result && !analyzing) {
+      onStepChange?.(1, url.trim() ? "Domain specified" : "Enter domain to test", false);
+    }
+  }, [url]);
 
   const handleAudit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -196,6 +238,7 @@ function SpeedAndSeoAuditor({
 
     setAnalyzing(true);
     setResult(null);
+    onStepChange?.(2, "Running Core Web Vitals & schema audit...", true);
 
     // Simulate realistic Lighthouse & schema audit based on input domain
     setTimeout(() => {
@@ -203,7 +246,7 @@ function SpeedAndSeoAuditor({
       const clean = url.replace(/https?:\/\//, "").replace(/\/.*$/, "").toLowerCase();
       const isShort = clean.length < 12;
       
-      setResult({
+      const newResult = {
         domain: clean,
         performanceScore: isShort ? 62 : 48,
         seoScore: 71,
@@ -214,7 +257,9 @@ function SpeedAndSeoAuditor({
         openGraphTags: "Partial / Missing Image",
         viewportConfigured: true,
         recommendation: "Critical bottleneck: Heavy unused JavaScript & missing JSON-LD Organization schema. Mobile bounce rate exceeds 54% due to slow LCP."
-      });
+      };
+      setResult(newResult);
+      onStepChange?.(3, `Audit complete: ${newResult.performanceScore}/100 speed · LCP ${newResult.loadTime}`, false);
     }, 1200);
   };
 
@@ -325,10 +370,12 @@ function SpeedAndSeoAuditor({
 // -------------------------------------------------------------
 function WikipediaNotabilityAuditor({ 
   onWhatsApp, 
-  onOpenQuote 
+  onOpenQuote,
+  onStepChange,
 }: { 
   onWhatsApp: (msg: string) => void; 
   onOpenQuote: () => void; 
+  onStepChange?: (step: number, detail?: string, processing?: boolean) => void;
 }) {
   const [subjectType, setSubjectType] = useState("person");
   const [tier1Count, setTier1Count] = useState(2);
@@ -345,6 +392,10 @@ function WikipediaNotabilityAuditor({
   };
 
   const score = calculateScore();
+
+  useEffect(() => {
+    onStepChange?.(3, `Feasibility: ${score}% (${hasExistingWiki ? "Defense Mode" : "Drafting Mode"})`, false);
+  }, [score, hasExistingWiki]);
 
   return (
     <div className="space-y-4 text-left">
@@ -440,30 +491,45 @@ function WikipediaNotabilityAuditor({
 // -------------------------------------------------------------
 function HandleClaimChecker({ 
   onWhatsApp, 
-  onOpenQuote 
+  onOpenQuote,
+  onStepChange,
 }: { 
   onWhatsApp: (msg: string) => void; 
   onOpenQuote: () => void; 
+  onStepChange?: (step: number, detail?: string, processing?: boolean) => void;
 }) {
   const [handle, setHandle] = useState("");
   const [platform, setPlatform] = useState("instagram");
   const [checked, setChecked] = useState<any>(null);
 
+  useEffect(() => {
+    if (!checked) {
+      onStepChange?.(1, handle.trim() ? "Handle configured" : "Enter target handle", false);
+    }
+  }, [handle, platform, checked]);
+
   const handleCheck = (e: React.FormEvent) => {
     e.preventDefault();
     if (!handle.trim()) return;
+
+    onStepChange?.(2, "Verifying handle inactivity & registry...", true);
 
     const clean = handle.replace("@", "").toLowerCase();
     const isRare = clean.length <= 4;
     const isGeneric = ["media", "digital", "agency", "official", "luxury", "club", "studio"].some(k => clean.includes(k));
 
-    setChecked({
+    const res = {
       handle: `@${clean}`,
       tier: isRare ? "Tier-1 Ultra Rare (1-4 Characters)" : isGeneric ? "Commercial Brand Generic" : "Standard Squatted / Inactive Handle",
       feasibility: isRare ? "High Security Escort Required" : "Standard Agency Portal Route",
       minInactiveYears: "2+ Years Inactive",
       successRate: isRare ? "85%" : "95%"
-    });
+    };
+
+    setTimeout(() => {
+      setChecked(res);
+      onStepChange?.(3, `Claim profile verified: ${res.tier}`, false);
+    }, 400);
   };
 
   return (
@@ -544,10 +610,12 @@ function HandleClaimChecker({
 // -------------------------------------------------------------
 function AccountRecoveryTriage({ 
   onWhatsApp, 
-  onOpenQuote 
+  onOpenQuote,
+  onStepChange,
 }: { 
   onWhatsApp: (msg: string) => void; 
   onOpenQuote: () => void; 
+  onStepChange?: (step: number, detail?: string, processing?: boolean) => void;
 }) {
   const [banReason, setBanReason] = useState("integrity");
   const [daysElapsed, setDaysElapsed] = useState("3");
@@ -568,6 +636,10 @@ function AccountRecoveryTriage({
   };
 
   const triage = getTriageInfo();
+
+  useEffect(() => {
+    onStepChange?.(3, `Protocol ready: ${triage.rate} rate · ${triage.time}`, false);
+  }, [banReason, daysElapsed]);
 
   return (
     <div className="space-y-4 text-left">
@@ -644,10 +716,12 @@ function AccountRecoveryTriage({
 // -------------------------------------------------------------
 function VerificationReadinessCalculator({ 
   onWhatsApp, 
-  onOpenQuote 
+  onOpenQuote,
+  onStepChange,
 }: { 
   onWhatsApp: (msg: string) => void; 
   onOpenQuote: () => void; 
+  onStepChange?: (step: number, detail?: string, processing?: boolean) => void;
 }) {
   const [followers, setFollowers] = useState("10k-50k");
   const [hasGooglePanel, setHasGooglePanel] = useState(true);
@@ -662,6 +736,10 @@ function VerificationReadinessCalculator({
   };
 
   const score = calculateScore();
+
+  useEffect(() => {
+    onStepChange?.(3, `Readiness: ${score}% (${score >= 80 ? "Pre-Audit Approved" : "PR Gap Identified"})`, false);
+  }, [score, followers, hasGooglePanel]);
 
   return (
     <div className="space-y-4 text-left">
@@ -742,10 +820,12 @@ function VerificationReadinessCalculator({
 // -------------------------------------------------------------
 function MediaImpactCalculator({ 
   onWhatsApp, 
-  onOpenQuote 
+  onOpenQuote,
+  onStepChange,
 }: { 
   onWhatsApp: (msg: string) => void; 
   onOpenQuote: () => void; 
+  onStepChange?: (step: number, detail?: string, processing?: boolean) => void;
 }) {
   const [tier, setTier] = useState<"tier1" | "tier2" | "syndicate">("tier1");
 
@@ -777,6 +857,10 @@ function MediaImpactCalculator({
   };
 
   const current = tierDetails[tier];
+
+  useEffect(() => {
+    onStepChange?.(3, `Selected tier: ${current.name} (${current.da})`, false);
+  }, [tier]);
 
   return (
     <div className="space-y-4 text-left">

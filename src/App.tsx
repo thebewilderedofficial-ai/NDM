@@ -385,13 +385,18 @@ export default function App() {
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="agency-services-grid">
-          {filteredServices.map((srv) => {
+          {filteredServices.map((srv, index) => {
+            const floatDelays = ["0s", "0.9s", "1.8s", "0.45s", "1.35s", "2.25s"];
+            const staggerDelay = floatDelays[index % floatDelays.length];
             return (
               <div
                 key={srv.id}
                 id={`card-${srv.id}`}
-                className="relative overflow-hidden rounded-2xl bg-zinc-900/35 border border-zinc-800/60 hover:border-zinc-750 p-6 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_12px_40px_rgba(0,0,0,0.5)] glow-hover"
-                style={{ "--hover-shadow": srv.glowColor } as any}
+                className="service-card-floating relative overflow-hidden rounded-2xl bg-zinc-900/35 border border-zinc-800/60 hover:border-zinc-750 p-6 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_12px_40px_rgba(0,0,0,0.5)] glow-hover"
+                style={{
+                  "--hover-shadow": srv.glowColor,
+                  animationDelay: staggerDelay,
+                } as any}
               >
                 {/* 3D-styled Custom Layer Illustration (Clickable) */}
                 <div 

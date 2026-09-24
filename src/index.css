@@ -940,6 +940,50 @@ html.light [id^="utility-modal-"] .bg-zinc-900\/80 {
   border-bottom: 1px solid #e2e8f0 !important;
 }
 
+/* Brief Step Progress Indicator in Light Mode */
+html.light .brief-step-indicator {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+html.light .brief-step-indicator .text-white {
+  color: #090d16 !important;
+}
+
+html.light .brief-step-indicator .text-zinc-300 {
+  color: #1e293b !important;
+}
+
+html.light .brief-step-indicator .text-zinc-400 {
+  color: #475569 !important;
+}
+
+html.light .brief-step-indicator .text-zinc-500 {
+  color: #64748b !important;
+}
+
+html.light .brief-step-indicator .bg-zinc-950\/60 {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #334155 !important;
+}
+
+html.light .brief-step-indicator .bg-zinc-800 {
+  background-color: #cbd5e1 !important;
+}
+
+html.light .brief-step-indicator .bg-zinc-900 {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #64748b !important;
+}
+
+html.light .brief-step-indicator .bg-zinc-950 {
+  background-color: #ffffff !important;
+  color: #4338ca !important;
+  border-color: #6366f1 !important;
+}
+
 /* Form Inputs in Light Mode with vibrant focus ring */
 html.light input[type="text"],
 html.light input[type="email"],
@@ -1287,6 +1331,41 @@ html.light div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > footer#uni
   }
   50% {
     opacity: 0;
+  }
+}
+
+/* =========================================================
+   FEATURED SERVICES FLOATING CARD LEVITATION (ELITE FEEL)
+   ========================================================= */
+@keyframes serviceCardFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.service-card-floating {
+  animation: serviceCardFloat 5.6s ease-in-out infinite;
+  will-change: transform;
+}
+
+.service-card-floating:hover {
+  animation: none !important;
+  transform: translateY(-9px) !important;
+}
+
+html.light .service-card-floating:hover,
+html.light #agency-services-grid > div:hover {
+  animation: none !important;
+  transform: translateY(-9px) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .service-card-floating {
+    animation: none !important;
+    transform: none !important;
   }
 }
 
