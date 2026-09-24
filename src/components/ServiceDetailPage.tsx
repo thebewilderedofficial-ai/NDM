@@ -25,6 +25,7 @@ import { Service } from "../types";
 import { EXTENDED_SERVICE_DATA } from "../data/serviceDetails";
 import Interactive3DStage from "./Interactive3DStage";
 import WikipediaRealtimeChart from "./WikipediaRealtimeChart";
+import InteractiveMediaTabs from "./InteractiveMediaTabs";
 import ServiceDiagnosticTool from "./ServiceDiagnosticTool";
 import ThemeToggle from "./ThemeToggle";
 import Footer from "./Footer";
@@ -246,6 +247,21 @@ export default function ServiceDetailPage({
             </span>
           </div>
           <WikipediaRealtimeChart />
+        </section>
+      )}
+
+      {/* SPECIAL HIGHLIGHT: Interactive Tier-1 Media Showcase for News & PR */}
+      {service.id === "news-pr" && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 w-full overflow-hidden" id="media-showcase-section">
+          <InteractiveMediaTabs
+            whatsappNumber={whatsappNumber}
+            onOpenBrief={(outletName) => {
+              onOpenBriefModal({
+                ...service,
+                title: `${outletName} Guaranteed Editorial Feature`
+              });
+            }}
+          />
         </section>
       )}
 

@@ -154,14 +154,14 @@ export default function TypewriterHeadline({
 
   return (
     <span
-      className={`relative inline-grid grid-cols-1 grid-rows-1 text-left align-baseline max-w-full ${className}`}
+      className={`relative inline-grid grid-cols-1 grid-rows-1 text-center align-baseline max-w-full ${className}`}
       aria-live="polite"
     >
       {/* Invisible ghost phrases that reserve the exact max width & height across all screen sizes */}
       {phrases.map((phrase, idx) => (
         <span
           key={idx}
-          className="col-start-1 row-start-1 invisible select-none pointer-events-none opacity-0 font-extrabold pr-2 break-words text-[21px] sm:text-inherit"
+          className="col-start-1 row-start-1 invisible select-none pointer-events-none opacity-0 font-extrabold pr-2 break-words text-[21px] sm:text-inherit text-center"
           aria-hidden="true"
         >
           {phrase}
@@ -169,7 +169,7 @@ export default function TypewriterHeadline({
       ))}
 
       {/* Active typing text layer */}
-      <span className="col-start-1 row-start-1 inline max-w-full">
+      <span className="col-start-1 row-start-1 inline max-w-full text-center">
         <span
           className={`bg-gradient-to-r ${theme.gradient} bg-clip-text text-transparent font-extrabold inline break-words text-[21px] sm:text-inherit transition-all duration-500`}
         >

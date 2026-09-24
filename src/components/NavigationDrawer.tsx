@@ -231,6 +231,14 @@ export default function NavigationDrawer({
               </button>
 
               <button
+                onClick={() => handleNavHome("tier1-media-features")}
+                className="p-3 bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/70 hover:border-zinc-700 rounded-xl text-left text-zinc-300 hover:text-white transition flex items-center justify-between"
+              >
+                <span>Media Features</span>
+                <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
+              </button>
+
+              <button
                 onClick={() => handleNavHome("testimonials-block")}
                 className="p-3 bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/70 hover:border-zinc-700 rounded-xl text-left text-zinc-300 hover:text-white transition flex items-center justify-between"
               >

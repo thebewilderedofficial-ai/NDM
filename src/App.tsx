@@ -22,6 +22,7 @@ import {
 import { SERVICES_DATA } from "./data";
 import { Service, AgencySettings } from "./types";
 import ThreeDIcon from "./components/ThreeDIcons";
+import CardBorderFlare from "./components/CardBorderFlare";
 import StatsDashboard from "./components/StatsDashboard";
 import WikipediaRealtimeChart from "./components/WikipediaRealtimeChart";
 import ServiceModal from "./components/ServiceModal";
@@ -390,102 +391,108 @@ export default function App() {
               <div
                 key={srv.id}
                 id={`card-${srv.id}`}
-                className="relative overflow-hidden rounded-2xl bg-zinc-900/35 border border-zinc-800/60 hover:border-zinc-750 p-6 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_12px_40px_rgba(0,0,0,0.5)] glow-hover"
+                className="relative rounded-2xl p-[1.5px] group transition-all duration-300 hover:shadow-[0_12px_40px_rgba(0,0,0,0.5)] glow-hover"
                 style={{ "--hover-shadow": srv.glowColor } as any}
               >
-                {/* 3D-styled Custom Layer Illustration (Clickable) */}
-                <div 
-                  className="flex justify-center mb-4 cursor-pointer"
-                  onClick={() => openServicePage(srv)}
-                  title={`View dedicated ${srv.title} page`}
-                >
-                  <ThreeDIcon serviceId={srv.id} />
-                </div>
+                {/* Continuous 360-degree Border Flare running around card matching 3D logo color */}
+                <CardBorderFlare serviceId={srv.id} />
 
-                {/* Info Text block */}
-                <div className="mt-4 flex-1">
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="text-[10px] font-mono tracking-widest text-zinc-500 uppercase">
-                      {srv.avgTimeline} duration
-                    </span>
-                    <span className={`px-2 py-0.5 rounded text-[9px] font-semibold bg-white/5 border border-white/10 text-zinc-300`}>
-                      {srv.difficulty}
-                    </span>
-                  </div>
-
-                  <h3 
+                {/* Card Inner Surface (elevated above border flare beam) */}
+                <div className="relative z-10 w-full h-full rounded-[15px] bg-zinc-950/95 border border-zinc-800/80 p-6 flex flex-col justify-between overflow-hidden">
+                  {/* 3D-styled Custom Layer Illustration (Clickable) */}
+                  <div 
+                    className="flex justify-center mb-4 cursor-pointer"
                     onClick={() => openServicePage(srv)}
-                    className="text-xl font-bold font-display text-white tracking-tight mb-2 group-hover:text-indigo-300 transition-colors cursor-pointer flex items-center justify-between"
+                    title={`View dedicated ${srv.title} page`}
                   >
-                    <span>{srv.title}</span>
-                    <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-indigo-400" />
-                  </h3>
-                  
-                  <p className="text-zinc-400 text-xs leading-relaxed mb-4">
-                    {srv.tagline}
-                  </p>
-
-                  {/* Special note for Wikipedia maintenance on card */}
-                  {srv.id === "wikipedia" && (
-                    <div className="mb-3 px-2.5 py-1.5 bg-blue-500/10 border border-blue-500/25 rounded-lg text-[11px] text-blue-300 flex items-center gap-1.5">
-                      <ShieldCheck className="w-3.5 h-3.5 text-blue-400 shrink-0" />
-                      <span>Includes 24/7 existing page maintenance &amp; defense</span>
-                    </div>
-                  )}
-
-                  <ul className="space-y-2 mt-3 pt-3 border-t border-zinc-900/80">
-                    {srv.benefits.slice(0, 3).map((benefit, bidx) => (
-                      <li key={bidx} className="flex items-start space-x-2 text-[11px] text-zinc-400">
-                        <Check className="w-3.5 h-3.5 text-indigo-400 mt-0.5 shrink-0" />
-                        <span>{benefit}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Action Buttons Trio: Learn More, Interactive Tool, Request Quote */}
-                <div className="mt-6 space-y-2">
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      onClick={() => openServicePage(srv)}
-                      className="bg-zinc-800/90 hover:bg-zinc-700 text-white font-display font-semibold text-xs py-2 rounded-xl border border-zinc-700 transition flex items-center justify-center space-x-1.5"
-                      id={`view-page-btn-${srv.id}`}
-                    >
-                      <span>Learn More</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-indigo-300" />
-                    </button>
-
-                    <button
-                      onClick={() => setUtilityModalService(srv)}
-                      className="bg-indigo-950/60 hover:bg-indigo-900/80 border border-indigo-500/40 text-indigo-200 hover:text-white font-display font-semibold text-xs py-2 rounded-xl transition flex items-center justify-center space-x-1.5 shadow-sm"
-                      id={`utility-btn-${srv.id}`}
-                      title={`Launch ${srv.title} Tool`}
-                    >
-                      <Gauge className="w-3.5 h-3.5 text-indigo-400" />
-                      <span>
-                        {srv.id === "web-development"
-                          ? "Speed Audit"
-                          : srv.id === "wikipedia"
-                          ? "Check Eligibility"
-                          : srv.id === "username-claim"
-                          ? "Check Handle"
-                          : srv.id === "instagram-unban"
-                          ? "Ban Triage"
-                          : srv.id === "meta-verify"
-                          ? "Audit Badge"
-                          : "ROI Simulator"}
-                      </span>
-                    </button>
+                    <ThreeDIcon serviceId={srv.id} />
                   </div>
 
-                  <button
-                    onClick={() => setSelectedService(srv)}
-                    className={`w-full bg-gradient-to-r ${srv.gradient} text-white font-display font-semibold text-xs py-2 rounded-xl shadow-md transition hover:opacity-90 active:scale-[0.98] flex items-center justify-center space-x-1.5`}
-                    id={`quote-btn-${srv.id}`}
-                  >
-                    <span>Request Quote</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </button>
+                  {/* Info Text block */}
+                  <div className="mt-4 flex-1">
+                    <div className="flex justify-between items-start mb-2">
+                      <span className="text-[10px] font-mono tracking-widest text-zinc-500 uppercase">
+                        {srv.avgTimeline} duration
+                      </span>
+                      <span className={`px-2 py-0.5 rounded text-[9px] font-semibold bg-white/5 border border-white/10 text-zinc-300`}>
+                        {srv.difficulty}
+                      </span>
+                    </div>
+
+                    <h3 
+                      onClick={() => openServicePage(srv)}
+                      className="text-xl font-bold font-display text-white tracking-tight mb-2 group-hover:text-indigo-300 transition-colors cursor-pointer flex items-center justify-between"
+                    >
+                      <span>{srv.title}</span>
+                      <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-indigo-400" />
+                    </h3>
+                    
+                    <p className="text-zinc-400 text-xs leading-relaxed mb-4">
+                      {srv.tagline}
+                    </p>
+
+                    {/* Special note for Wikipedia maintenance on card */}
+                    {srv.id === "wikipedia" && (
+                      <div className="mb-3 px-2.5 py-1.5 bg-blue-500/10 border border-blue-500/25 rounded-lg text-[11px] text-blue-300 flex items-center gap-1.5">
+                        <ShieldCheck className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                        <span>Includes 24/7 existing page maintenance &amp; defense</span>
+                      </div>
+                    )}
+
+                    <ul className="space-y-2 mt-3 pt-3 border-t border-zinc-900/80">
+                      {srv.benefits.slice(0, 3).map((benefit, bidx) => (
+                        <li key={bidx} className="flex items-start space-x-2 text-[11px] text-zinc-400">
+                          <Check className="w-3.5 h-3.5 text-indigo-400 mt-0.5 shrink-0" />
+                          <span>{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Action Buttons Trio: Learn More, Interactive Tool, Request Quote */}
+                  <div className="mt-6 space-y-2">
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        onClick={() => openServicePage(srv)}
+                        className="bg-zinc-800/90 hover:bg-zinc-700 text-white font-display font-semibold text-xs py-2 rounded-xl border border-zinc-700 transition flex items-center justify-center space-x-1.5"
+                        id={`view-page-btn-${srv.id}`}
+                      >
+                        <span>Learn More</span>
+                        <ArrowRight className="w-3.5 h-3.5 text-indigo-300" />
+                      </button>
+
+                      <button
+                        onClick={() => setUtilityModalService(srv)}
+                        className="bg-indigo-950/60 hover:bg-indigo-900/80 border border-indigo-500/40 text-indigo-200 hover:text-white font-display font-semibold text-xs py-2 rounded-xl transition flex items-center justify-center space-x-1.5 shadow-sm"
+                        id={`utility-btn-${srv.id}`}
+                        title={`Launch ${srv.title} Tool`}
+                      >
+                        <Gauge className="w-3.5 h-3.5 text-indigo-400" />
+                        <span>
+                          {srv.id === "web-development"
+                            ? "Speed Audit"
+                            : srv.id === "wikipedia"
+                            ? "Check Eligibility"
+                            : srv.id === "username-claim"
+                            ? "Check Handle"
+                            : srv.id === "instagram-unban"
+                            ? "Ban Triage"
+                            : srv.id === "meta-verify"
+                            ? "Audit Badge"
+                            : "ROI Simulator"}
+                        </span>
+                      </button>
+                    </div>
+
+                    <button
+                      onClick={() => setSelectedService(srv)}
+                      className={`w-full bg-gradient-to-r ${srv.gradient} text-white font-display font-semibold text-xs py-2 rounded-xl shadow-md transition hover:opacity-90 active:scale-[0.98] flex items-center justify-center space-x-1.5`}
+                      id={`quote-btn-${srv.id}`}
+                    >
+                      <span>Request Quote</span>
+                      <ArrowUpRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
               </div>
             );
