@@ -154,14 +154,14 @@ export default function TypewriterHeadline({
 
   return (
     <span
-      className={`relative inline-grid grid-cols-1 grid-rows-1 text-center align-baseline max-w-full ${className}`}
+      className={`relative inline-grid grid-cols-1 grid-rows-1 text-left align-baseline max-w-full ${className}`}
       aria-live="polite"
     >
       {/* Invisible ghost phrases that reserve the exact max width & height across all screen sizes */}
       {phrases.map((phrase, idx) => (
         <span
           key={idx}
-          className="col-start-1 row-start-1 invisible select-none pointer-events-none opacity-0 font-extrabold pr-2 break-words text-[21px] sm:text-inherit text-center"
+          className="col-start-1 row-start-1 invisible select-none pointer-events-none opacity-0 font-extrabold pr-2 break-words text-[21px] sm:text-inherit"
           aria-hidden="true"
         >
           {phrase}

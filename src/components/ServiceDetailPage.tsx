@@ -25,7 +25,6 @@ import { Service } from "../types";
 import { EXTENDED_SERVICE_DATA } from "../data/serviceDetails";
 import Interactive3DStage from "./Interactive3DStage";
 import WikipediaRealtimeChart from "./WikipediaRealtimeChart";
-import InteractiveMediaTabs from "./InteractiveMediaTabs";
 import ServiceDiagnosticTool from "./ServiceDiagnosticTool";
 import ThemeToggle from "./ThemeToggle";
 import Footer from "./Footer";
@@ -77,7 +76,7 @@ export default function ServiceDetailPage({
   };
 
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-zinc-950 text-stone-200 relative pb-20 selection:bg-indigo-500/30 selection:text-white" id={`service-page-${service.id}`}>
+    <div className="min-h-screen w-full max-w-full overflow-x-clip bg-zinc-950 text-stone-200 relative pb-20 selection:bg-indigo-500/30 selection:text-white" id={`service-page-${service.id}`}>
       {/* Visual Ambient Atmosphere Glows - Contained to prevent horizontal document overflow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
         <div className="absolute top-0 right-0 w-[min(550px,100vw)] h-[min(550px,100vw)] bg-indigo-900/10 rounded-full blur-[140px]" />
@@ -85,7 +84,7 @@ export default function ServiceDetailPage({
       </div>
 
       {/* Sub-Header Navigation */}
-      <div className="sticky top-0 z-40 bg-zinc-950/85 backdrop-blur-md border-b border-zinc-900/90 w-full" id="service-subnav">
+      <div className="sticky top-0 z-50 bg-zinc-950/85 backdrop-blur-md border-b border-zinc-900/90 w-full shadow-sm" id="service-subnav">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
           <div className="flex items-center space-x-3 min-w-0">
             <button
@@ -247,21 +246,6 @@ export default function ServiceDetailPage({
             </span>
           </div>
           <WikipediaRealtimeChart />
-        </section>
-      )}
-
-      {/* SPECIAL HIGHLIGHT: Interactive Tier-1 Media Showcase for News & PR */}
-      {service.id === "news-pr" && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 w-full overflow-hidden" id="media-showcase-section">
-          <InteractiveMediaTabs
-            whatsappNumber={whatsappNumber}
-            onOpenBrief={(outletName) => {
-              onOpenBriefModal({
-                ...service,
-                title: `${outletName} Guaranteed Editorial Feature`
-              });
-            }}
-          />
         </section>
       )}
 
