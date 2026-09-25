@@ -33,6 +33,8 @@ import HeroTypewriterVisual from "./components/HeroTypewriterVisual";
 import ThemeToggle from "./components/ThemeToggle";
 import Footer from "./components/Footer";
 import ScrollProgressBar from "./components/ScrollProgressBar";
+import ParallaxAmbientGlows from "./components/ParallaxAmbientGlows";
+import CredibilityKnowledgeGraphVisualizer from "./components/CredibilityKnowledgeGraphVisualizer";
 
 // Fixed WhatsApp line across all dispatches and calls
 const FIXED_WHATSAPP = "+919103908189";
@@ -157,6 +159,47 @@ export default function App() {
     return true;
   });
 
+  // Silky-smooth fade-in-up scroll reveal observer for featured service cards
+  useEffect(() => {
+    if (activeServiceDetail) return;
+
+    const cards = document.querySelectorAll<HTMLElement>(".service-card-reveal-target");
+    if (!cards.length) return;
+
+    if (!("IntersectionObserver" in window)) {
+      cards.forEach((card) => card.classList.add("revealed"));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("revealed");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.05,
+        rootMargin: "0px 0px 60px 0px",
+      }
+    );
+
+    cards.forEach((card) => {
+      const rect = card.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        card.classList.add("revealed");
+      } else if (!card.classList.contains("revealed")) {
+        observer.observe(card);
+      }
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [filteredServices, activeServiceDetail]);
+
   const cleanPhone = FIXED_WHATSAPP.replace("+", "").replace(/\s/g, "");
 
   // If a dedicated service detail page is active, display it full-page
@@ -200,10 +243,8 @@ export default function App() {
   return (
     <div className="min-h-screen bg-zinc-950 font-sans text-stone-200 relative pb-16 selection:bg-indigo-500/30 selection:text-white" id="agency-root">
       
-      {/* Visual Ambient Atmosphere Glows */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-900/10 rounded-full blur-[120px] -z-10 pointer-events-none" />
-      <div className="absolute top-1/3 left-0 w-[400px] h-[400px] bg-rose-900/5 rounded-full blur-[100px] -z-10 pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-emerald-950/10 rounded-full blur-[150px] -z-10 pointer-events-none" />
+      {/* Smooth Parallax Scroll Background Ambient Atmosphere Glows */}
+      <ParallaxAmbientGlows variant="home" />
 
       {/* Primary Header */}
       <header className="sticky top-0 z-50 bg-zinc-950/85 backdrop-blur-md border-b border-zinc-900/80 shadow-sm relative" id="agency-header">
@@ -232,6 +273,7 @@ export default function App() {
               <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-ping" />
             </button>
             <a href="#stats-dashboard" className="hover:text-white transition">Authority Stats</a>
+            <a href="#credibility-visualizer" className="hover:text-white transition">Credibility</a>
             <a href="#testimonials-block" className="hover:text-white transition">Reviews</a>
             <a href="#advisory-faq" className="hover:text-white transition">FAQ</a>
             <a href="https://www.notoriousdigitalmedia.in" target="_blank" rel="noreferrer" className="text-amber-400 hover:text-amber-300 transition flex items-center space-x-1 lowercase font-mono">
@@ -329,21 +371,6 @@ export default function App() {
           <StatsDashboard />
         </div>
 
-        {/* Wikipedia Realtime Live Stats & Authority Trends on Homepage */}
-        <div className="mt-8 text-left" id="homepage-wikipedia-stats">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-2 px-1">
-            <div className="flex items-center space-x-2">
-              <span className="text-[10px] font-mono tracking-widest text-blue-400 uppercase bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full inline-block">
-                What you are missing out on
-              </span>
-              <span className="hidden sm:inline-block text-zinc-500 font-mono text-xs">
-                Real-Time Global Fact &amp; Entity Search Impact
-              </span>
-            </div>
-          </div>
-          <WikipediaRealtimeChart />
-        </div>
-
       </section>
 
       {/* Services Section */}
@@ -390,16 +417,15 @@ export default function App() {
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="agency-services-grid">
           {filteredServices.map((srv, index) => {
-            const floatDelays = ["0s", "0.9s", "1.8s", "0.45s", "1.35s", "2.25s"];
-            const staggerDelay = floatDelays[index % floatDelays.length];
+            const revealDelayMs = Math.min((index % 3) * 70, 210);
             return (
               <div
                 key={srv.id}
                 id={`card-${srv.id}`}
-                className="service-card-floating relative overflow-hidden rounded-2xl bg-zinc-900/35 border border-zinc-800/60 hover:border-zinc-750 p-6 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_12px_40px_rgba(0,0,0,0.5)] glow-hover"
+                className="service-card-reveal-target relative overflow-hidden rounded-2xl bg-zinc-900/35 border border-zinc-800/60 hover:border-zinc-750 p-6 flex flex-col justify-between group transition-colors duration-200 hover:shadow-[0_12px_40px_rgba(0,0,0,0.5)] glow-hover"
                 style={{
                   "--hover-shadow": srv.glowColor,
-                  animationDelay: staggerDelay,
+                  "--reveal-delay": `${revealDelayMs}ms`,
                 } as any}
               >
                 {/* 3D-styled Custom Layer Illustration (Clickable) */}
@@ -501,6 +527,30 @@ export default function App() {
           })}
         </div>
 
+      </section>
+
+      {/* Why You Need Better Credibility: Before & After Google Knowledge Graph Visualizer */}
+      <CredibilityKnowledgeGraphVisualizer
+        onOpenConsultation={() => {
+          const wikiSrv = SERVICES_DATA.find((s) => s.id === "wikipedia") || SERVICES_DATA[0];
+          setSelectedService(wikiSrv);
+        }}
+        whatsappNumber={FIXED_WHATSAPP}
+      />
+
+      {/* Wikipedia Realtime Live Stats & Authority Trends on Homepage */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16" id="homepage-wikipedia-stats">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-2 px-1">
+          <div className="flex items-center space-x-2">
+            <span className="text-[10px] font-mono tracking-widest text-blue-400 uppercase bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full inline-block">
+              What you are missing out on
+            </span>
+            <span className="hidden sm:inline-block text-zinc-500 font-mono text-xs">
+              Real-Time Global Fact &amp; Entity Search Impact
+            </span>
+          </div>
+        </div>
+        <WikipediaRealtimeChart />
       </section>
 
       {/* Customer Trust Section */}

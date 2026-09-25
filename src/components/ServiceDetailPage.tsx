@@ -29,6 +29,7 @@ import ServiceDiagnosticTool from "./ServiceDiagnosticTool";
 import ThemeToggle from "./ThemeToggle";
 import Footer from "./Footer";
 import ScrollProgressBar from "./ScrollProgressBar";
+import ParallaxAmbientGlows from "./ParallaxAmbientGlows";
 
 interface ServiceDetailPageProps {
   service: Service;
@@ -78,11 +79,8 @@ export default function ServiceDetailPage({
 
   return (
     <div className="min-h-screen w-full max-w-full overflow-x-clip bg-zinc-950 text-stone-200 relative pb-20 selection:bg-indigo-500/30 selection:text-white" id={`service-page-${service.id}`}>
-      {/* Visual Ambient Atmosphere Glows - Contained to prevent horizontal document overflow */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
-        <div className="absolute top-0 right-0 w-[min(550px,100vw)] h-[min(550px,100vw)] bg-indigo-900/10 rounded-full blur-[140px]" />
-        <div className="absolute top-1/2 left-0 w-[min(450px,100vw)] h-[min(450px,100vw)] bg-blue-900/10 rounded-full blur-[120px]" />
-      </div>
+      {/* Visual Ambient Atmosphere Glows with Smooth Parallax Scroll */}
+      <ParallaxAmbientGlows variant="service" />
 
       {/* Sub-Header Navigation */}
       <div className="sticky top-0 z-50 bg-zinc-950/85 backdrop-blur-md border-b border-zinc-900/90 w-full shadow-sm relative" id="service-subnav">
