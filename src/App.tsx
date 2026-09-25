@@ -539,7 +539,24 @@ export default function App() {
       />
 
       {/* Wikipedia Realtime Live Stats & Authority Trends on Homepage */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16" id="homepage-wikipedia-stats">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-zinc-900/80" id="homepage-wikipedia-stats">
+        
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/25 text-blue-300 text-xs font-mono uppercase tracking-wider mb-4">
+            <Globe className="w-3.5 h-3.5 text-blue-400" />
+            <span>Wikipedia Real-Time Impact &amp; Authority</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-white tracking-tight leading-tight mb-4">
+            Wikipedia is not just an encyclopaedia, it’s a proof of credibility
+          </h2>
+
+          <p className="text-sm sm:text-base text-zinc-400 leading-relaxed">
+            Search engines, global databases, and AI models look to Wikipedia as the canonical source of truth. Explore real-time entity traffic, page views, and the tangible reach of published authority.
+          </p>
+        </div>
+
         <div className="mb-6 flex flex-wrap items-center justify-between gap-2 px-1">
           <div className="flex items-center space-x-2">
             <span className="text-[10px] font-mono tracking-widest text-blue-400 uppercase bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full inline-block">
