@@ -836,7 +836,6 @@ html.light #wikipedia-maintenance-section button.bg-indigo-900\/60:hover {
 }
 
 /* Bottom Conversion Box in Light Mode (replaces dark white-to-black gradient) */
-html.light [id^="service-page-"] section:has(h3:contains("Ready to Lock In Your Authority?")),
 html.light [id^="service-page-"] .from-blue-900\/40.via-indigo-900\/40.to-zinc-900 {
   background: linear-gradient(150deg, #ffffff 0%, #eef2ff 50%, #e0e7ff 100%) !important;
   border: 2px solid #818cf8 !important;
