@@ -37,6 +37,7 @@ import ScrollProgressBar from "./components/ScrollProgressBar";
 import ParallaxAmbientGlows from "./components/ParallaxAmbientGlows";
 import CredibilityKnowledgeGraphVisualizer from "./components/CredibilityKnowledgeGraphVisualizer";
 import RocketWelcomeScreen from "./components/RocketWelcomeScreen";
+import HeroTwinklingStars from "./components/HeroTwinklingStars";
 
 // Fixed WhatsApp line across all dispatches and calls
 const FIXED_WHATSAPP = "+919103908189";
@@ -401,9 +402,12 @@ export default function App() {
           </button>
         </div>
 
-        {/* Bento Board component */}
-        <div className="pt-2 border-t border-zinc-900/60" id="stats-dashboard">
-          <StatsDashboard />
+        {/* Authority Stats Bento Board with Twinkling Stars Background */}
+        <div className="relative pt-4 pb-2 border-t border-zinc-900/60 overflow-hidden rounded-3xl" id="stats-dashboard">
+          <HeroTwinklingStars />
+          <div className="relative z-10">
+            <StatsDashboard />
+          </div>
         </div>
 
       </section>

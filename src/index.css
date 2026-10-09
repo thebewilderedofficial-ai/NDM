@@ -1610,6 +1610,59 @@ html.light #credibility-visualizer .text-zinc-400 {
   color: #475569 !important;
 }
 
+/* =========================================================
+   HERO SECTION TWINKLING STARS & SHOOTING METEOR STREAKS
+   ========================================================= */
+@keyframes heroStarTwinkle {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.35);
+  }
+}
+
+@keyframes heroShootingStar {
+  0% {
+    transform: translateX(0) translateY(0) rotate(-35deg) scaleX(0);
+    opacity: 0;
+  }
+  12% {
+    transform: translateX(60px) translateY(42px) rotate(-35deg) scaleX(1);
+    opacity: 1;
+  }
+  30% {
+    transform: translateX(280px) translateY(196px) rotate(-35deg) scaleX(1.4);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(280px) translateY(196px) rotate(-35deg) scaleX(0);
+    opacity: 0;
+  }
+}
+
+.hero-twinkling-star {
+  animation: heroStarTwinkle var(--twinkle-dur, 3s) ease-in-out infinite;
+  animation-delay: var(--twinkle-delay, 0s);
+  will-change: opacity, transform;
+}
+
+.hero-shooting-star-1 {
+  animation: heroShootingStar 12s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  animation-delay: 2s;
+}
+
+.hero-shooting-star-2 {
+  animation: heroShootingStar 16s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  animation-delay: 7.5s;
+}
+
+html.light .hero-starfield-container {
+  opacity: 0.12 !important;
+}
+
 
 
 
