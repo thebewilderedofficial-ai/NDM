@@ -1066,6 +1066,66 @@ html.light #navigation-drawer-panel .bg-zinc-950 {
 }
 
 /* =========================================================
+   NAVIGATION DRAWER SERVICE CARDS (MATCHED SETTINGS)
+   ========================================================= */
+#navigation-drawer-panel button[id^="nav-service-link-"] {
+  font-size: 15px !important;
+}
+
+#navigation-drawer-panel button[id^="nav-service-link-"] > div:nth-of-type(2) {
+  font-size: 13px !important;
+}
+
+#navigation-drawer-panel button[id^="nav-service-link-"] > div:nth-of-type(2) > div:nth-of-type(1) > h4:nth-of-type(1),
+#navigation-drawer-panel button[id^="nav-service-link-"] h4 {
+  font-size: 13px !important;
+}
+
+#navigation-drawer-panel button[id^="nav-service-link-"] > div:nth-of-type(2) > p:nth-of-type(1),
+#navigation-drawer-panel button[id^="nav-service-link-"] p {
+  font-size: 9px !important;
+}
+
+#navigation-drawer-panel button[id^="nav-service-link-"] > div:nth-of-type(2) > div:nth-of-type(2) > span:nth-of-type(1) {
+  font-size: 8px !important;
+}
+
+#navigation-drawer-panel button[id^="nav-service-link-"] > div:nth-of-type(2) > div:nth-of-type(2) > span:nth-of-type(2) {
+  font-size: 8px !important;
+}
+
+#navigation-drawer-panel button[id^="nav-service-link-"] > div:nth-of-type(1) > svg:nth-of-type(1) {
+  font-size: 14px !important;
+}
+
+/* =========================================================
+   NAVIGATION DRAWER QUICK NAVIGATION LINKS (FOCUS MODE)
+   ========================================================= */
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > div#navigation-drawer-portal:nth-of-type(2) > aside#navigation-drawer-panel:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > button:nth-of-type(1) > span:nth-of-type(1) {
+  font-size: 10px !important;
+}
+
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > div#navigation-drawer-portal:nth-of-type(2) > aside#navigation-drawer-panel:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > button:nth-of-type(2) > span:nth-of-type(1) {
+  font-size: 10px !important;
+}
+
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > div#navigation-drawer-portal:nth-of-type(2) > aside#navigation-drawer-panel:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > button:nth-of-type(3) > span:nth-of-type(1) {
+  font-size: 10px !important;
+}
+
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > div#navigation-drawer-portal:nth-of-type(2) > aside#navigation-drawer-panel:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > button:nth-of-type(4) > span:nth-of-type(1) {
+  font-size: 11px !important;
+}
+
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > div#navigation-drawer-portal:nth-of-type(2) > aside#navigation-drawer-panel:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > button:nth-of-type(5) > span:nth-of-type(1) {
+  font-size: 11px !important;
+}
+
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > div#navigation-drawer-portal:nth-of-type(2) > aside#navigation-drawer-panel:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) > a:nth-of-type(1) > span:nth-of-type(1) {
+  font-size: 10px !important;
+}
+
+/* =========================================================
    FOOTER ATTRIBUTION (LIGHT MODE)
    ========================================================= */
 
@@ -1156,68 +1216,93 @@ div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-v
 }
 
 /* Focus Mode: Credibility Visualizer Gauge Bar Typography Customizations */
-div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) {
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1),
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(1),
+#credibility-authority-gauge > div:nth-of-type(1) {
   font-size: 13px !important;
 }
 
-div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(1) {
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(1),
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(1),
+#credibility-authority-gauge div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(1) {
   font-size: 10px !important;
 }
 
-div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > span:nth-of-type(2) {
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > span:nth-of-type(2),
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > span:nth-of-type(2),
+#credibility-authority-gauge div:nth-of-type(2) > span:nth-of-type(2) {
   font-size: 8px !important;
 }
 
-div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > h4:nth-of-type(1) {
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > h4:nth-of-type(1),
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > h4:nth-of-type(1),
+#credibility-authority-gauge h4:nth-of-type(1) {
   font-size: 10px !important;
 }
 
-div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(2) {
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(2),
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(2),
+#credibility-authority-gauge div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(2) {
   font-size: 9px !important;
 }
 
-div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > span:nth-of-type(1) {
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > span:nth-of-type(1),
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > span:nth-of-type(1),
+#credibility-authority-gauge div:nth-of-type(2) > span:nth-of-type(1) {
   font-size: 10px !important;
 }
 
-div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(2) {
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(2),
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(1) > div:nth-of-type(2),
+#credibility-authority-gauge > div:nth-of-type(1) > div:nth-of-type(2) {
   font-size: 10px !important;
 }
 
-div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) {
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1),
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1),
+#credibility-authority-gauge div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) {
   font-size: 12px !important;
 }
 
-div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > svg:nth-of-type(1) > path:nth-of-type(2) {
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > svg:nth-of-type(1) > path:nth-of-type(2),
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > svg:nth-of-type(1) > path:nth-of-type(2) {
   font-size: 12px !important;
 }
 
 /* Focus Mode: Knowledge Graph Panel Typography Sizing */
-div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > h3:nth-of-type(1) {
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > h3:nth-of-type(1),
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > h3:nth-of-type(1),
+#google-serp-simulator-frame h3 {
   font-size: 18px !important;
 }
 
-div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > p:nth-of-type(1) {
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > p:nth-of-type(1),
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > p:nth-of-type(1) {
   font-size: 10px !important;
 }
 
-div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(1) > span:nth-of-type(2) {
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(1) > span:nth-of-type(2),
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(1) > span:nth-of-type(2) {
   font-size: 10px !important;
 }
 
-div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(2) > span:nth-of-type(2) {
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(2) > span:nth-of-type(2),
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(2) > span:nth-of-type(2) {
   font-size: 10px !important;
 }
 
-div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(3) > span:nth-of-type(2) {
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(3) > span:nth-of-type(2),
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(3) > span:nth-of-type(2) {
   font-size: 10px !important;
 }
 
-div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(4) > span:nth-of-type(2) {
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(4) > span:nth-of-type(2),
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(4) > span:nth-of-type(2) {
   font-size: 10px !important;
 }
 
-div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(5) > span:nth-of-type(2) {
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(5) > span:nth-of-type(2),
+div#root:nth-of-type(1) > div#agency-root:nth-of-type(1) > section#credibility-visualizer:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(5) > span:nth-of-type(2) {
   font-size: 10px !important;
 }
 

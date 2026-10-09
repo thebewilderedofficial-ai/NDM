@@ -17,7 +17,8 @@ import {
   ChevronRight,
   Menu,
   Wrench,
-  Gauge
+  Gauge,
+  Rocket
 } from "lucide-react";
 import { SERVICES_DATA } from "./data";
 import { Service, AgencySettings } from "./types";
@@ -35,6 +36,7 @@ import Footer from "./components/Footer";
 import ScrollProgressBar from "./components/ScrollProgressBar";
 import ParallaxAmbientGlows from "./components/ParallaxAmbientGlows";
 import CredibilityKnowledgeGraphVisualizer from "./components/CredibilityKnowledgeGraphVisualizer";
+import RocketWelcomeScreen from "./components/RocketWelcomeScreen";
 
 // Fixed WhatsApp line across all dispatches and calls
 const FIXED_WHATSAPP = "+919103908189";
@@ -89,6 +91,12 @@ export default function App() {
   const [activeServiceDetail, setActiveServiceDetail] = useState<Service | null>(null);
   const [hasGemini, setHasGemini] = useState(false);
   const [isNavDrawerOpen, setIsNavDrawerOpen] = useState(false);
+  const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
+
+  const handleWelcomeComplete = useCallback(() => {
+    setShowWelcomeScreen(false);
+  }, []);
+
   const [heroTypewriter, setHeroTypewriter] = useState({
     phraseIndex: 0,
     isVisible: true,
@@ -235,7 +243,15 @@ export default function App() {
           onSelectService={openServicePage}
           onNavigateHome={backToAllServices}
           whatsappNumber={FIXED_WHATSAPP}
+          onReplayLaunch={() => setShowWelcomeScreen(true)}
         />
+
+        {showWelcomeScreen && (
+          <RocketWelcomeScreen
+            onComplete={handleWelcomeComplete}
+            durationSeconds={5.2}
+          />
+        )}
       </>
     );
   }
@@ -243,6 +259,14 @@ export default function App() {
   return (
     <div className="min-h-screen bg-zinc-950 font-sans text-stone-200 relative pb-16 selection:bg-indigo-500/30 selection:text-white" id="agency-root">
       
+      {/* 2D Welcome Rocket Launch Sequence (Takes off upwards, smoke, stars parallax, fades into site) */}
+      {showWelcomeScreen && (
+        <RocketWelcomeScreen
+          onComplete={handleWelcomeComplete}
+          durationSeconds={5.2}
+        />
+      )}
+
       {/* Smooth Parallax Scroll Background Ambient Atmosphere Glows */}
       <ParallaxAmbientGlows variant="home" />
 
@@ -276,8 +300,8 @@ export default function App() {
             <a href="#credibility-visualizer" className="hover:text-white transition">Credibility</a>
             <a href="#testimonials-block" className="hover:text-white transition">Reviews</a>
             <a href="#advisory-faq" className="hover:text-white transition">FAQ</a>
-            <a href="https://www.notoriousdigitalmedia.in" target="_blank" rel="noreferrer" className="text-amber-400 hover:text-amber-300 transition flex items-center space-x-1 lowercase font-mono">
-              <span>www.notoriousdigitalmedia.in</span>
+            <a href="https://www.notoriousdigitalmedia.com" target="_blank" rel="noreferrer" className="text-amber-400 hover:text-amber-300 transition flex items-center space-x-1 lowercase font-mono">
+              <span>www.notoriousdigitalmedia.com</span>
               <ExternalLink className="w-3 h-3" />
             </a>
           </nav>
@@ -288,6 +312,17 @@ export default function App() {
               <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping" />
               <span className="text-zinc-400 uppercase">Live SLA: 3m</span>
             </div>
+
+            {/* Replay 2D Rocket Launch Animation */}
+            <button
+              onClick={() => setShowWelcomeScreen(true)}
+              className="hidden md:flex items-center space-x-1.5 bg-zinc-900/80 hover:bg-zinc-800 text-zinc-400 hover:text-white border border-zinc-800 hover:border-zinc-700 px-2.5 py-1.5 rounded-xl font-mono text-[11px] transition cursor-pointer select-none"
+              title="Watch Credibility Launch Animation"
+              aria-label="Replay intro launch animation"
+            >
+              <Rocket className="w-3.5 h-3.5 text-blue-400" />
+              <span>Launch</span>
+            </button>
 
             {/* Light / Dark Mode Toggle */}
             <ThemeToggle />

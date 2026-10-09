@@ -10,7 +10,8 @@ import {
   AtSign,
   Sparkles,
   ChevronRight,
-  Code
+  Code,
+  Rocket
 } from "lucide-react";
 import { Service } from "../types";
 import ThemeToggle from "./ThemeToggle";
@@ -23,6 +24,7 @@ interface NavigationDrawerProps {
   onSelectService: (service: Service) => void;
   onNavigateHome: () => void;
   whatsappNumber: string;
+  onReplayLaunch?: () => void;
 }
 
 export default function NavigationDrawer({
@@ -33,6 +35,7 @@ export default function NavigationDrawer({
   onSelectService,
   onNavigateHome,
   whatsappNumber,
+  onReplayLaunch,
 }: NavigationDrawerProps) {
   // Lock body scroll and handle Escape key dismissal
   useEffect(() => {
@@ -170,7 +173,7 @@ export default function NavigationDrawer({
                   <button
                     key={service.id}
                     onClick={() => handleSelect(service)}
-                    className={`w-full text-left p-3.5 rounded-xl border transition group relative overflow-hidden flex items-start space-x-3.5 ${
+                    className={`w-full text-left p-3.5 rounded-xl border transition group relative overflow-hidden flex items-start space-x-3.5 text-[15px] ${
                       isActive
                         ? "bg-blue-950/30 border-blue-500/50 shadow-[0_0_15px_rgba(59,130,246,0.15)]"
                         : "bg-zinc-900/50 hover:bg-zinc-900 border-zinc-800/80 hover:border-zinc-700"
@@ -178,26 +181,26 @@ export default function NavigationDrawer({
                     id={`nav-service-link-${service.id}`}
                   >
                     {/* Icon Container */}
-                    <div className="p-2.5 rounded-lg bg-zinc-950 border border-zinc-800 shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
+                    <div className="p-2.5 rounded-lg bg-zinc-950 border border-zinc-800 shrink-0 mt-0.5 group-hover:scale-105 transition-transform text-[14px]">
                       {getServiceIcon(service.id)}
                     </div>
 
                     {/* Text description */}
-                    <div className="flex-1 min-w-0">
+                    <div className="flex-1 min-w-0 text-[13px]">
                       <div className="flex items-center justify-between space-x-2">
-                        <h4 className="text-sm font-display font-semibold text-white group-hover:text-blue-300 transition truncate">
+                        <h4 className="text-[13px] font-display font-semibold text-white group-hover:text-blue-300 transition truncate">
                           {service.title}
                         </h4>
                         <ChevronRight className="w-4 h-4 text-zinc-500 group-hover:text-white group-hover:translate-x-0.5 transition shrink-0" />
                       </div>
-                      <p className="text-xs text-zinc-400 line-clamp-1 mt-0.5">
+                      <p className="text-[9px] text-zinc-400 line-clamp-1 mt-0.5">
                         {service.tagline}
                       </p>
                       <div className="flex items-center space-x-2 mt-2">
-                        <span className="text-[10px] font-mono bg-zinc-950 text-zinc-400 border border-zinc-800 px-2 py-0.5 rounded-md">
+                        <span className="text-[8px] font-mono bg-zinc-950 text-zinc-400 border border-zinc-800 px-2 py-0.5 rounded-md">
                           {service.badge}
                         </span>
-                        <span className="text-[10px] font-mono text-zinc-500">
+                        <span className="text-[8px] font-mono text-zinc-500">
                           {service.avgTimeline}
                         </span>
                       </div>
@@ -218,7 +221,7 @@ export default function NavigationDrawer({
                 onClick={() => handleNavHome("featured-services")}
                 className="p-3 bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/70 hover:border-zinc-700 rounded-xl text-left text-zinc-300 hover:text-white transition flex items-center justify-between"
               >
-                <span>All Services Grid</span>
+                <span className="text-[10px]">All Services Grid</span>
                 <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
               </button>
 
@@ -226,7 +229,7 @@ export default function NavigationDrawer({
                 onClick={() => handleNavHome("stats-dashboard")}
                 className="p-3 bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/70 hover:border-zinc-700 rounded-xl text-left text-zinc-300 hover:text-white transition flex items-center justify-between"
               >
-                <span>Authority Stats</span>
+                <span className="text-[10px]">Authority Stats</span>
                 <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
               </button>
 
@@ -234,7 +237,7 @@ export default function NavigationDrawer({
                 onClick={() => handleNavHome("tier1-media-features")}
                 className="p-3 bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/70 hover:border-zinc-700 rounded-xl text-left text-zinc-300 hover:text-white transition flex items-center justify-between"
               >
-                <span>Media Features</span>
+                <span className="text-[10px]">Media Features</span>
                 <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
               </button>
 
@@ -242,7 +245,7 @@ export default function NavigationDrawer({
                 onClick={() => handleNavHome("testimonials-block")}
                 className="p-3 bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/70 hover:border-zinc-700 rounded-xl text-left text-zinc-300 hover:text-white transition flex items-center justify-between"
               >
-                <span>Client Reviews</span>
+                <span className="text-[11px]">Client Reviews</span>
                 <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
               </button>
 
@@ -250,18 +253,18 @@ export default function NavigationDrawer({
                 onClick={() => handleNavHome("advisory-faq")}
                 className="p-3 bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/70 hover:border-zinc-700 rounded-xl text-left text-zinc-300 hover:text-white transition flex items-center justify-between"
               >
-                <span>Advisory FAQ</span>
+                <span className="text-[11px]">Advisory FAQ</span>
                 <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
               </button>
             </div>
 
             <a
-              href="https://www.notoriousdigitalmedia.in"
+              href="https://www.notoriousdigitalmedia.com"
               target="_blank"
               rel="noreferrer"
               className="mt-2 p-3 bg-zinc-900/30 hover:bg-zinc-900/70 border border-zinc-800/70 rounded-xl text-xs text-amber-400 hover:text-amber-300 transition flex items-center justify-between font-mono"
             >
-              <span>www.notoriousdigitalmedia.in</span>
+              <span className="text-[10px]">www.notoriousdigitalmedia.com</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
@@ -277,6 +280,19 @@ export default function NavigationDrawer({
             </div>
             <span className="text-zinc-500 font-mono text-[11px]">Confidential</span>
           </div>
+
+          {onReplayLaunch && (
+            <button
+              onClick={() => {
+                onClose();
+                onReplayLaunch();
+              }}
+              className="w-full bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 hover:border-zinc-700 font-display font-medium text-xs py-2.5 rounded-xl flex items-center justify-center space-x-2 transition cursor-pointer"
+            >
+              <Rocket className="w-3.5 h-3.5 text-blue-400" />
+              <span>Watch Launch Intro</span>
+            </button>
+          )}
 
           <a
             href={`https://api.whatsapp.com/send?phone=${cleanPhone}&text=Hello%20Notorious%20Digital%20Media%2C%20I%20would%20like%20to%20request%20a%20priority%20consultation%20regarding%20your%20services.`}

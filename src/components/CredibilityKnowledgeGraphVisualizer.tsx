@@ -199,78 +199,8 @@ export default function CredibilityKnowledgeGraphVisualizer({
           </div>
         </div>
 
-        {/* Real-time Dynamic Credibility Gauge Bar */}
-        <div className="mb-8 max-w-4xl mx-auto">
-          <div className="bg-zinc-900/50 border border-zinc-800/80 rounded-2xl p-5 sm:p-6 backdrop-blur-md">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
-              <div className="flex items-center space-x-3">
-                <div
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors duration-500 ${
-                    hasKnowledgePanel
-                      ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30"
-                      : "bg-rose-500/10 text-rose-400 border border-rose-500/30"
-                  }`}
-                >
-                  {hasKnowledgePanel ? (
-                    <ShieldCheck className="w-5 h-5 animate-pulse" />
-                  ) : (
-                    <ShieldAlert className="w-5 h-5 animate-pulse" />
-                  )}
-                </div>
-                <div>
-                  <h4 className="text-xs font-mono uppercase tracking-widest text-zinc-400">
-                    Instant Search Authority Score
-                  </h4>
-                  <div className="text-xl sm:text-2xl font-black font-display text-white flex items-center space-x-2">
-                    <span>{hasKnowledgePanel ? "94 / 100" : "8 / 100"}</span>
-                    <span
-                      className={`text-xs px-2.5 py-0.5 rounded-full font-semibold border ${
-                        hasKnowledgePanel
-                          ? "bg-emerald-950/80 border-emerald-500/40 text-emerald-300"
-                          : "bg-rose-950/80 border-rose-500/40 text-rose-300"
-                      }`}
-                    >
-                      {hasKnowledgePanel
-                        ? "Elite Sovereign Authority"
-                        : "High Risk of Disqualification"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="text-xs text-zinc-400 font-mono sm:text-right">
-                {hasKnowledgePanel ? (
-                  <span className="text-emerald-400 flex items-center sm:justify-end gap-1">
-                    <TrendingUp className="w-4 h-4" />
-                    +86% Conversion Lift
-                  </span>
-                ) : (
-                  <span className="text-rose-400 flex items-center sm:justify-end gap-1">
-                    <TrendingDown className="w-4 h-4" />
-                    74% Client Drop-off
-                  </span>
-                )}
-                <span className="text-[11px] text-zinc-500 block">
-                  Measured across 1,200+ partner executive audits
-                </span>
-              </div>
-            </div>
-
-            {/* Visual meter track */}
-            <div className="w-full h-3 bg-zinc-950 rounded-full overflow-hidden p-0.5 border border-zinc-800">
-              <div
-                className={`h-full rounded-full transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                  hasKnowledgePanel
-                    ? "w-[94%] bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-400 shadow-[0_0_12px_#10b981]"
-                    : "w-[8%] bg-gradient-to-r from-rose-600 to-red-500 shadow-[0_0_8px_#f43f5e]"
-                }`}
-              />
-            </div>
-          </div>
-        </div>
-
         {/* Google SERP Simulated Window */}
-        <div className="bg-zinc-950 rounded-2xl border border-zinc-800/90 shadow-2xl overflow-hidden mb-12">
+        <div id="google-serp-simulator-frame" className="bg-zinc-950 rounded-2xl border border-zinc-800/90 shadow-2xl overflow-hidden mb-8">
           {/* Simulated Browser Chrome Top Bar */}
           <div className="bg-zinc-900/90 border-b border-zinc-800 px-4 py-3 flex items-center justify-between">
             <div className="flex items-center space-x-2">
@@ -547,6 +477,76 @@ export default function CredibilityKnowledgeGraphVisualizer({
                 </div>
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Real-time Dynamic Credibility Gauge Bar (Positioned Directly Below Panel Simulator) */}
+        <div id="credibility-authority-gauge" className="mb-10 max-w-4xl mx-auto">
+          <div className="bg-zinc-900/50 border border-zinc-800/80 rounded-2xl p-5 sm:p-6 backdrop-blur-md">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
+              <div className="flex items-center space-x-3">
+                <div
+                  className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors duration-500 ${
+                    hasKnowledgePanel
+                      ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30"
+                      : "bg-rose-500/10 text-rose-400 border border-rose-500/30"
+                  }`}
+                >
+                  {hasKnowledgePanel ? (
+                    <ShieldCheck className="w-5 h-5 animate-pulse" />
+                  ) : (
+                    <ShieldAlert className="w-5 h-5 animate-pulse" />
+                  )}
+                </div>
+                <div>
+                  <h4 className="text-xs font-mono uppercase tracking-widest text-zinc-400">
+                    Instant Search Authority Score
+                  </h4>
+                  <div className="text-xl sm:text-2xl font-black font-display text-white flex items-center space-x-2">
+                    <span>{hasKnowledgePanel ? "94 / 100" : "8 / 100"}</span>
+                    <span
+                      className={`text-xs px-2.5 py-0.5 rounded-full font-semibold border ${
+                        hasKnowledgePanel
+                          ? "bg-emerald-950/80 border-emerald-500/40 text-emerald-300"
+                          : "bg-rose-950/80 border-rose-500/40 text-rose-300"
+                      }`}
+                    >
+                      {hasKnowledgePanel
+                        ? "Elite Sovereign Authority"
+                        : "High Risk of Disqualification"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-xs text-zinc-400 font-mono sm:text-right">
+                {hasKnowledgePanel ? (
+                  <span className="text-emerald-400 flex items-center sm:justify-end gap-1">
+                    <TrendingUp className="w-4 h-4" />
+                    +86% Conversion Lift
+                  </span>
+                ) : (
+                  <span className="text-rose-400 flex items-center sm:justify-end gap-1">
+                    <TrendingDown className="w-4 h-4" />
+                    74% Client Drop-off
+                  </span>
+                )}
+                <span className="text-[11px] text-zinc-500 block">
+                  Measured across 1,200+ partner executive audits
+                </span>
+              </div>
+            </div>
+
+            {/* Visual meter track */}
+            <div className="w-full h-3 bg-zinc-950 rounded-full overflow-hidden p-0.5 border border-zinc-800">
+              <div
+                className={`h-full rounded-full transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                  hasKnowledgePanel
+                    ? "w-[94%] bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-400 shadow-[0_0_12px_#10b981]"
+                    : "w-[8%] bg-gradient-to-r from-rose-600 to-red-500 shadow-[0_0_8px_#f43f5e]"
+                }`}
+              />
+            </div>
           </div>
         </div>
 
